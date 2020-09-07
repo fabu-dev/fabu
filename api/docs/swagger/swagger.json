@@ -1,0 +1,26 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {},
+        "license": {}
+    },
+    "paths": {
+        "/system/health": {
+            "get": {
+                "description": "描述信息",
+                "tags": [
+                    "系统管理"
+                ],
+                "summary": "测试接口",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
