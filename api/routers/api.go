@@ -1,6 +1,6 @@
 package routers
 
-import "go-web-frame/controller"
+import "fabu.dev/api/controller"
 
 func CreateApiRouter() {
 

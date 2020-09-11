@@ -1,8 +1,9 @@
 package controller
 
 import (
-	"go-web-frame/pkg/api"
 	"net/http"
+
+	"fabu.dev/api/pkg/api"
 
 	"github.com/gin-gonic/gin"
 )

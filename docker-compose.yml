@@ -1,29 +1,35 @@
 version: '3'
-services:
-  api:                                  # 后端springboot容器
-    container_name: fabu.dev-api    # 容器名为'xiao-xiao-su-api'
-    restart: always                     # 重启策略: 容器退出时总是重启容器
-    build:
-      context: ./                       # 指定设定上下文根目录，然后以该目录为准指定Dockerfile
-      dockerfile: docker/api/Dockerfile
-    working_dir: /app                   # 设置工作目录为容器内的app文件夹
-    environment:
-      TZ: Asia/Shanghai
-    volumes:                            # 挂载文件
-      - ../api:/app                      # 将主机的code-api文件夹映射到容器内的app文件夹
-      - ./logs/:/app/log                # 映射容器产生的日志到主机的logs文件夹
-    ports:                              # 映射端口
-      - "8802:8802"
+networks:
+  fabu:
 
-  web:                                  # 前端node容器(运行nginx中的Vue项目)
-    container_name: fabu.dev-web    # 容器名为'xiao-xiao-su-web'
-    restart: always                     # 重启策略: 容器退出时总是重启容器
+services:
+  api:
+    container_name: fabu.dev-api
+    restart: always
     build:
-      context: ./                       # 指定设定上下文根目录，然后以该目录为准指定Dockerfile
-      dockerfile: docker/web/Dockerfile      # 指定Dockerfile
+      context: ./
+      dockerfile: docker/api/Dockerfile
+    working_dir: /go/src/api
     environment:
       TZ: Asia/Shanghai
     ports:
-      - "8801:8801"                      # 映射端口
-    depends_on:                          # 依赖于api容器，被依赖容器启动后此web容器才可启动
-      - fabu.dev-api
+      - "8801:8801"
+    networks:
+      - fabu
+
+  web:
+    container_name: fabu.dev-web
+    restart: always
+    build:
+      context: ./
+      dockerfile: docker/web/Dockerfile
+    environment:
+      TZ: Asia/Shanghai
+    ports:
+      - "8802:8802"
+    depends_on:                          #
+      - api
+    networks:
+      - fabu
+
+

@@ -1,8 +1,9 @@
 package response
 
 import (
-	"go-web-frame/pkg/api/code"
 	"time"
+
+	"fabu.dev/api/pkg/api/code"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,7 +1,7 @@
 package db
 
 import (
-	"go-web-frame/pkg/config"
+	"fabu.dev/api/pkg/config"
 
 	"github.com/sirupsen/logrus"
 

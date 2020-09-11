@@ -3,12 +3,13 @@ package web
 import (
 	"context"
 	"fmt"
-	"go-web-frame/pkg/config"
-	"go-web-frame/routers"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"fabu.dev/api/pkg/config"
+	"fabu.dev/api/routers"
 
 	"github.com/sirupsen/logrus"
 )

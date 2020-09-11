@@ -1,6 +1,7 @@
 
 .idea
 
-go-web-framework.exe*
+api
+api.exe
 
 runtime/logs/*

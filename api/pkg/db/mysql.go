@@ -2,8 +2,9 @@ package db
 
 import (
 	"fmt"
-	"go-web-frame/pkg/config"
 	"net/url"
+
+	"fabu.dev/api/pkg/config"
 
 	"github.com/sirupsen/logrus"
 

@@ -1,10 +1,11 @@
 package controller
 
 import (
-	"go-web-frame/filter"
-	"go-web-frame/pkg/api"
-	"go-web-frame/pkg/api/code"
 	"net/http"
+
+	"fabu.dev/api/filter"
+	"fabu.dev/api/pkg/api"
+	"fabu.dev/api/pkg/api/code"
 
 	"github.com/sirupsen/logrus"
 

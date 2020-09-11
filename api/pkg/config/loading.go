@@ -1,8 +1,9 @@
 package config
 
 import (
-	"go-web-frame/pkg/utils"
 	"os"
+
+	"fabu.dev/api/pkg/utils"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/sirupsen/logrus"

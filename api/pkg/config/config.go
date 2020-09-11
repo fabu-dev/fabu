@@ -1,8 +1,9 @@
 package config
 
 import (
-	"go-web-frame/pkg/utils"
 	"time"
+
+	"fabu.dev/api/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )

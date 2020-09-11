@@ -1,14 +1,15 @@
 package routers
 
 import (
-	"go-web-frame/pkg/api/middleware"
-	"go-web-frame/pkg/config"
 	"io"
 	"os"
 
+	"fabu.dev/api/pkg/api/middleware"
+	"fabu.dev/api/pkg/config"
+
 	"github.com/sirupsen/logrus"
 
-	_ "go-web-frame/docs/swagger"
+	_ "fabu.dev/api/docs/swagger"
 
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"

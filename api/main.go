@@ -1,8 +1,8 @@
 package main
 
 import (
-	"go-web-frame/pkg/db"
-	"go-web-frame/pkg/web"
+	"fabu.dev/api/pkg/db"
+	"fabu.dev/api/pkg/web"
 )
 
 func init() {

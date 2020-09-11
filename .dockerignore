@@ -1,0 +1,10 @@
+*.zip
+*.7z
+.git/
+
+
+./api/runtime/cache/*
+./api/runtime/logs/*
+./web/vue/node_modules
+./docker/api/Dockerfile
+./docker/web/Dockerfile

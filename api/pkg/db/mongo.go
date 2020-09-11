@@ -3,8 +3,9 @@ package db
 import (
 	"context"
 	"fmt"
-	"go-web-frame/pkg/config"
 	"time"
+
+	"fabu.dev/api/pkg/config"
 
 	"github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/mongo"
