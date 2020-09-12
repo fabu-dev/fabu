@@ -21,10 +21,6 @@ RUN cnpm install
 # RUN npm run build:prod
 RUN cnpm run build
 
-# 前端项目运行命令
-#CMD ["npm","run","start"]
-
-
 # nginx镜像, 上面创建的目录(app)在容易中并不会有。因为这里有FROM是一个新的容器
 FROM nginx:1.15.3-alpine as production-stage
 
@@ -40,8 +36,8 @@ COPY docker/web/nginx.conf /etc/nginx/
 # 拷贝前端vue项目打包后生成的文件到nginx下运行
 COPY --from=build-stage /app/dist /usr/share/nginx/html/
 
-# 暴露8101端口
-EXPOSE 8000
+# 暴露8101端口 nginx 监听的端口
+EXPOSE 8804
 
 # 注：CMD不同于RUN，CMD用于指定在容器启动时所要执行的命令，而RUN用于指定镜像构建时所要执行的命令。
 #    RUN指令创建的中间镜像会被缓存，并会在下次构建中使用。如果不想使用这些缓存镜像，可以在构建时指定--no-cache参数，如：docker build --no-cache
