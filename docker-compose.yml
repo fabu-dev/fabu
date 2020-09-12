@@ -13,7 +13,7 @@ services:
     environment:
       TZ: Asia/Shanghai
     ports:
-      - "8801:8801"
+      - "8803:8803"
     networks:
       - fabu
 
@@ -26,7 +26,7 @@ services:
     environment:
       TZ: Asia/Shanghai
     ports:
-      - "8802:8802"
+      - "8804:8804"
     depends_on:                          #
       - api
     networks:

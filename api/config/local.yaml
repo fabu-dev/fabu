@@ -24,7 +24,7 @@ mongo:
 
 server:
   runMode: "debug"
-  httpPort: 8866
+  httpPort: 8803
   readTimeout: 2000000000
   writeTimeout: 5000000000
   closeTimeout: 3000000000
