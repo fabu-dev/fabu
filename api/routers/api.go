@@ -8,10 +8,17 @@ func CreateApiRouter() {
 	v1Member := Router.Group("/v1/member")
 	{
 		v1Member.GET("/info/:id", controller.NewMember().View)           // 会员详情
-		v1Member.POST("/login", controller.NewMember().Login)            // 登录
-		v1Member.POST("/register", controller.NewMember().Register)      // 注册
 		v1Member.GET("/group/:id", controller.NewMember().GroupView)     // 获取会员的团队信息
 		v1Member.PUT("/password", controller.NewMember().UpdatePassword) // 会员详情
+	}
+
+	v1Auth := Router.Group("/v1/auth")
+	{
+
+		v1Auth.POST("/login", controller.NewAuth().Login)            // 登录
+		v1Auth.GET("/logout", controller.NewAuth().Logout)           // 登出
+		v1Auth.POST("/register", controller.NewAuth().Register)      // 注册
+		v1Auth.GET("/forget", controller.NewAuth().Forget)     // 忘记密码
 	}
 
 	// 系统API路由配置

@@ -25,6 +25,8 @@ const userApi = {
  * @returns {*}
  */
 export function login (parameter) {
+  console.log(userApi.Login)
+  console.log(process.env.VUE_APP_API_BASE_URL)
   return request({
     url: userApi.Login,
     method: 'post',

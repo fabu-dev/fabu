@@ -6,7 +6,6 @@ import (
 
 	"fabu.dev/api/pkg/api/middleware"
 	"fabu.dev/api/pkg/config"
-
 	"github.com/sirupsen/logrus"
 
 	_ "fabu.dev/api/docs/swagger"
@@ -49,6 +48,7 @@ func InitRouter() {
 
 	Router.Use(gin.Logger())
 	Router.Use(gin.Recovery())
+	Router.Use(middleware.Cors())  // 跨域
 	Router.Use(middleware.Consuming())
 
 	Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
