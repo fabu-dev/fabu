@@ -1,15 +1,46 @@
 version: '3'
 networks:
   fabu:
+    driver: bridge
 
 services:
+  # mysql
+  db:
+    container_name: fabu-db
+    image: mysql:5.7.16
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'fabu'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'root'
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+    ports:
+      - '8805:3306'
+    networks:
+      - fabu
+  # redis
+  redis:
+    container_name: fabu-redis
+    image: redis:alpine
+    networks:
+      - fabu
+    ports:
+      - '8806:6379'
+
+  # 后台API服务
   api:
-    container_name: fabu.dev-api
+    container_name: fabu-api
     restart: always
     build:
       context: ./
       dockerfile: docker/api/Dockerfile
     working_dir: /go/src/api
+    volumes:
+      - ./api:/go/src/api
+    depends_on:
+      - db
+      - redis
     environment:
       TZ: Asia/Shanghai
     ports:
@@ -17,17 +48,20 @@ services:
     networks:
       - fabu
 
+  # 前端界面
   web:
-    container_name: fabu.dev-web
+    container_name: fabu-web
     restart: always
     build:
       context: ./
       dockerfile: docker/web/Dockerfile
+    volumes:
+        - ./web/dist:/usr/share/nginx/html/
     environment:
       TZ: Asia/Shanghai
     ports:
       - "8804:8804"
-    depends_on:                          #
+    depends_on:
       - api
     networks:
       - fabu
