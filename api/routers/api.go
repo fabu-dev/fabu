@@ -5,7 +5,7 @@ import "fabu.dev/api/controller"
 func CreateApiRouter() {
 
 	// 会员API路由配置
-	v1Member := Router.Group("/v1/member")
+	v1Member := Router.Group("/v1/user")
 	{
 		v1Member.GET("/info/:id", controller.NewMember().View)           // 会员详情
 		v1Member.GET("/group/:id", controller.NewMember().GroupView)     // 获取会员的团队信息
@@ -16,7 +16,8 @@ func CreateApiRouter() {
 	{
 
 		v1Auth.POST("/login", controller.NewAuth().Login)            // 登录
-		v1Auth.GET("/logout", controller.NewAuth().Logout)           // 登出
+		v1Auth.POST("/2step-code", controller.NewAuth().Login)            // 登录
+		v1Auth.POST("/logout", controller.NewAuth().Logout)           // 登出
 		v1Auth.POST("/register", controller.NewAuth().Register)      // 注册
 		v1Auth.GET("/forget", controller.NewAuth().Forget)     // 忘记密码
 	}

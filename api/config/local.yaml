@@ -2,14 +2,14 @@
 database:
   type: "mysql"
   host: "192.168.3.132"
-  port: 33065
+  port: 8805
   user: "root"
   password: "root"
   name: "app_publish"
   tablePrefix: ""
 
 redis:
-  host: "192.168.3.132:6379"
+  host: "192.168.3.132:8806"
   db: 8
   password: ""
   maxIdle: 20

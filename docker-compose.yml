@@ -21,7 +21,7 @@ services:
       - fabu
   # redis
   redis:
-    container_name: fabu-redis
+    container_name: fabuex-redis
     image: redis:alpine
     networks:
       - fabu

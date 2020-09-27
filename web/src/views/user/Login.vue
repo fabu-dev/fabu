@@ -247,6 +247,7 @@ export default {
       })
     },
     loginSuccess (res) {
+      console.log('hi!!!!')
       console.log(res)
       // check res.homePage define, set $router.push name res.homePage
       // Why not enter onComplete
@@ -268,6 +269,8 @@ export default {
         })
       }, 1000)
       this.isLoginError = false
+      console.log('error')
+      console.log(this.isLoginError)
     },
     requestFailed (err) {
       console.log(err)

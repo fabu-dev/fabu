@@ -42,9 +42,9 @@ export function getSmsCaptcha (parameter) {
   })
 }
 
-export function getInfo () {
+export function getInfo (id) {
   return request({
-    url: userApi.UserInfo,
+    url: userApi.UserInfo + '/' + id,
     method: 'get',
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
