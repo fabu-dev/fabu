@@ -18,5 +18,5 @@ type ForgetParams struct {
 }
 
 type ViewParams struct {
-	Id uint `uri:"id" binding:"required,numeric"`
+	Id uint64 `uri:"id" binding:"required,numeric"`
 }

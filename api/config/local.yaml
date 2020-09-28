@@ -5,7 +5,7 @@ database:
   port: 8805
   user: "root"
   password: "root"
-  name: "app_publish"
+  name: "fabu.dev"
   tablePrefix: ""
 
 redis:

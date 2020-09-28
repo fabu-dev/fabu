@@ -29,7 +29,7 @@ func NewResponse(c *gin.Context) *Response {
 func (b *Response) SetResponse(httpCode, responseCode int, data interface{}) {
 	b.GinCtx.JSON(httpCode, HttpResponse{
 		Code:   responseCode,
-		Message:      code.GetMessage(responseCode),
+		Message:  code.GetMessage(responseCode),
 		Timestamp: time.Since(b.GinCtx.GetTime("startTime")).Seconds(),
 		Result:   data,
 	})

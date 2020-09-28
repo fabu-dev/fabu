@@ -28,12 +28,11 @@ func (a *Auth) Login(c *gin.Context) {
 	logrus.Info(params)
 	member := model.Member{
 		Id: 1,
-		Name :"gelu",
+		Account :"gelu",
 		UserName: "gelu",
 		Password: "111111",
 		Avatar: "https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png",
 		Status: 1,
-		Telephone: "15000502790",
 		RoleId: "admin",
 		Lang: "zh-CN",
 		Token: "4291d7da9005377ec9aec4a71ea837f",

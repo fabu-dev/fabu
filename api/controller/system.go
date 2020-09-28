@@ -16,7 +16,7 @@ func NewSystem() *System {
 }
 
 // @Tags 系统管理
-// @Summary 测试接口
+// @Summary 健康检查API
 // @Description 描述信息
 // @Success 200 {string} string    "ok"
 // @Router /system/health [get]

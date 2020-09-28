@@ -31,7 +31,24 @@ var doc = `{
                 "tags": [
                     "系统管理"
                 ],
-                "summary": "测试接口",
+                "summary": "健康检查API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/info/:id": {
+            "get": {
+                "description": "获取单个用户信息",
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "获取单个用户信息API",
                 "responses": {
                     "200": {
                         "description": "ok",

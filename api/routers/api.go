@@ -7,7 +7,7 @@ func CreateApiRouter() {
 	// 会员API路由配置
 	v1Member := Router.Group("/v1/user")
 	{
-		v1Member.GET("/info/:id", controller.NewMember().View)           // 会员详情
+		v1Member.GET("/info/:id", controller.NewMember().Info)           // 会员详情
 		v1Member.GET("/group/:id", controller.NewMember().GroupView)     // 获取会员的团队信息
 		v1Member.PUT("/password", controller.NewMember().UpdatePassword) // 会员详情
 	}
