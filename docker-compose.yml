@@ -23,6 +23,7 @@ services:
   redis:
     container_name: fabuex-redis
     image: redis:alpine
+    restart: always
     networks:
       - fabu
     ports:
