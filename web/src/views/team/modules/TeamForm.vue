@@ -5,15 +5,16 @@
       :labelCol="labelCol"
       :wrapperCol="wrapperCol"
     >
-      <a-input v-decorator="['title', {rules:[{required: true, message: '请输入团队名称'}]}]" />
+      <a-input v-decorator="['name', {rules:[{required: true, message: '请输入团队名称'}]}]" />
     </a-form-item>
   </a-form>
 </template>
 
 <script>
 import pick from 'lodash.pick'
+import { mapActions } from 'vuex'
 
-const fields = ['title']
+const fields = ['name']
 
 export default {
   name: 'TeamForm',
@@ -40,13 +41,17 @@ export default {
     this.record && this.form.setFieldsValue(pick(this.record, fields))
   },
   methods: {
+    ...mapActions(['Create']),
     onOk () {
       console.log('监听了 modal ok 事件')
-      const { form: { validateFields } } = this
+      const { form: { validateFields }, Create } = this
       this.visible = true
       validateFields((errors, values) => {
         if (!errors) {
           console.log('values', values)
+          Create(values)
+            .then((res) => this.success(res))
+            .catch(err => this.failed(err))
         } else {
           this.visible = false
         }
@@ -73,6 +78,12 @@ export default {
           console.log('values', values)
         }
       })
+    },
+    success (res) {
+      console.log(res)
+    },
+    failed (err) {
+      console.log(err)
     }
   }
 }
