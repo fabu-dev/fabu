@@ -12,6 +12,13 @@ func CreateApiRouter() {
 		v1Member.PUT("/password", controller.NewMember().UpdatePassword) // 会员详情
 	}
 
+	// 团队API路由配置
+	v1Team := Router.Group("/v1/team")
+	{
+		v1Team.POST("/create", controller.NewTeam().Create)           // 创建团队
+	}
+
+	// 登录认证API路由配置
 	v1Auth := Router.Group("/v1/auth")
 	{
 

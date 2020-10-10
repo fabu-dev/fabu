@@ -23,7 +23,7 @@ export default {
   menu: {
     locale: true
   },
-  title: 'Ant Design Pro',
+  title: 'fabu.dev',
   pwa: false,
   iconfontUrl: '',
   lang: 'zh-CN"',

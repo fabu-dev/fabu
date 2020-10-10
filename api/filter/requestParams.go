@@ -20,3 +20,7 @@ type ForgetParams struct {
 type ViewParams struct {
 	Id uint64 `uri:"id" binding:"required,numeric"`
 }
+
+type TeamCreateParams struct {
+	Name string `json:"name" binding:"required"`
+}

@@ -50,7 +50,6 @@ export const asyncRouterMap = [
         path: '/app',
         name: 'app',
         component: () => import('@/views/app/BasicList'),
-        // redirect: '/app/app-list',
         meta: { title: '应用列表', icon: 'table', permission: [ 'table' ] }
         // children: [
         //   {
@@ -107,9 +106,7 @@ export const asyncRouterMap = [
         path: '/team',
         name: 'team',
         component: () => import('@/views/team/BasicList'),
-        // redirect: '/team/team-list',
         meta: { title: '我的团队', icon: 'profile', permission: [ 'team' ] }
-
         // children: [
         //   {
         //     path: '/profile/basic',
