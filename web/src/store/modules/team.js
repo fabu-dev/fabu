@@ -5,7 +5,7 @@ const team = {
     Create ({ commit }, params) {
       return new Promise((resolve, reject) => {
         create(params).then(response => {
-          resolve()
+          resolve(response)
         }).catch(error => {
           reject(error)
         })

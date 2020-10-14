@@ -13,7 +13,314 @@ paths:
       summary: 健康检查API
       tags:
       - 系统管理
-  /user/info/:id:
+  /system/setting:
+    post:
+      description: 系统配置
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 系统配置 API
+      tags:
+      - 系统管理
+  /v1/app/:
+    get:
+      description: APP列表
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: APP列表 API
+      tags:
+      - APP管理
+  /v1/app/combine:
+    post:
+      description: App合并
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: App合并 API
+      tags:
+      - APP管理
+  /v1/app/delete:
+    delete:
+      description: App删除
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: App删除 API
+      tags:
+      - APP管理
+  /v1/app/edit:
+    put:
+      description: App编辑
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: App编辑 API
+      tags:
+      - APP管理
+  /v1/app/info/1:
+    get:
+      description: App详情
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: App详情 API
+      tags:
+      - APP管理
+  /v1/app/log:
+    get:
+      description: 获取App操作日志
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 获取App操作日志 API
+      tags:
+      - APP管理
+  /v1/app/stat:
+    get:
+      description: App统计
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: App统计 API
+      tags:
+      - APP管理
+  /v1/app/upload:
+    post:
+      description: App上传
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: App上传 API
+      tags:
+      - APP管理
+  /v1/app/version/:
+    get:
+      description: App版本版本列表
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: APP版本列表 API
+      tags:
+      - APP版本管理
+  /v1/app/version/cancel:
+    post:
+      description: APP版本取消发布
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: APP版本取消发布 API
+      tags:
+      - APP版本管理
+  /v1/app/version/delete:
+    get:
+      description: APP版本删除
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: APP版本删除 API
+      tags:
+      - APP版本管理
+  /v1/app/version/download/:id:
+    get:
+      description: App版本下载
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: APP版本下载 API
+      tags:
+      - APP版本管理
+  /v1/app/version/download/log:
+    get:
+      description: APP版本下载记录
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: APP版本下载记录 API
+      tags:
+      - APP版本管理
+  /v1/app/version/edit:
+    post:
+      description: APP版本编辑
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: APP版本编辑 API
+      tags:
+      - APP版本管理
+  /v1/app/version/info/1:
+    get:
+      description: App版本
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: APP版本详情 API
+      tags:
+      - APP版本管理
+  /v1/app/version/publish:
+    post:
+      description: APP版本发布
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: APP版本发布 API
+      tags:
+      - APP版本管理
+  /v1/auth/forget:
+    get:
+      description: 忘记密码
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 忘记密码 API
+      tags:
+      - 用户登录注册相关接口
+  /v1/auth/login:
+    post:
+      description: 登录
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 登录 API
+      tags:
+      - 用户登录注册相关接口
+  /v1/auth/logout:
+    post:
+      description: 登出
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 登出 API
+      tags:
+      - 用户登录注册相关接口
+  /v1/auth/register:
+    post:
+      description: 编辑团队
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 注册 API
+      tags:
+      - 用户登录注册相关接口
+  /v1/team/create:
+    post:
+      description: 创建团队
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 创建团队 API
+      tags:
+      - 团队管理
+  /v1/team/edit:
+    put:
+      description: 编辑团队
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 编辑团队 API
+      tags:
+      - 团队管理
+  /v1/team/log/1:
+    get:
+      description: 获取团队操作日志
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 获取团队操作日志 API
+      tags:
+      - 团队管理
+  /v1/team/member/add:
+    post:
+      description: 添加团队成员
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 添加团队成员 API
+      tags:
+      - 团队管理
+  /v1/team/member/del:
+    delete:
+      description: 移除团队成员
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 移除团队成员 API
+      tags:
+      - 团队管理
+    get:
+      description: 获取团队信息
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 获取团队信息 API
+      tags:
+      - 团队管理
+  /v1/user/group/1:
+    get:
+      description: 获取会员的团队信息
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 获取会员的团队信息 API
+      tags:
+      - 用户管理
+  /v1/user/info/1:
     get:
       description: 获取单个用户信息
       responses:
@@ -22,6 +329,28 @@ paths:
           schema:
             type: string
       summary: 获取单个用户信息API
+      tags:
+      - 用户管理
+  /v1/user/password:
+    put:
+      description: 修改密码
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 修改密码 API
+      tags:
+      - 用户管理
+  /v1/user/token:
+    post:
+      description: 生成TOKEN
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 生成TOKEN API
       tags:
       - 用户管理
 swagger: "2.0"

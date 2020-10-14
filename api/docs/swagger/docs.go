@@ -42,13 +42,521 @@ var doc = `{
                 }
             }
         },
-        "/user/info/:id": {
+        "/system/setting": {
+            "post": {
+                "description": "系统配置",
+                "tags": [
+                    "系统管理"
+                ],
+                "summary": "系统配置 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/app/": {
+            "get": {
+                "description": "APP列表",
+                "tags": [
+                    "APP管理"
+                ],
+                "summary": "APP列表 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/app/combine": {
+            "post": {
+                "description": "App合并",
+                "tags": [
+                    "APP管理"
+                ],
+                "summary": "App合并 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/app/delete": {
+            "delete": {
+                "description": "App删除",
+                "tags": [
+                    "APP管理"
+                ],
+                "summary": "App删除 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/app/edit": {
+            "put": {
+                "description": "App编辑",
+                "tags": [
+                    "APP管理"
+                ],
+                "summary": "App编辑 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/app/info/1": {
+            "get": {
+                "description": "App详情",
+                "tags": [
+                    "APP管理"
+                ],
+                "summary": "App详情 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/app/log": {
+            "get": {
+                "description": "获取App操作日志",
+                "tags": [
+                    "APP管理"
+                ],
+                "summary": "获取App操作日志 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/app/stat": {
+            "get": {
+                "description": "App统计",
+                "tags": [
+                    "APP管理"
+                ],
+                "summary": "App统计 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/app/upload": {
+            "post": {
+                "description": "App上传",
+                "tags": [
+                    "APP管理"
+                ],
+                "summary": "App上传 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/app/version/": {
+            "get": {
+                "description": "App版本版本列表",
+                "tags": [
+                    "APP版本管理"
+                ],
+                "summary": "APP版本列表 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/app/version/cancel": {
+            "post": {
+                "description": "APP版本取消发布",
+                "tags": [
+                    "APP版本管理"
+                ],
+                "summary": "APP版本取消发布 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/app/version/delete": {
+            "get": {
+                "description": "APP版本删除",
+                "tags": [
+                    "APP版本管理"
+                ],
+                "summary": "APP版本删除 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/app/version/download/:id": {
+            "get": {
+                "description": "App版本下载",
+                "tags": [
+                    "APP版本管理"
+                ],
+                "summary": "APP版本下载 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/app/version/download/log": {
+            "get": {
+                "description": "APP版本下载记录",
+                "tags": [
+                    "APP版本管理"
+                ],
+                "summary": "APP版本下载记录 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/app/version/edit": {
+            "post": {
+                "description": "APP版本编辑",
+                "tags": [
+                    "APP版本管理"
+                ],
+                "summary": "APP版本编辑 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/app/version/info/1": {
+            "get": {
+                "description": "App版本",
+                "tags": [
+                    "APP版本管理"
+                ],
+                "summary": "APP版本详情 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/app/version/publish": {
+            "post": {
+                "description": "APP版本发布",
+                "tags": [
+                    "APP版本管理"
+                ],
+                "summary": "APP版本发布 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/forget": {
+            "get": {
+                "description": "忘记密码",
+                "tags": [
+                    "用户登录注册相关接口"
+                ],
+                "summary": "忘记密码 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/login": {
+            "post": {
+                "description": "登录",
+                "tags": [
+                    "用户登录注册相关接口"
+                ],
+                "summary": "登录 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/logout": {
+            "post": {
+                "description": "登出",
+                "tags": [
+                    "用户登录注册相关接口"
+                ],
+                "summary": "登出 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/register": {
+            "post": {
+                "description": "编辑团队",
+                "tags": [
+                    "用户登录注册相关接口"
+                ],
+                "summary": "注册 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/team/create": {
+            "post": {
+                "description": "创建团队",
+                "tags": [
+                    "团队管理"
+                ],
+                "summary": "创建团队 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/team/edit": {
+            "put": {
+                "description": "编辑团队",
+                "tags": [
+                    "团队管理"
+                ],
+                "summary": "编辑团队 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/team/log/1": {
+            "get": {
+                "description": "获取团队操作日志",
+                "tags": [
+                    "团队管理"
+                ],
+                "summary": "获取团队操作日志 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/team/member/add": {
+            "post": {
+                "description": "添加团队成员",
+                "tags": [
+                    "团队管理"
+                ],
+                "summary": "添加团队成员 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/team/member/del": {
+            "get": {
+                "description": "获取团队信息",
+                "tags": [
+                    "团队管理"
+                ],
+                "summary": "获取团队信息 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "移除团队成员",
+                "tags": [
+                    "团队管理"
+                ],
+                "summary": "移除团队成员 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/user/group/1": {
+            "get": {
+                "description": "获取会员的团队信息",
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "获取会员的团队信息 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/user/info/1": {
             "get": {
                 "description": "获取单个用户信息",
                 "tags": [
                     "用户管理"
                 ],
                 "summary": "获取单个用户信息API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/user/password": {
+            "put": {
+                "description": "修改密码",
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "修改密码 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/user/token": {
+            "post": {
+                "description": "生成TOKEN",
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "生成TOKEN API",
                 "responses": {
                     "200": {
                         "description": "ok",

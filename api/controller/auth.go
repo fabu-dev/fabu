@@ -17,7 +17,12 @@ func NewAuth() *Auth {
 	return &Auth{}
 }
 
-func (a *Auth) Login(c *gin.Context) {
+// @Tags 用户登录注册相关接口
+// @Summary 登录 API
+// @Description 登录
+// @Success 200 {string} string    "ok"
+// @Router /v1/auth/login [POST]
+func (ctl *Auth) Login(c *gin.Context) {
 	params, err := filter.Login(c)
 	if err != nil {
 		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST_ERROR, "")
@@ -40,8 +45,12 @@ func (a *Auth) Login(c *gin.Context) {
 	api.SetResponse(c, http.StatusOK, code.Success, member)
 }
 
-
-func (a *Auth) Logout(c *gin.Context) {
+// @Tags 用户登录注册相关接口
+// @Summary 登出 API
+// @Description 登出
+// @Success 200 {string} string    "ok"
+// @Router /v1/auth/logout [POST]
+func (ctl *Auth) Logout(c *gin.Context) {
 	params, err := filter.Logout(c)
 	if err != nil {
 		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST_ERROR, "")
@@ -54,7 +63,12 @@ func (a *Auth) Logout(c *gin.Context) {
 	api.SetResponse(c, http.StatusOK, code.Success, "")
 }
 
-func (a *Auth) Forget(c *gin.Context) {
+// @Tags 用户登录注册相关接口
+// @Summary 忘记密码 API
+// @Description 忘记密码
+// @Success 200 {string} string    "ok"
+// @Router /v1/auth/forget [GET]
+func (ctl *Auth) Forget(c *gin.Context) {
 	params, err := filter.Forget(c)
 	if err != nil {
 		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST_ERROR, "")
@@ -67,7 +81,12 @@ func (a *Auth) Forget(c *gin.Context) {
 	api.SetResponse(c, http.StatusOK, code.Success, "")
 }
 
-func (a *Auth) Register(c *gin.Context) {
+// @Tags 用户登录注册相关接口
+// @Summary 注册 API
+// @Description 编辑团队
+// @Success 200 {string} string    "ok"
+// @Router /v1/auth/register [POST]
+func (ctl *Auth) Register(c *gin.Context) {
 	params, err := filter.Register(c)
 	if err != nil {
 		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST_ERROR, "")
