@@ -18,6 +18,10 @@ func (m *BaseModel) GetTableName() string {
 	return ""
 }
 
+func (m *BaseModel) SetTableName(tableName string) {
+	m.TableName = tableName
+}
+
 func (m *BaseModel) Find() *gorm.DB {
 	return db.Mysql
 }

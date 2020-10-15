@@ -28,7 +28,7 @@ func NewAuth() *Auth {
 func (ctl *Auth) Login(c *gin.Context) {
 	member, err := ctl.paramFilter.Login(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST, "")
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
 		return
 	}
 
@@ -77,14 +77,11 @@ func (ctl *Auth) Forget(c *gin.Context) {
 // @Success 200 {string} string    "ok"
 // @Router /v1/auth/register [POST]
 func (ctl *Auth) Register(c *gin.Context) {
-	params, err := ctl.paramFilter.Register(c)
+	member, err := ctl.paramFilter.Register(c)
 	if err != nil {
 		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
 		return
 	}
 
-	// 调用service对应的方法
-	logrus.Info(params)
-
-	api.SetResponse(c, http.StatusOK, code.Success, "")
+	api.SetResponse(c, http.StatusOK, code.Success, member)
 }

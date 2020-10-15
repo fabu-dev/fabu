@@ -1,6 +1,9 @@
 package model
 
+import "fabu.dev/api/pkg/api/request"
+
 type Member struct {
+	DetailColumns []string
 	BaseModel
 }
 
@@ -17,11 +20,13 @@ type MemberInfo struct {
 }
 
 func NewMember() *Member {
-	return &Member{}
-}
+	member := &Member{
+		DetailColumns: []string{"id", "mobile", "account", "user_name", "email", "password", "status", "token"},
+	}
 
-func (m *Member) GetTableName() string {
-	return "member"
+	member.SetTableName("member")
+
+	return member
 }
 
 func (m *Member) Add(member *MemberInfo) (*MemberInfo, error) {
@@ -32,4 +37,13 @@ func (m *Member) Add(member *MemberInfo) (*MemberInfo, error) {
 	}
 
 	return member, nil
+}
+
+func (m *Member) GetDetailByAccount(params *request.LoginParams) (*MemberInfo, error) {
+	member := &MemberInfo{}
+	err := m.Find().Table(m.TableName).Select(m.DetailColumns).
+		Where("account = ? and password = ?", params.Account, params.Password).
+		First(member).Error
+
+	return member, err
 }

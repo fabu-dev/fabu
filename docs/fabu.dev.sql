@@ -79,7 +79,6 @@ CREATE TABLE `member`  (
   UNIQUE KEY `uk_token` (`token`) USING BTREE,
   UNIQUE KEY `uk_email` (`email`) USING BTREE,
   UNIQUE KEY `uk_account` (`account`) USING BTREE,
-  UNIQUE KEY `uk_mobile` (`mobile`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------

@@ -6,6 +6,7 @@ import (
 	"fabu.dev/api/pkg/api/code"
 	"fabu.dev/api/pkg/api/request"
 	"fabu.dev/api/pkg/constant"
+	"fabu.dev/api/pkg/utils"
 	"github.com/sirupsen/logrus"
 )
 
@@ -16,6 +17,17 @@ func NewAuth() *Auth {
 	return &Auth{}
 }
 
+func (s *Auth) Login(params *request.LoginParams) (*model.MemberInfo, *api.Error) {
+	memberObj := model.NewMember()
+
+	member, err := memberObj.GetDetailByAccount(params)
+	if err != nil {
+		return nil, api.NewError(code.ERROR_DATABASE, err.Error())
+	}
+
+	return member, nil
+}
+
 func (s *Auth) Register(params *request.RegisterParams) (*model.MemberInfo, *api.Error) {
 	memberObj := model.NewMember()
 	member := &model.MemberInfo{
@@ -23,6 +35,7 @@ func (s *Auth) Register(params *request.RegisterParams) (*model.MemberInfo, *api
 		Email:    params.Email,
 		Password: params.Password,
 		Status:   constant.StatusEnable,
+		Token:    utils.GetRandom(20),
 	}
 
 	member, err := memberObj.Add(member)
