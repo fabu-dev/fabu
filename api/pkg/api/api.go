@@ -21,3 +21,5 @@ func SetResponse(c *gin.Context, httpCode, responseCode int, data interface{}) {
 func WriterAccessLog() {
 	return
 }
+
+

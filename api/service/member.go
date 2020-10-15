@@ -4,7 +4,17 @@ import (
 	"fabu.dev/api/model"
 )
 
-func GetMemberInfo(memberId uint64) (*model.Member,error){
+type Member struct {
+
+}
+
+func NewMember() *Member {
+	return &Member{
+
+	}
+}
+
+func (s *Member) GetMemberInfo(memberId uint64) (*model.Member,error){
 	member := model.NewMember()
 
 	err := member.Find().Where("id = ?", memberId).First(member).Error

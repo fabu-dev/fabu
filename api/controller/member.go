@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fabu.dev/api/service"
 	"net/http"
 
 	"fabu.dev/api/filter"
@@ -12,10 +11,15 @@ import (
 )
 
 type Member struct {
+	paramFilter *filter.Member
+
 }
 
 func NewMember() *Member {
-	return &Member{}
+	return &Member{
+		paramFilter: filter.NewMember(),
+
+	}
 }
 
 
@@ -25,16 +29,9 @@ func NewMember() *Member {
 // @Success 200 {string} string    "ok"
 // @Router /v1/user/info/1 [GET]
 func (ctl *Member) Info(c *gin.Context) {
-	params, err := filter.View(c)
+	member, err := ctl.paramFilter.View(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST_ERROR, "")
-		return
-	}
-
-	// 调用service对应的方法
-	member,err := service.GetMemberInfo(params.Id)
-	if err!=nil{
-		api.SetResponse(c, http.StatusOK, code.ERROR_DATABASE, err.Error())
+		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST, "")
 		return
 	}
 

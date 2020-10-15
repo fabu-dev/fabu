@@ -1,6 +1,9 @@
 package routers
 
-import "fabu.dev/api/controller"
+import (
+	"fabu.dev/api/controller"
+)
+
 
 func CreateApiRouter() {
 

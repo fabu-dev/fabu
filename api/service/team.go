@@ -1,8 +1,18 @@
 package service
 
-import "fabu.dev/api/filter"
+import (
+	"fabu.dev/api/pkg/api"
+)
 
-func CreateTeam(params *filter.TeamCreateParams) error{
+type Team struct {
+
+}
+
+func NewTeam() *Team {
+	return &Team{}
+}
+
+func (s *Team)CreateTeam(params *api.TeamCreateParams) error{
 
 
 	return nil

@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fabu.dev/api/filter"
 	"net/http"
 
 	"fabu.dev/api/pkg/api"
@@ -9,10 +10,15 @@ import (
 )
 
 type System struct {
+	paramFilter *filter.System
+
 }
 
 func NewSystem() *System {
-	return &System{}
+	return &System{
+		paramFilter: filter.NewSystem(),
+
+	}
 }
 
 // @Tags 系统管理

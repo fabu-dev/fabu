@@ -1,16 +1,20 @@
 package controller
 
 import (
+	"fabu.dev/api/filter"
 	"fabu.dev/api/pkg/api"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 type App struct {
+	paramFilter *filter.App
 }
 
 func NewApp() *App {
-	return &App{}
+	return &App{
+		paramFilter: filter.NewApp(),
+	}
 }
 
 // @Tags APP管理

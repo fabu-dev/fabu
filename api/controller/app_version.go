@@ -1,12 +1,20 @@
 package controller
 
-import "github.com/gin-gonic/gin"
+import (
+	"fabu.dev/api/filter"
+	"github.com/gin-gonic/gin"
+)
 
 type AppVersion struct {
+	paramFilter *filter.AppVersion
+
 }
 
 func NewAppVersion() *AppVersion {
-	return &AppVersion{}
+	return &AppVersion{
+		paramFilter: filter.NewAppVersion(),
+
+	}
 }
 
 // @Tags APP版本管理

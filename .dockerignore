@@ -3,6 +3,9 @@
 .git/
 
 
+**/.git/
+
+
 ./api/runtime/cache/*
 ./api/runtime/logs/*
 ./web/vue/node_modules

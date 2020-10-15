@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fabu.dev/api/service"
 	"net/http"
 
 	"fabu.dev/api/filter"
@@ -12,10 +11,15 @@ import (
 )
 
 type Team struct {
+	paramFilter *filter.Team
+
 }
 
 func NewTeam() *Team {
-	return &Team{}
+	return &Team{
+		paramFilter: filter.NewTeam(),
+
+	}
 }
 
 
@@ -25,18 +29,13 @@ func NewTeam() *Team {
 // @Success 200 {string} string    "ok"
 // @Router /v1/team/create [POST]
 func (ctl *Team) Create(c *gin.Context) {
-	params, err := filter.Create(c)
+	_, err := ctl.paramFilter.Create(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST_ERROR, "")
+		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST, "")
 		return
 	}
 
-	// 调用service对应的方法
-	err = service.CreateTeam(params)
-	if err!=nil{
-		api.SetResponse(c, http.StatusOK, code.ERROR_DATABASE, err.Error())
-		return
-	}
+
 
 	api.SetResponse(c, http.StatusOK, code.Success, nil)
 }

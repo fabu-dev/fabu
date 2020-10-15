@@ -2,7 +2,6 @@ package controller
 
 import (
 	"fabu.dev/api/filter"
-	"fabu.dev/api/model"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
 	"github.com/gin-gonic/gin"
@@ -11,10 +10,14 @@ import (
 )
 
 type Auth struct {
+	paramFilter *filter.Auth
+
 }
 
 func NewAuth() *Auth {
-	return &Auth{}
+	return &Auth{
+		paramFilter: filter.NewAuth(),
+	}
 }
 
 // @Tags 用户登录注册相关接口
@@ -23,25 +26,13 @@ func NewAuth() *Auth {
 // @Success 200 {string} string    "ok"
 // @Router /v1/auth/login [POST]
 func (ctl *Auth) Login(c *gin.Context) {
-	params, err := filter.Login(c)
+	member, err := ctl.paramFilter.Login(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST_ERROR, "")
+		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST, "")
 		return
 	}
 
-	// 调用service对应的方法
-	logrus.Info(params)
-	member := model.Member{
-		Id: 1,
-		Account :"gelu",
-		UserName: "gelu",
-		Password: "111111",
-		Avatar: "https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png",
-		Status: 1,
-		RoleId: "admin",
-		Lang: "zh-CN",
-		Token: "4291d7da9005377ec9aec4a71ea837f",
-	}
+
 	api.SetResponse(c, http.StatusOK, code.Success, member)
 }
 
@@ -51,9 +42,9 @@ func (ctl *Auth) Login(c *gin.Context) {
 // @Success 200 {string} string    "ok"
 // @Router /v1/auth/logout [POST]
 func (ctl *Auth) Logout(c *gin.Context) {
-	params, err := filter.Logout(c)
+	params, err := ctl.paramFilter.Logout(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST_ERROR, "")
+		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST, "")
 		return
 	}
 
@@ -69,9 +60,9 @@ func (ctl *Auth) Logout(c *gin.Context) {
 // @Success 200 {string} string    "ok"
 // @Router /v1/auth/forget [GET]
 func (ctl *Auth) Forget(c *gin.Context) {
-	params, err := filter.Forget(c)
+	params, err := ctl.paramFilter.Forget(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST_ERROR, "")
+		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST, "")
 		return
 	}
 
@@ -87,9 +78,9 @@ func (ctl *Auth) Forget(c *gin.Context) {
 // @Success 200 {string} string    "ok"
 // @Router /v1/auth/register [POST]
 func (ctl *Auth) Register(c *gin.Context) {
-	params, err := filter.Register(c)
+	params, err := ctl.paramFilter.Register(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST_ERROR, "")
+		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST, "")
 		return
 	}
 
