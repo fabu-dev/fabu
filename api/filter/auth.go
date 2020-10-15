@@ -25,7 +25,7 @@ func (f *Auth) Login(c *gin.Context) (*model.MemberInfo, *api.Error) {
 	params := &request.LoginParams{}
 
 	if err := c.ShouldBindJSON(params); err != nil {
-		return nil, api.NewError(code.ERROR_REQUEST, err.Error())
+		return nil, api.NewError(code.ErrorRequest, err.Error())
 	}
 
 	// 调用service对应的方法
@@ -50,7 +50,7 @@ func (f *Auth) Register(c *gin.Context) (*model.MemberInfo, *api.Error) {
 	params := &request.RegisterParams{}
 
 	if err := c.ShouldBind(params); err != nil {
-		return nil, api.NewError(code.ERROR_REQUEST, err.Error())
+		return nil, api.NewError(code.ErrorRequest, err.Error())
 	}
 
 	member, err := f.service.Register(params)

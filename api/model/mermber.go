@@ -30,7 +30,7 @@ func NewMember() *Member {
 }
 
 func (m *Member) Add(member *MemberInfo) (*MemberInfo, error) {
-	err := m.Find().Table(m.GetTableName()).Create(member).Error
+	err := m.Db().Create(member).Error
 
 	if err != nil {
 		return nil, err
@@ -41,7 +41,7 @@ func (m *Member) Add(member *MemberInfo) (*MemberInfo, error) {
 
 func (m *Member) GetDetailByAccount(params *request.LoginParams) (*MemberInfo, error) {
 	member := &MemberInfo{}
-	err := m.Find().Table(m.TableName).Select(m.DetailColumns).
+	err := m.Db().Select(m.DetailColumns).
 		Where("account = ? and password = ?", params.Account, params.Password).
 		First(member).Error
 

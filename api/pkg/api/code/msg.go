@@ -3,10 +3,11 @@ package code
 var Message = map[int]string{
 	Success: "OK",
 
-	ERROR_REQUEST:  "请求参数错误",
-	ERROR_PANIC:    "系统报错",
-	ERROR_SIGN:     "签名错误",
-	ERROR_DATABASE: "数据库异常",
+	ErrorRequest:  "请求参数错误",
+	ErrorPanic:    "系统报错",
+	ErrorSign:     "签名错误",
+	ErrorDatabase: "数据库异常",
+	ErrorSyntax:   "动态语法错误",
 }
 
 func GetMessage(code int) string {

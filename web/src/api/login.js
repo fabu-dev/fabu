@@ -47,7 +47,6 @@ export function login (parameter) {
  */
 export function register (parameter) {
   console.log(userApi.Register)
-  console.log(process.env.VUE_APP_API_BASE_URL)
   return request({
     url: userApi.Register,
     method: 'post',

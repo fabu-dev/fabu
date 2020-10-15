@@ -43,7 +43,7 @@ func (ctl *Auth) Login(c *gin.Context) {
 func (ctl *Auth) Logout(c *gin.Context) {
 	params, err := ctl.paramFilter.Logout(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST, "")
+		api.SetResponse(c, http.StatusOK, code.ErrorRequest, "")
 		return
 	}
 
@@ -61,7 +61,7 @@ func (ctl *Auth) Logout(c *gin.Context) {
 func (ctl *Auth) Forget(c *gin.Context) {
 	params, err := ctl.paramFilter.Forget(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST, "")
+		api.SetResponse(c, http.StatusOK, code.ErrorRequest, "")
 		return
 	}
 

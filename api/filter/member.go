@@ -1,6 +1,8 @@
 package filter
 
 import (
+	"net/http"
+
 	"fabu.dev/api/model"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
@@ -8,7 +10,6 @@ import (
 	"fabu.dev/api/service"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"net/http"
 )
 
 type Filter func(c *gin.Context)
@@ -36,7 +37,7 @@ func (f *Member) View(c *gin.Context) (*model.Member, error) {
 	// 调用service对应的方法
 	member, err := f.service.GetMemberInfo(params.Id)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ERROR_DATABASE, err.Error())
+		api.SetResponse(c, http.StatusOK, code.ErrorDatabase, err.Error())
 		return nil, err
 	}
 

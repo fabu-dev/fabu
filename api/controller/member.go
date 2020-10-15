@@ -12,16 +12,13 @@ import (
 
 type Member struct {
 	paramFilter *filter.Member
-
 }
 
 func NewMember() *Member {
 	return &Member{
 		paramFilter: filter.NewMember(),
-
 	}
 }
-
 
 // @Tags 用户管理
 // @Summary 获取单个用户信息API
@@ -31,7 +28,7 @@ func NewMember() *Member {
 func (ctl *Member) Info(c *gin.Context) {
 	member, err := ctl.paramFilter.View(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST, "")
+		api.SetResponse(c, http.StatusOK, code.ErrorRequest, "")
 		return
 	}
 

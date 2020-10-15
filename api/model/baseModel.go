@@ -22,6 +22,6 @@ func (m *BaseModel) SetTableName(tableName string) {
 	m.TableName = tableName
 }
 
-func (m *BaseModel) Find() *gorm.DB {
-	return db.Mysql
+func (m *BaseModel) Db() *gorm.DB {
+	return db.Mysql.Table(m.TableName)
 }

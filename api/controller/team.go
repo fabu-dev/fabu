@@ -12,16 +12,13 @@ import (
 
 type Team struct {
 	paramFilter *filter.Team
-
 }
 
 func NewTeam() *Team {
 	return &Team{
 		paramFilter: filter.NewTeam(),
-
 	}
 }
-
 
 // @Tags 团队管理
 // @Summary 创建团队 API
@@ -31,11 +28,9 @@ func NewTeam() *Team {
 func (ctl *Team) Create(c *gin.Context) {
 	_, err := ctl.paramFilter.Create(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST, "")
+		api.SetResponse(c, http.StatusOK, code.ErrorRequest, "")
 		return
 	}
-
-
 
 	api.SetResponse(c, http.StatusOK, code.Success, nil)
 }

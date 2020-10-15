@@ -5,21 +5,18 @@ import (
 )
 
 type Member struct {
-
 }
 
 func NewMember() *Member {
-	return &Member{
-
-	}
+	return &Member{}
 }
 
-func (s *Member) GetMemberInfo(memberId uint64) (*model.Member,error){
+func (s *Member) GetMemberInfo(memberId uint64) (*model.Member, error) {
 	member := model.NewMember()
 
-	err := member.Find().Where("id = ?", memberId).First(member).Error
+	err := member.Db().Where("id = ?", memberId).First(member).Error
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 
 	return member, nil
