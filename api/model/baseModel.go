@@ -15,7 +15,7 @@ type BaseModel struct {
 }
 
 func (m *BaseModel) GetTableName() string {
-	return ""
+	return m.TableName
 }
 
 func (m *BaseModel) SetTableName(tableName string) {

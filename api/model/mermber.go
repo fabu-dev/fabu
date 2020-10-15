@@ -32,11 +32,7 @@ func NewMember() *Member {
 func (m *Member) Add(member *MemberInfo) (*MemberInfo, error) {
 	err := m.Db().Create(member).Error
 
-	if err != nil {
-		return nil, err
-	}
-
-	return member, nil
+	return member, err
 }
 
 func (m *Member) GetDetailByAccount(params *request.LoginParams) (*MemberInfo, error) {
