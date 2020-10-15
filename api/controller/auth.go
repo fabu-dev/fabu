@@ -1,17 +1,17 @@
 package controller
 
 import (
+	"net/http"
+
 	"fabu.dev/api/filter"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"net/http"
 )
 
 type Auth struct {
 	paramFilter *filter.Auth
-
 }
 
 func NewAuth() *Auth {
@@ -31,7 +31,6 @@ func (ctl *Auth) Login(c *gin.Context) {
 		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST, "")
 		return
 	}
-
 
 	api.SetResponse(c, http.StatusOK, code.Success, member)
 }
@@ -80,7 +79,7 @@ func (ctl *Auth) Forget(c *gin.Context) {
 func (ctl *Auth) Register(c *gin.Context) {
 	params, err := ctl.paramFilter.Register(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ERROR_REQUEST, "")
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
 		return
 	}
 

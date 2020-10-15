@@ -2,6 +2,8 @@ package filter
 
 import (
 	"fabu.dev/api/model"
+	"fabu.dev/api/pkg/api"
+	"fabu.dev/api/pkg/api/code"
 	"fabu.dev/api/pkg/api/request"
 	"fabu.dev/api/service"
 	"github.com/gin-gonic/gin"
@@ -19,7 +21,7 @@ func NewAuth() *Auth {
 }
 
 // 验证登录的请求参数
-func (f *Auth) Login(c *gin.Context) (*model.Member, error) {
+func (f *Auth) Login(c *gin.Context) (*model.MemberInfo, error) {
 	params := &request.LoginParams{}
 
 	if err := c.ShouldBindJSON(params); err != nil {
@@ -30,16 +32,13 @@ func (f *Auth) Login(c *gin.Context) (*model.Member, error) {
 
 	// 调用service对应的方法
 	logrus.Info(params)
-	member := &model.Member{
-		Id: 1,
-		Account :"gelu",
+	member := &model.MemberInfo{
+		Id:       1,
+		Account:  "gelu",
 		UserName: "gelu",
 		Password: "111111",
-		Avatar: "https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png",
-		Status: 1,
-		RoleId: "admin",
-		Lang: "zh-CN",
-		Token: "4291d7da9005377ec9aec4a71ea837f",
+		Status:   1,
+		Token:    "4291d7da9005377ec9aec4a71ea837f",
 	}
 
 	return member, nil
@@ -59,16 +58,18 @@ func (f *Auth) Logout(c *gin.Context) (*request.LogoutParams, error) {
 }
 
 // 验证注册信息
-func (f *Auth) Register(c *gin.Context) (*request.RegisterParams, error) {
+func (f *Auth) Register(c *gin.Context) (*model.MemberInfo, *api.Error) {
 	params := &request.RegisterParams{}
 
 	if err := c.ShouldBind(params); err != nil {
 		logrus.Error(err)
 
-		return nil, err
+		return nil, api.NewError(code.ERROR_REQUEST, err.Error())
 	}
 
-	return params, nil
+	member, err := f.service.Register(params)
+
+	return member, err
 }
 
 // 验证获取用户详情

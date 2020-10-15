@@ -7,17 +7,17 @@ import (
 
 type IModel interface {
 	GetTableName() string
-	Find()*gorm.DB
+	Find() *gorm.DB
 }
 
 type BaseModel struct {
 	TableName string
 }
 
-func (m *BaseModel) GetTableName() string{
+func (m *BaseModel) GetTableName() string {
 	return ""
 }
 
-func (m *BaseModel) Find() *gorm.DB{
+func (m *BaseModel) Find() *gorm.DB {
 	return db.Mysql
 }

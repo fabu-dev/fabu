@@ -53,7 +53,7 @@ const user = {
         register(userInfo).then(response => {
           // const result = response.result
           console.log('register result:', response)
-          resolve()
+          resolve(response)
         }).catch(error => {
           reject(error)
         })

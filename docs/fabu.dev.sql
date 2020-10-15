@@ -61,8 +61,8 @@ CREATE TABLE `download_log`  (
 -- ----------------------------
 -- Table structure for members
 -- ----------------------------
-DROP TABLE IF EXISTS `members`;
-CREATE TABLE `members`  (
+DROP TABLE IF EXISTS `member`;
+CREATE TABLE `member`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `mobile` varchar(15) NOT NULL DEFAULT '' COMMENT '手机',
   `account` varchar(50) NOT NULL DEFAULT '' COMMENT '登录账户',
@@ -70,13 +70,17 @@ CREATE TABLE `members`  (
   `password` varchar(80) NOT NULL DEFAULT '' COMMENT '密码',
   `email` varchar(80) NOT NULL DEFAULT '' COMMENT '邮箱',
   `token` varchar(80) NOT NULL DEFAULT '' COMMENT 'API Token',
+  `status` tinyint(1) NOT NULL COMMENT '状态（0 禁用，1正常）',
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   `updated_by` varchar(50) NOT NULL DEFAULT '' COMMENT '修改人',
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `created_by` varchar(50) NOT NULL DEFAULT '' COMMENT '添加人',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_token`(`token`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+  UNIQUE KEY `uk_token` (`token`) USING BTREE,
+  UNIQUE KEY `uk_email` (`email`) USING BTREE,
+  UNIQUE KEY `uk_account` (`account`) USING BTREE,
+  UNIQUE KEY `uk_mobile` (`mobile`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for team

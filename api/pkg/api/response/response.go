@@ -9,10 +9,10 @@ import (
 )
 
 type HttpResponse struct {
-	Code   int         `json:"code"`
-	Message      string      `json:"message"`
+	Code      int         `json:"code"`
+	Message   string      `json:"message"`
 	Timestamp float64     `json:"duration"`
-	Result   interface{} `json:"result"`
+	Result    interface{} `json:"result"`
 }
 
 type Response struct {
@@ -28,10 +28,10 @@ func NewResponse(c *gin.Context) *Response {
 // 调用 c.json 响应
 func (b *Response) SetResponse(httpCode, responseCode int, data interface{}) {
 	b.GinCtx.JSON(httpCode, HttpResponse{
-		Code:   responseCode,
-		Message:  code.GetMessage(responseCode),
+		Code:      responseCode,
+		Message:   code.GetMessage(responseCode),
 		Timestamp: time.Since(b.GinCtx.GetTime("startTime")).Seconds(),
-		Result:   data,
+		Result:    data,
 	})
 
 	return

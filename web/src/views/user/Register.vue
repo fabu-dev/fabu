@@ -11,6 +11,15 @@
         ></a-input>
       </a-form-item>
 
+      <a-form-item>
+        <a-input
+            size="large"
+            type="text"
+            placeholder="用户名"
+            v-decorator="['account', {rules: [{ required: true, message: '请输入登录用户名' }], validateTrigger: ['change', 'blur']}]"
+        ></a-input>
+      </a-form-item>
+
       <a-popover
         placement="rightTop"
         :trigger="['focus']"
@@ -39,7 +48,7 @@
         <a-input-password
           size="large"
           placeholder="确认密码"
-          v-decorator="['password2', {rules: [{ required: true, message: '至少6位密码，区分大小写' }, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
+          v-decorator="['password_confirm', {rules: [{ required: true, message: '至少6位密码，区分大小写' }, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
         ></a-input-password>
       </a-form-item>
 
