@@ -4,6 +4,7 @@ import (
 	"fabu.dev/api/model"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
+	"fabu.dev/api/pkg/api/request"
 	"fabu.dev/api/service"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -24,7 +25,7 @@ func NewMember() *Member {
 
 // 验证获取用户详情
 func (f *Member) View(c *gin.Context) (*model.Member, error) {
-	params := &api.ViewParams{}
+	params := &request.ViewParams{}
 
 	if err := c.ShouldBindUri(params); err != nil {
 		logrus.Error(err)
@@ -33,8 +34,8 @@ func (f *Member) View(c *gin.Context) (*model.Member, error) {
 	}
 
 	// 调用service对应的方法
-	member,err := f.service.GetMemberInfo(params.Id)
-	if err!=nil{
+	member, err := f.service.GetMemberInfo(params.Id)
+	if err != nil {
 		api.SetResponse(c, http.StatusOK, code.ERROR_DATABASE, err.Error())
 		return nil, err
 	}

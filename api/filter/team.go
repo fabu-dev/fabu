@@ -2,6 +2,7 @@ package filter
 
 import (
 	"fabu.dev/api/pkg/api"
+	"fabu.dev/api/pkg/api/request"
 	"fabu.dev/api/pkg/api/code"
 	"fabu.dev/api/service"
 	"github.com/gin-gonic/gin"
@@ -20,8 +21,8 @@ func NewTeam() *Team {
 }
 
 //
-func (f *Team) Create(c *gin.Context) (*api.TeamCreateParams, error) {
-	params := &api.TeamCreateParams{}
+func (f *Team) Create(c *gin.Context) (*request.TeamCreateParams, error) {
+	params := &request.TeamCreateParams{}
 
 	if err := c.ShouldBindJSON(params); err != nil {
 		logrus.Error(err)

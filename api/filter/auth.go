@@ -2,7 +2,7 @@ package filter
 
 import (
 	"fabu.dev/api/model"
-	"fabu.dev/api/pkg/api"
+	"fabu.dev/api/pkg/api/request"
 	"fabu.dev/api/service"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -20,7 +20,7 @@ func NewAuth() *Auth {
 
 // 验证登录的请求参数
 func (f *Auth) Login(c *gin.Context) (*model.Member, error) {
-	params := &api.LoginParams{}
+	params := &request.LoginParams{}
 
 	if err := c.ShouldBindJSON(params); err != nil {
 		logrus.Error(err)
@@ -46,8 +46,8 @@ func (f *Auth) Login(c *gin.Context) (*model.Member, error) {
 }
 
 // 验证出的请求参数
-func (f *Auth) Logout(c *gin.Context) (*api.LogoutParams, error) {
-	params := &api.LogoutParams{}
+func (f *Auth) Logout(c *gin.Context) (*request.LogoutParams, error) {
+	params := &request.LogoutParams{}
 
 	if err := c.ShouldBind(params); err != nil {
 		logrus.Error(err)
@@ -59,8 +59,8 @@ func (f *Auth) Logout(c *gin.Context) (*api.LogoutParams, error) {
 }
 
 // 验证注册信息
-func (f *Auth) Register(c *gin.Context) (*api.RegisterParams, error) {
-	params := &api.RegisterParams{}
+func (f *Auth) Register(c *gin.Context) (*request.RegisterParams, error) {
+	params := &request.RegisterParams{}
 
 	if err := c.ShouldBind(params); err != nil {
 		logrus.Error(err)
@@ -72,8 +72,8 @@ func (f *Auth) Register(c *gin.Context) (*api.RegisterParams, error) {
 }
 
 // 验证获取用户详情
-func (f *Auth) Forget(c *gin.Context) (*api.ForgetParams, error) {
-	params := &api.ForgetParams{}
+func (f *Auth) Forget(c *gin.Context) (*request.ForgetParams, error) {
+	params := &request.ForgetParams{}
 
 	if err := c.ShouldBindUri(params); err != nil {
 		logrus.Error(err)
