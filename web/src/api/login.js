@@ -34,6 +34,27 @@ export function login (parameter) {
   })
 }
 
+/**
+ * register func
+ * parameter: {
+ *     username: '',
+ *     password: '',
+ *     remember_me: true,
+ *     captcha: '12345'
+ * }
+ * @param parameter
+ * @returns {*}
+ */
+export function register (parameter) {
+  console.log(userApi.Register)
+  console.log(process.env.VUE_APP_API_BASE_URL)
+  return request({
+    url: userApi.Register,
+    method: 'post',
+    data: parameter
+  })
+}
+
 export function getSmsCaptcha (parameter) {
   return request({
     url: userApi.SendSms,

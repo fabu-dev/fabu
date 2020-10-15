@@ -43,14 +43,14 @@
         ></a-input-password>
       </a-form-item>
 
-      <a-form-item>
+      <!--<a-form-item>
         <a-input size="large" placeholder="11 位手机号" v-decorator="['mobile', {rules: [{ required: true, message: '请输入正确的手机号', pattern: /^1[3456789]\d{9}$/ }, { validator: this.handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }]">
           <a-select slot="addonBefore" size="large" defaultValue="+86">
             <a-select-option value="+86">+86</a-select-option>
             <a-select-option value="+87">+87</a-select-option>
           </a-select>
         </a-input>
-      </a-form-item>
+      </a-form-item>-->
       <!--<a-input-group size="large" compact>
             <a-select style="width: 20%" size="large" defaultValue="+86">
               <a-select-option value="+86">+86</a-select-option>
@@ -59,7 +59,7 @@
             <a-input style="width: 80%" size="large" placeholder="11 位手机号"></a-input>
           </a-input-group>-->
 
-      <a-row :gutter="16">
+      <!--<a-row :gutter="16">
         <a-col class="gutter-row" :span="16">
           <a-form-item>
             <a-input size="large" type="text" placeholder="验证码" v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]">
@@ -76,7 +76,7 @@
             v-text="!state.smsSendBtn && '获取验证码'||(state.time+' s')"></a-button>
         </a-col>
       </a-row>
-
+      -->
       <a-form-item>
         <a-button
           size="large"
@@ -96,6 +96,7 @@
 
 <script>
 import { getSmsCaptcha } from '@/api/login'
+import { mapActions } from 'vuex'
 import { deviceMixin } from '@/store/device-mixin'
 
 const levelNames = {
@@ -148,6 +149,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['Register']),
     handlePasswordLevel (rule, value, callback) {
       let level = 0
 
@@ -207,13 +209,23 @@ export default {
     },
 
     handleSubmit () {
-      const { form: { validateFields }, state, $router } = this
+      const { form: { validateFields }, state, Register } = this
       validateFields({ force: true }, (err, values) => {
         if (!err) {
           state.passwordLevelChecked = false
-          $router.push({ name: 'registerResult', params: { ...values } })
+          Register(values)
+            .then((res) => this.RegisterSuccess(res, values))
+            .catch(err => this.requestFailed(err))
         }
       })
+    },
+
+    RegisterSuccess (res, values) {
+      console.log('register success res:', res)
+      this.$router.push({ name: 'registerResult', params: { ...values } })
+      this.isLoginError = false
+      console.log('error')
+      console.log(this.isLoginError)
     },
 
     getCaptcha (e) {

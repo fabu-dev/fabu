@@ -1,5 +1,5 @@
 import storage from 'store'
-import { login, getInfo, logout } from '@/api/login'
+import { login, register, getInfo, logout } from '@/api/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
 
@@ -47,6 +47,18 @@ const user = {
       })
     },
 
+    // 注册
+    Register ({ commit }, userInfo) {
+      return new Promise((resolve, reject) => {
+        register(userInfo).then(response => {
+          // const result = response.result
+          console.log('register result:', response)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     // 获取用户信息
     GetInfo ({ commit }) {
       return new Promise((resolve, reject) => {
