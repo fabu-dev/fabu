@@ -26,13 +26,13 @@ func NewTeam() *Team {
 // @Success 200 {string} string    "ok"
 // @Router /v1/team/create [POST]
 func (ctl *Team) Create(c *gin.Context) {
-	_, err := ctl.paramFilter.Create(c)
+	teamInfo, err := ctl.paramFilter.Create(c)
 	if err != nil {
 		api.SetResponse(c, http.StatusOK, code.ErrorRequest, "")
 		return
 	}
 
-	api.SetResponse(c, http.StatusOK, code.Success, nil)
+	api.SetResponse(c, http.StatusOK, code.Success, teamInfo)
 }
 
 // @Tags 团队管理

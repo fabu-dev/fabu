@@ -1,14 +1,12 @@
 package filter
 
 import (
-	"net/http"
-
+	"fabu.dev/api/model"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
 	"fabu.dev/api/pkg/api/request"
 	"fabu.dev/api/service"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 type Team struct {
@@ -21,22 +19,21 @@ func NewTeam() *Team {
 	}
 }
 
-//
-func (f *Team) Create(c *gin.Context) (*request.TeamCreateParams, error) {
+// 创建团队
+func (f *Team) Create(c *gin.Context) (*model.TeamInfo, *api.Error) {
 	params := &request.TeamCreateParams{}
 
 	if err := c.ShouldBindJSON(params); err != nil {
-		logrus.Error(err)
+		return nil, api.NewError(code.ErrorRequest, err.Error())
+	}
 
-		return nil, err
+	operator := &model.Operator{
+		Id:      c.GetInt64("member_id"),
+		Account: c.GetString("account"),
 	}
 
 	// 调用service对应的方法
-	err := f.service.CreateTeam(params)
-	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ErrorDatabase, err.Error())
-		return nil, nil
-	}
+	teamInfo, err := f.service.CreateTeam(params, operator)
 
-	return params, nil
+	return teamInfo, err
 }

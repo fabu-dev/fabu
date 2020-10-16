@@ -1,6 +1,10 @@
 package model
 
-import "fabu.dev/api/pkg/api/request"
+import (
+	"fabu.dev/api/pkg/api"
+	"fabu.dev/api/pkg/api/code"
+	"fabu.dev/api/pkg/api/request"
+)
 
 type Member struct {
 	DetailColumns []string
@@ -29,26 +33,35 @@ func NewMember() *Member {
 	return member
 }
 
-func (m *Member) Add(member *MemberInfo) (*MemberInfo, error) {
+func (m *Member) Add(member *MemberInfo) (*MemberInfo, *api.Error) {
 	err := m.Db().Create(member).Error
+	if err != nil {
+		return nil, api.NewError(code.ErrorDatabase, err.Error())
+	}
 
-	return member, err
+	return member, nil
 }
 
-func (m *Member) GetDetailByAccount(params *request.LoginParams) (*MemberInfo, error) {
+func (m *Member) GetDetailByAccount(params *request.LoginParams) (*MemberInfo, *api.Error) {
 	member := &MemberInfo{}
 	err := m.Db().Select(m.DetailColumns).
 		Where("account = ? and password = ?", params.Account, params.Password).
 		First(member).Error
+	if err != nil {
+		return nil, api.NewError(code.ErrorDatabase, err.Error())
+	}
 
-	return member, err
+	return member, nil
 }
 
-func (m *Member) GetDetailByToken(token string) (*MemberInfo, error) {
+func (m *Member) GetDetailByToken(token string) (*MemberInfo, *api.Error) {
 	member := &MemberInfo{}
 	err := m.Db().Select(m.DetailColumns).
 		Where("token = ?", token).
 		First(member).Error
+	if err != nil {
+		return nil, api.NewError(code.ErrorDatabase, err.Error())
+	}
 
-	return member, err
+	return member, nil
 }

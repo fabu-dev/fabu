@@ -46,8 +46,8 @@ CREATE TABLE `app`  (
 -- ----------------------------
 -- Table structure for download_log
 -- ----------------------------
-DROP TABLE IF EXISTS `download_log`;
-CREATE TABLE `download_log`  (
+DROP TABLE IF EXISTS `app_download_log`;
+CREATE TABLE `app_download_log`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `app_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'APP ID',
   `version_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '版本ID',
@@ -57,6 +57,28 @@ CREATE TABLE `download_log`  (
   `created_by` varchar(50) NOT NULL DEFAULT '' COMMENT '添加人',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for version
+-- ----------------------------
+DROP TABLE IF EXISTS `app_version`;
+CREATE TABLE `app_version`  (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'APP版本ID',
+  `app_id` bigint(20) UNSIGNED NOT NULL COMMENT 'APP ID',
+  `tag` varchar(10) NOT NULL DEFAULT '' COMMENT '版本tag',
+  `code` varchar(10) NOT NULL DEFAULT '' COMMENT '版本号',
+  `description` varchar(300) NOT NULL DEFAULT '' COMMENT '更新说明',
+  `size` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '包大小',
+  `hash` varchar(80) NOT NULL DEFAULT '' COMMENT 'hash',
+  `path` varchar(200) NOT NULL DEFAULT '' COMMENT '文件存放路径（如果上传到云平台这里是url）',
+  `is_publish` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否发布（0：未发布，1：发布）',
+  `status` tinyint(1) UNSIGNED DEFAULT 1 COMMENT '状态（0：删除，1有效）',
+  `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
+  `updated_by` varchar(50) NOT NULL DEFAULT '' COMMENT '修改人',
+  `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `created_by` varchar(50) NOT NULL DEFAULT '' COMMENT '添加人',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = 'app版本表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for members
@@ -114,27 +136,5 @@ CREATE TABLE `team_member`  (
   INDEX `idx_member_id`(`member_id`) USING BTREE,
   INDEX `idx_group_id`(`group_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = '团队成员表' ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for version
--- ----------------------------
-DROP TABLE IF EXISTS `version`;
-CREATE TABLE `version`  (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'APP版本ID',
-  `app_id` bigint(20) UNSIGNED NOT NULL COMMENT 'APP ID',
-  `tag` varchar(10) NOT NULL DEFAULT '' COMMENT '版本tag',
-  `code` varchar(10) NOT NULL DEFAULT '' COMMENT '版本号',
-  `description` varchar(300) NOT NULL DEFAULT '' COMMENT '更新说明',
-  `size` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '包大小',
-  `hash` varchar(80) NOT NULL DEFAULT '' COMMENT 'hash',
-  `path` varchar(200) NOT NULL DEFAULT '' COMMENT '文件存放路径（如果上传到云平台这里是url）',
-  `is_publish` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否发布（0：未发布，1：发布）',
-  `status` tinyint(1) UNSIGNED DEFAULT 1 COMMENT '状态（0：删除，1有效）',
-  `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
-  `updated_by` varchar(50) NOT NULL DEFAULT '' COMMENT '修改人',
-  `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `created_by` varchar(50) NOT NULL DEFAULT '' COMMENT '添加人',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = 'app版本表' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

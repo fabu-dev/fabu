@@ -5,7 +5,7 @@ var Message = map[int]string{
 
 	ErrorRequest:  "请求参数错误",
 	ErrorPanic:    "系统报错",
-	ErrorSign:     "签名错误",
+	ErrorSign:     "权限验证失败",
 	ErrorDatabase: "数据库异常",
 	ErrorSyntax:   "动态语法错误",
 }

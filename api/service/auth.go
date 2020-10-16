@@ -3,7 +3,6 @@ package service
 import (
 	"fabu.dev/api/model"
 	"fabu.dev/api/pkg/api"
-	"fabu.dev/api/pkg/api/code"
 	"fabu.dev/api/pkg/api/request"
 	"fabu.dev/api/pkg/constant"
 	"fabu.dev/api/pkg/utils"
@@ -20,11 +19,8 @@ func (s *Auth) Login(params *request.LoginParams) (*model.MemberInfo, *api.Error
 	memberObj := model.NewMember()
 
 	member, err := memberObj.GetDetailByAccount(params)
-	if err != nil {
-		return nil, api.NewError(code.ErrorDatabase, err.Error())
-	}
 
-	return member, nil
+	return member, err
 }
 
 func (s *Auth) Register(params *request.RegisterParams) (*model.MemberInfo, *api.Error) {
@@ -39,9 +35,6 @@ func (s *Auth) Register(params *request.RegisterParams) (*model.MemberInfo, *api
 	}
 
 	member, err := memberObj.Add(member)
-	if err != nil {
-		return nil, api.NewError(code.ErrorDatabase, err.Error())
-	}
 
-	return member, nil
+	return member, err
 }
