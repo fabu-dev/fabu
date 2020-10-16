@@ -18,6 +18,13 @@ func NewTeam() *Team {
 		service: service.NewTeam(),
 	}
 }
+func (f *Team) GetList(c *gin.Context) ([]*model.TeamInfo, *api.Error) {
+	memberId := c.GetInt64("member_id")
+
+	teamSlice, err := f.service.GetListByMember(uint64(memberId))
+
+	return teamSlice, err
+}
 
 // 创建团队
 func (f *Team) Create(c *gin.Context) (*model.TeamInfo, *api.Error) {
@@ -33,7 +40,7 @@ func (f *Team) Create(c *gin.Context) (*model.TeamInfo, *api.Error) {
 	}
 
 	// 调用service对应的方法
-	teamInfo, err := f.service.CreateTeam(params, operator)
+	teamInfo, err := f.service.Create(params, operator)
 
 	return teamInfo, err
 }

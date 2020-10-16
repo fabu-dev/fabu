@@ -21,6 +21,21 @@ func NewTeam() *Team {
 }
 
 // @Tags 团队管理
+// @Summary 团队列表 API
+// @Description 团队列表
+// @Success 200 {string} string    "ok"
+// @Router /v1/team/ [GET]
+func (ctl *Team) GetList(c *gin.Context) {
+	teamSlice, err := ctl.paramFilter.GetList(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, code.ErrorRequest, err.Message)
+		return
+	}
+
+	api.SetResponse(c, http.StatusOK, 1, teamSlice)
+}
+
+// @Tags 团队管理
 // @Summary 创建团队 API
 // @Description 创建团队
 // @Success 200 {string} string    "ok"

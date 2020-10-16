@@ -19,7 +19,7 @@ func CreateApiRouter() {
 	// 团队API路由配置
 	v1Team := Router.Group("/v1/team").Use(middleware.VerifyToken())
 	{
-		v1Team.GET("/", controller.NewTeam().View)                   // 团队列表
+		v1Team.GET("/", controller.NewTeam().GetList)                // 团队列表
 		v1Team.POST("/create", controller.NewTeam().Create)          // 创建团队
 		v1Team.PUT("/edit", controller.NewTeam().Edit)               // 编辑团队
 		v1Team.POST("/member/add", controller.NewTeam().AddMember)   // 邀请成员

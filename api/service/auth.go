@@ -16,9 +16,9 @@ func NewAuth() *Auth {
 }
 
 func (s *Auth) Login(params *request.LoginParams) (*model.MemberInfo, *api.Error) {
-	memberObj := model.NewMember()
+	objMember := model.NewMember()
 
-	member, err := memberObj.GetDetailByAccount(params)
+	member, err := objMember.GetDetailByAccount(params)
 
 	return member, err
 }
