@@ -5,6 +5,8 @@ import notification from 'ant-design-vue/es/notification'
 import { VueAxios } from './axios'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 
+console.log('token is ', storage.get(ACCESS_TOKEN))
+
 // 创建 axios 实例
 const request = axios.create({
   // API 请求的默认前缀

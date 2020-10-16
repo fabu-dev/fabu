@@ -14,6 +14,7 @@ func Consuming() gin.HandlerFunc {
 func ControllerConsuming() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Set("startTime", time.Now())
+
 		c.Next()
 	}
 }

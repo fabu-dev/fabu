@@ -43,3 +43,12 @@ func (m *Member) GetDetailByAccount(params *request.LoginParams) (*MemberInfo, e
 
 	return member, err
 }
+
+func (m *Member) GetDetailByToken(token string) (*MemberInfo, error) {
+	member := &MemberInfo{}
+	err := m.Db().Select(m.DetailColumns).
+		Where("token = ?", token).
+		First(member).Error
+
+	return member, err
+}
