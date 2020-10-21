@@ -1,11 +1,6 @@
 <template>
   <a-form @submit="handleSubmit" :form="form">
-    <a-form-item
-        label="ID"
-        v-if = "record.id"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
-    >
+    <a-form-item label="ID" v-if= "record.id" :labelCol="labelCol" :wrapperCol="wrapperCol">
       <a-input v-decorator="['id', {initialValue: record.id, rules:[]}]" :allowClear="true" :disabled="true" />
     </a-form-item>
     <a-form-item
@@ -50,17 +45,23 @@ export default {
     this.record && this.form.setFieldsValue(pick(this.record, fields))
   },
   methods: {
-    ...mapActions(['TeamCreate']),
+    ...mapActions(['TeamCreate', 'TeamEdit']),
     onOk () {
       console.log('监听了 modal ok 事件')
-      const { form: { validateFields }, TeamCreate } = this
+      const { form: { validateFields }, TeamCreate, TeamEdit } = this
       this.visible = true
       validateFields((errors, values) => {
         if (!errors) {
           console.log('values', values)
-          TeamCreate(values)
-            .then((res) => this.success(res))
-            .catch(err => this.failed(err))
+          if (this.record.id > 0) {
+            TeamEdit(values)
+              .then((res) => this.success(res))
+              .catch(err => this.failed(err))
+          } else {
+            TeamCreate(values)
+              .then((res) => this.success(res))
+              .catch(err => this.failed(err))
+          }
         } else {
           this.visible = false
         }

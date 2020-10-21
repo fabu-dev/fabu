@@ -97,6 +97,22 @@ func (s *Team) Create(params *request.TeamCreateParams, operator *model.Operator
 	return teamInfo, err
 }
 
+// 创建团队
+func (s *Team) Edit(params *request.TeamEditParams, operator *model.Operator) (*model.TeamInfo, *api.Error) {
+	teamInfo := &model.TeamInfo{
+		Id:        params.Id,
+		Name:      params.Name,
+		UpdatedBy: operator.Account,
+	}
+
+	objTeam := model.NewTeam()
+	if err := objTeam.Edit(teamInfo); err != nil {
+		return nil, err
+	}
+
+	return teamInfo, nil
+}
+
 // 保存数据到team表
 func (s *Team) CreateTeam(teamInfo *model.TeamInfo) *api.Error {
 	objTeam := model.NewTeam()

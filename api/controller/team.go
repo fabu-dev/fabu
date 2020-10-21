@@ -56,7 +56,13 @@ func (ctl *Team) Create(c *gin.Context) {
 // @Success 200 {string} string    "ok"
 // @Router /v1/team/edit [PUT]
 func (ctl *Team) Edit(c *gin.Context) {
-	api.SetResponse(c, http.StatusOK, 1, "")
+	teamInfo, err := ctl.paramFilter.Edit(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, code.ErrorRequest, "")
+		return
+	}
+
+	api.SetResponse(c, http.StatusOK, code.Success, teamInfo)
 }
 
 // @Tags 团队管理

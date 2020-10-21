@@ -23,6 +23,7 @@ type TeamInfo struct {
 	Status    uint8          `json:"status"`
 	CreatedBy string         `json:"created_by"`
 	CreatedAt utils.JSONTime `json:"created_at" gorm:"-"` // 插入时忽略该字段
+	UpdatedBy string         `json:"updated_at"`          // 插入时忽略该字段
 }
 
 func NewTeam() *Team {
@@ -54,6 +55,16 @@ func (m *Team) GetListById(teamId []uint64) ([]*TeamInfo, *api.Error) {
 // 创建团队
 func (m *Team) Add(team *TeamInfo) *api.Error {
 	err := m.Db().Create(team).Error
+	if err != nil {
+		return api.NewError(code.ErrorDatabase, err.Error())
+	}
+
+	return nil
+}
+
+// 编辑团队
+func (m *Team) Edit(team *TeamInfo) *api.Error {
+	err := m.Db().Where("id = ?", team.Id).Updates(team).Error
 	if err != nil {
 		return api.NewError(code.ErrorDatabase, err.Error())
 	}

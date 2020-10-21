@@ -60,3 +60,22 @@ func (f *Team) Create(c *gin.Context) (*model.TeamInfo, *api.Error) {
 
 	return teamInfo, err
 }
+
+// 编辑团队
+func (f *Team) Edit(c *gin.Context) (*model.TeamInfo, *api.Error) {
+	params := &request.TeamEditParams{}
+
+	if err := c.ShouldBindJSON(params); err != nil {
+		return nil, api.NewError(code.ErrorRequest, err.Error())
+	}
+
+	operator := &model.Operator{
+		Id:      c.GetInt64("member_id"),
+		Account: c.GetString("account"),
+	}
+
+	// 调用service对应的方法
+	teamInfo, err := f.service.Edit(params, operator)
+
+	return teamInfo, err
+}
