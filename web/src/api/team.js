@@ -2,6 +2,7 @@ import request from '@/utils/request'
 
 const teamApi = {
   Create: '/team/create',
+  Edit: '/team/edit',
   Index: '/team/',
   Member: '/team/member/'
 }
@@ -31,5 +32,14 @@ export function getMember (id) {
     url: teamApi.Member + id,
     method: 'get',
     data: ''
+  })
+}
+
+// 获取团队的成员信息
+export function edit (parameter) {
+  return request({
+    url: teamApi.Edit,
+    method: 'put',
+    data: parameter
   })
 }

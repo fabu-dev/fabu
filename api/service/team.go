@@ -89,7 +89,7 @@ func (s *Team) Create(params *request.TeamCreateParams, operator *model.Operator
 	teamMemberInfo := &model.TeamMemberInfo{
 		TeamId:    teamInfo.Id,
 		MemberId:  uint64(operator.Id),
-		Role:      1,
+		Role:      constant.TeamRoleCreator,
 		CreatedBy: operator.Account,
 	}
 	err := s.AddMember(teamMemberInfo)

@@ -21,7 +21,7 @@
 
       <div slot="extra">
         团队：
-        <a-select v-model="teamSelect" style="width: 120px" @change="getTeamMember">
+        <a-select v-model="selectTeam" style="width: 120px" @change="getTeamMember" v-decorator="[ 'team', {rules: []} ]">
           <a-select-option v-for="item in teamData" :key="item.id" >
             {{ item.name }}
           </a-select-option>
@@ -39,21 +39,29 @@
             <a slot="title">{{ item.member_name }}</a>
           </a-list-item-meta>
           <div slot="actions">
-            <a @click="edit(item)">编辑</a>
+            <a @click="edit(item)">退出</a>
           </div>
           <div slot="actions">
             <a-dropdown>
               <a-menu slot="overlay">
-                <a-menu-item><a>编辑</a></a-menu-item>
-                <a-menu-item><a>删除</a></a-menu-item>
+                <a-menu-item><a>退出</a></a-menu-item>
+                <a-menu-item v-if="item.role == 3"><a>解散</a></a-menu-item>
+                <a-menu-item v-if="item.role == 2 || item.role == 3" @click="edit(item)"><a>编辑团队名称</a></a-menu-item>
+                <a-menu-item v-if="item.role == 2 || item.role == 3"><a>邀请团队成员</a></a-menu-item>
               </a-menu>
               <a>更多<a-icon type="down"/></a>
             </a-dropdown>
           </div>
           <div class="list-content">
             <div class="list-content-item">
-              <span>Owner</span>
+              <span>角色</span>
               <p>{{ item.role_name }}</p>
+            </div>
+          </div>
+          <div class="list-content">
+            <div class="list-content-item">
+              <span>加入时间</span>
+              <p>{{ item.created_at }}</p>
             </div>
           </div>
         </a-list-item>
@@ -77,14 +85,13 @@ export default {
   data () {
     return {
       teamData: [],
-      teamSelect: '', // 靠，这里不能给0
+      selectTeam: '', // 靠，这里不能给0
       data: [],
       status: 'all'
     }
   },
   created () {
     this.getTeamData()
-    console.log('teamSelect3', this.teamSelect)
   },
   mounted () {
 
@@ -93,7 +100,6 @@ export default {
     ...mapActions(['TeamIndex', 'TeamMember']),
     add () {
       this.$dialog(TeamForm,
-        // component props
         {
           record: {},
           on: {
@@ -117,7 +123,17 @@ export default {
         })
     },
     edit (record) {
-      console.log('record', record)
+      let name = ''
+      for (const key in this.teamData) {
+        if (this.teamData[key].id === this.selectTeam) {
+          name = this.teamData[key].name
+        }
+      }
+      record = {
+        'id': this.selectTeam,
+        'name': name
+      }
+
       this.$dialog(TeamForm,
         // component props
         {
@@ -146,19 +162,16 @@ export default {
       const { TeamIndex } = this
       TeamIndex().then(res => {
         if (res.result.length > 0) {
-          this.teamSelect = res.result[0].id
+          this.selectTeam = res.result[0].id
           this.teamData = res.result
 
-          this.getTeamMember(this.teamSelect)
+          this.getTeamMember(this.selectTeam)
         }
-
-        console.log('teamSelect2', this.teamSelect)
       }).catch((err) => {
         console.log('team list', err)
       })
     },
     getTeamMember (id) {
-      console.log('get team by id :', id)
       const { TeamMember } = this
       TeamMember(id).then(res => {
         this.data = res.result

@@ -1,6 +1,14 @@
 <template>
   <a-form @submit="handleSubmit" :form="form">
     <a-form-item
+        label="ID"
+        v-if = "record.id"
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+    >
+      <a-input v-decorator="['id', {initialValue: record.id, rules:[]}]" :allowClear="true" :disabled="true" />
+    </a-form-item>
+    <a-form-item
       label="团队名称"
       :labelCol="labelCol"
       :wrapperCol="wrapperCol"
@@ -38,6 +46,7 @@ export default {
     }
   },
   mounted () {
+    console.log('record', this.record)
     this.record && this.form.setFieldsValue(pick(this.record, fields))
   },
   methods: {
@@ -56,7 +65,6 @@ export default {
           this.visible = false
         }
       })
-
       if (this.visible) {
         return new Promise(resolve => {
           resolve(true)
