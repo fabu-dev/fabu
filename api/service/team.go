@@ -5,7 +5,6 @@ import (
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/request"
 	"fabu.dev/api/pkg/constant"
-	"github.com/sirupsen/logrus"
 )
 
 type Team struct {
@@ -44,9 +43,8 @@ func (s *Team) GetMemberList(teamId uint64) ([]*model.TeamMemberInfo, *api.Error
 		return teamMemberList, nil
 	}
 
-	s.ApplyMember(teamMemberList)
+	err = s.ApplyMember(teamMemberList)
 
-	logrus.Info(model.TeamRoleMap)
 	return teamMemberList, err
 }
 
@@ -54,6 +52,7 @@ func (s *Team) GetMemberList(teamId uint64) ([]*model.TeamMemberInfo, *api.Error
 func (s *Team) ApplyMember(teamMemberList []*model.TeamMemberInfo) *api.Error {
 	memberIdList := make([]uint64, len(teamMemberList))
 	for _, teamMember := range teamMemberList {
+		teamMember.RoleName = model.TeamRoleMap[teamMember.Role]
 		memberIdList = append(memberIdList, teamMember.MemberId)
 	}
 
@@ -63,11 +62,11 @@ func (s *Team) ApplyMember(teamMemberList []*model.TeamMemberInfo) *api.Error {
 		return err
 	}
 
-	for _, TeamMember := range teamMemberList {
-		TeamMember.RoleName = model.TeamRoleMap[TeamMember.Role]
+	for _, teamMember := range teamMemberList {
 		for _, member := range memberList {
-			if TeamMember.MemberId == member.Id {
-				TeamMember.MemberName = member.Account
+			if teamMember.MemberId == member.Id {
+				teamMember.MemberName = member.UserName
+				teamMember.MemberAccount = member.Account
 			}
 		}
 	}

@@ -20,12 +20,12 @@
       title="标准列表">
 
       <div slot="extra">
-        <a-radio-group v-model="status">
-          <a-radio-button value="all">全部</a-radio-button>
-          <a-radio-button value="processing">进行中</a-radio-button>
-          <a-radio-button value="waiting">等待中</a-radio-button>
-        </a-radio-group>
-        <a-input-search style="margin-left: 16px; width: 272px;" />
+        团队：
+        <a-select v-model="teamSelect" style="width: 120px" @change="getTeamMember">
+          <a-select-option v-for="item in teamData" :key="item.id" >
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
       </div>
 
       <div class="operate">
@@ -34,9 +34,9 @@
 
       <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
         <a-list-item :key="index" v-for="(item, index) in data">
-          <a-list-item-meta :description="item.name">
+          <a-list-item-meta :description="item.member_account">
             <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>
-            <a slot="title">{{ item.name }}</a>
+            <a slot="title">{{ item.member_name }}</a>
           </a-list-item-meta>
           <div slot="actions">
             <a @click="edit(item)">编辑</a>
@@ -51,20 +51,9 @@
             </a-dropdown>
           </div>
           <div class="list-content">
-<!--            <div class="list-content-item">-->
-<!--              <span>Owner</span>-->
-<!--              <p>{{ item.name }}</p>-->
-<!--            </div>-->
             <div class="list-content-item">
               <span>Owner</span>
-              <p>{{ item.owner }}</p>
-            </div>
-<!--            <div class="list-content-item">-->
-<!--              <span>开始时间</span>-->
-<!--              <p>{{ item.created_at }}</p>-->
-<!--            </div>-->
-            <div class="list-content-item">
-<!--              <a-progress :percent="item.progress.value" :status="!item.progress.status ? null : item.progress.status" style="width: 180px" />-->
+              <p>{{ item.role_name }}</p>
             </div>
           </div>
         </a-list-item>
@@ -87,15 +76,21 @@ export default {
   },
   data () {
     return {
+      teamData: [],
+      teamSelect: '', // 靠，这里不能给0
       data: [],
       status: 'all'
     }
   },
+  created () {
+    this.getTeamData()
+    console.log('teamSelect3', this.teamSelect)
+  },
   mounted () {
-    this.getData()
+
   },
   methods: {
-    ...mapActions(['TeamIndex']),
+    ...mapActions(['TeamIndex', 'TeamMember']),
     add () {
       this.$dialog(TeamForm,
         // component props
@@ -147,9 +142,25 @@ export default {
           maskClosable: false
         })
     },
-    getData () {
+    getTeamData () {
       const { TeamIndex } = this
       TeamIndex().then(res => {
+        if (res.result.length > 0) {
+          this.teamSelect = res.result[0].id
+          this.teamData = res.result
+
+          this.getTeamMember(this.teamSelect)
+        }
+
+        console.log('teamSelect2', this.teamSelect)
+      }).catch((err) => {
+        console.log('team list', err)
+      })
+    },
+    getTeamMember (id) {
+      console.log('get team by id :', id)
+      const { TeamMember } = this
+      TeamMember(id).then(res => {
         this.data = res.result
       }).catch((err) => {
         console.log('team list', err)

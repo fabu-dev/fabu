@@ -12,14 +12,15 @@ type TeamMember struct {
 }
 
 type TeamMemberInfo struct {
-	Id         uint64         `json:"id" gorm:"primary_key"`
-	TeamId     uint64         `json:"team_id"`
-	MemberId   uint64         `json:"member_id"`
-	MemberName string         `json:"member_name"`
-	Role       uint8          `json:"role"`
-	RoleName   string         `json:"role_name"`
-	CreatedBy  string         `json:"created_by"`
-	CreatedAt  utils.JSONTime `json:"created_at" gorm:"-"` // 插入时忽略该字段
+	Id            uint64         `json:"id" gorm:"primary_key"`
+	TeamId        uint64         `json:"team_id"`
+	MemberId      uint64         `json:"member_id"`
+	MemberName    string         `json:"member_name" gorm:"-"`
+	MemberAccount string         `json:"member_account" gorm:"-"`
+	Role          uint8          `json:"role"`
+	RoleName      string         `json:"role_name"  gorm:"-"`
+	CreatedBy     string         `json:"created_by"`
+	CreatedAt     utils.JSONTime `json:"created_at" gorm:"-"` // 插入时忽略该字段
 }
 
 func NewTeamMember() *TeamMember {
