@@ -59,8 +59,19 @@ func (m *TeamMember) GetListByTeamId(teamId uint64) ([]*TeamMemberInfo, *api.Err
 	return teamMemberSlice, nil
 }
 
+// 添加团队成员
 func (m *TeamMember) Add(teamMemberInfo *TeamMemberInfo) *api.Error {
 	err := m.Db().Create(teamMemberInfo).Error
+	if err != nil {
+		return api.NewError(code.ErrorDatabase, err.Error())
+	}
+
+	return nil
+}
+
+// 删除团队成员
+func (m *TeamMember) Delete(id uint64) *api.Error {
+	err := m.Db().Where("id = ?", id).Delete(&TeamMemberInfo{}).Error
 	if err != nil {
 		return api.NewError(code.ErrorDatabase, err.Error())
 	}

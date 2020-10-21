@@ -12,3 +12,7 @@ type TeamEditParams struct {
 type TeamMemberListParams struct {
 	Id uint64 `uri:"id" binding:"required,numeric"`
 }
+
+type TeamMemberDeleteParams struct {
+	Id uint64 `json:"id" binding:"required"`
+}

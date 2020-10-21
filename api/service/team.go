@@ -74,6 +74,15 @@ func (s *Team) ApplyMember(teamMemberList []*model.TeamMemberInfo) *api.Error {
 	return nil
 }
 
+// 获取单个团队的成员信息
+func (s *Team) DelMember(teamMemberId uint64) *api.Error {
+	// TODO 删除之前需要做一些验证，eg：团队是否没人了，团队是否还有APP 是否是创建者
+	objTeamMember := model.NewTeamMember()
+	err := objTeamMember.Delete(teamMemberId)
+
+	return err
+}
+
 // 创建团队
 func (s *Team) Create(params *request.TeamCreateParams, operator *model.Operator) (*model.TeamInfo, *api.Error) {
 	teamInfo := &model.TeamInfo{

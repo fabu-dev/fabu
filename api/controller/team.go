@@ -80,6 +80,12 @@ func (ctl *Team) AddMember(c *gin.Context) {
 // @Success 200 {string} string    "ok"
 // @Router /v1/team/member/del [DELETE]
 func (ctl *Team) DelMember(c *gin.Context) {
+	err := ctl.paramFilter.DelMember(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, code.ErrorRequest, "")
+		return
+	}
+
 	api.SetResponse(c, http.StatusOK, 1, "")
 }
 
