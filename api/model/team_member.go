@@ -12,12 +12,14 @@ type TeamMember struct {
 }
 
 type TeamMemberInfo struct {
-	Id        uint64         `json:"id" gorm:"primary_key"`
-	TeamId    uint64         `json:"team_id"`
-	MemberId  int64          `json:"member_id"`
-	Role      uint8          `json:"role"`
-	CreatedBy string         `json:"created_by"`
-	CreatedAt utils.JSONTime `json:"created_at" gorm:"-"` // 插入时忽略该字段
+	Id         uint64         `json:"id" gorm:"primary_key"`
+	TeamId     uint64         `json:"team_id"`
+	MemberId   uint64         `json:"member_id"`
+	MemberName string         `json:"member_name"`
+	Role       uint8          `json:"role"`
+	RoleName   string         `json:"role_name"`
+	CreatedBy  string         `json:"created_by"`
+	CreatedAt  utils.JSONTime `json:"created_at" gorm:"-"` // 插入时忽略该字段
 }
 
 func NewTeamMember() *TeamMember {
@@ -40,14 +42,15 @@ func (m *TeamMember) GetTeamId(memberId uint64) ([]uint64, *api.Error) {
 	return teamIdSlice, nil
 }
 
-func (m *TeamMember) GetListByTeamId(teamId []uint64) ([]*TeamMemberInfo, *api.Error) {
-	if len(teamId) == 0 {
-		return nil, nil
+// 获取一个团队的成员信息
+func (m *TeamMember) GetListByTeamId(teamId uint64) ([]*TeamMemberInfo, *api.Error) {
+	if teamId < 1 {
+		return nil, api.NewError(code.ErrorRequest, "请求参数异常，ID不可以为空")
 	}
 
-	teamMemberSlice := make([]*TeamMemberInfo, 0, len(teamId))
+	teamMemberSlice := make([]*TeamMemberInfo, 0, 16)
 
-	err := m.Db().Select(m.DetailColumns).Where("team_id = (?)", teamId).Find(&teamMemberSlice).Error
+	err := m.Db().Select(m.DetailColumns).Where("team_id = ?", teamId).Find(&teamMemberSlice).Error
 	if err != nil {
 		return nil, api.NewError(code.ErrorDatabase, err.Error())
 	}

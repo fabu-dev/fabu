@@ -42,6 +42,21 @@ func (m *Member) Add(member *MemberInfo) (*MemberInfo, *api.Error) {
 	return member, nil
 }
 
+// 根据ID获取一组会员
+func (m *Member) GetListById(memberIdList []uint64) ([]*MemberInfo, *api.Error) {
+	if len(memberIdList) == 0 {
+		return nil, nil
+	}
+	memberList := make([]*MemberInfo, len(memberIdList))
+
+	err := m.Db().Select(m.DetailColumns).Where("id in (?)", memberIdList).Find(&memberList).Error
+	if err != nil {
+		return nil, api.NewError(code.ErrorDatabase, err.Error())
+	}
+
+	return memberList, nil
+}
+
 func (m *Member) GetDetailByAccount(params *request.LoginParams) (*MemberInfo, *api.Error) {
 	member := &MemberInfo{}
 	err := m.Db().Select(m.DetailColumns).

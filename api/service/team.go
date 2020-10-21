@@ -5,6 +5,7 @@ import (
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/request"
 	"fabu.dev/api/pkg/constant"
+	"github.com/sirupsen/logrus"
 )
 
 type Team struct {
@@ -14,6 +15,7 @@ func NewTeam() *Team {
 	return &Team{}
 }
 
+// 获取会员的团队列表
 func (s *Team) GetListByMember(memberId uint64) ([]*model.TeamInfo, *api.Error) {
 	// 先获取会员所有的团队
 	objTeamMember := model.NewTeamMember()
@@ -29,23 +31,43 @@ func (s *Team) GetListByMember(memberId uint64) ([]*model.TeamInfo, *api.Error) 
 		return nil, err
 	}
 
-	err = s.ApplyMember(teamIdSlice, &teamSlice)
-
 	return teamSlice, err
 }
 
-// 应用团队的成员信息
-func (s *Team) ApplyMember(teamIdSlice []uint64, teamSlice *[]*model.TeamInfo) *api.Error {
+// 获取单个团队的成员信息
+func (s *Team) GetMemberList(teamId uint64) ([]*model.TeamMemberInfo, *api.Error) {
+
 	objTeamMember := model.NewTeamMember()
-	teamMemberSlice, err := objTeamMember.GetListByTeamId(teamIdSlice)
+	teamMemberList, err := objTeamMember.GetListByTeamId(teamId)
+
+	if len(teamMemberList) == 0 {
+		return teamMemberList, nil
+	}
+
+	s.ApplyMember(teamMemberList)
+
+	logrus.Info(model.TeamRoleMap)
+	return teamMemberList, err
+}
+
+// 给团队成员列表应用用户名
+func (s *Team) ApplyMember(teamMemberList []*model.TeamMemberInfo) *api.Error {
+	memberIdList := make([]uint64, len(teamMemberList))
+	for _, teamMember := range teamMemberList {
+		memberIdList = append(memberIdList, teamMember.MemberId)
+	}
+
+	objMember := model.NewMember()
+	memberList, err := objMember.GetListById(memberIdList)
 	if err != nil {
 		return err
 	}
 
-	for _, teamMember := range teamMemberSlice {
-		for _, team := range *teamSlice {
-			if team.Id == teamMember.TeamId {
-				team.Member = append(team.Member, teamMember)
+	for _, TeamMember := range teamMemberList {
+		TeamMember.RoleName = model.TeamRoleMap[TeamMember.Role]
+		for _, member := range memberList {
+			if TeamMember.MemberId == member.Id {
+				TeamMember.MemberName = member.Account
 			}
 		}
 	}
@@ -67,7 +89,7 @@ func (s *Team) Create(params *request.TeamCreateParams, operator *model.Operator
 
 	teamMemberInfo := &model.TeamMemberInfo{
 		TeamId:    teamInfo.Id,
-		MemberId:  operator.Id,
+		MemberId:  uint64(operator.Id),
 		Role:      1,
 		CreatedBy: operator.Account,
 	}

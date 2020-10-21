@@ -34,9 +34,9 @@
 
       <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
         <a-list-item :key="index" v-for="(item, index) in data">
-          <a-list-item-meta :description="item.description">
+          <a-list-item-meta :description="item.name">
             <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>
-            <a slot="title">{{ item.title }}</a>
+            <a slot="title">{{ item.name }}</a>
           </a-list-item-meta>
           <div slot="actions">
             <a @click="edit(item)">编辑</a>
@@ -51,16 +51,20 @@
             </a-dropdown>
           </div>
           <div class="list-content">
+<!--            <div class="list-content-item">-->
+<!--              <span>Owner</span>-->
+<!--              <p>{{ item.name }}</p>-->
+<!--            </div>-->
             <div class="list-content-item">
               <span>Owner</span>
               <p>{{ item.owner }}</p>
             </div>
+<!--            <div class="list-content-item">-->
+<!--              <span>开始时间</span>-->
+<!--              <p>{{ item.created_at }}</p>-->
+<!--            </div>-->
             <div class="list-content-item">
-              <span>开始时间</span>
-              <p>{{ item.startAt }}</p>
-            </div>
-            <div class="list-content-item">
-              <a-progress :percent="item.progress.value" :status="!item.progress.status ? null : item.progress.status" style="width: 180px" />
+<!--              <a-progress :percent="item.progress.value" :status="!item.progress.status ? null : item.progress.status" style="width: 180px" />-->
             </div>
           </div>
         </a-list-item>
@@ -73,18 +77,7 @@
 // 演示如何使用 this.$dialog 封装 modal 组件
 import TeamForm from './modules/TeamForm'
 import Info from './components/Info'
-
-const data = []
-data.push({
-  title: 'Alipay',
-  avatar: 'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png',
-  description: '那是一种内在的东西， 他们到达不了，也无法触及的',
-  owner: '付晓晓',
-  startAt: '2018-07-26 22:44',
-  progress: {
-    value: 90
-  }
-})
+import { mapActions } from 'vuex'
 
 export default {
   name: 'StandardList',
@@ -94,11 +87,15 @@ export default {
   },
   data () {
     return {
-      data,
+      data: [],
       status: 'all'
     }
   },
+  mounted () {
+    this.getData()
+  },
   methods: {
+    ...mapActions(['TeamIndex']),
     add () {
       this.$dialog(TeamForm,
         // component props
@@ -149,6 +146,14 @@ export default {
           centered: true,
           maskClosable: false
         })
+    },
+    getData () {
+      const { TeamIndex } = this
+      TeamIndex().then(res => {
+        this.data = res.result
+      }).catch((err) => {
+        console.log('team list', err)
+      })
     }
   }
 }

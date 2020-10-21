@@ -11,7 +11,6 @@ func CreateApiRouter() {
 	v1Member := Router.Group("/v1/user").Use(middleware.VerifyToken())
 	{
 		v1Member.GET("/info/:id", controller.NewMember().Info)           // 会员详情
-		v1Member.GET("/group/:id", controller.NewMember().GroupView)     // 获取会员的团队信息
 		v1Member.PUT("/password", controller.NewMember().UpdatePassword) // 修改密码
 		v1Member.POST("/token", controller.NewMember().CreateToken)      // 生成TOKEN
 	}
@@ -19,12 +18,12 @@ func CreateApiRouter() {
 	// 团队API路由配置
 	v1Team := Router.Group("/v1/team").Use(middleware.VerifyToken())
 	{
-		v1Team.GET("/", controller.NewTeam().GetList)                // 团队列表
+		v1Team.GET("/", controller.NewTeam().GetList)                // 会员团队列表
 		v1Team.POST("/create", controller.NewTeam().Create)          // 创建团队
 		v1Team.PUT("/edit", controller.NewTeam().Edit)               // 编辑团队
 		v1Team.POST("/member/add", controller.NewTeam().AddMember)   // 邀请成员
 		v1Team.DELETE("/member/del", controller.NewTeam().DelMember) // 移除成员
-		v1Team.GET("/info/:id", controller.NewTeam().View)           // 团队信息
+		v1Team.GET("/member/:id", controller.NewTeam().GetMember)    // 获取团队成员信息
 		v1Team.GET("/log", controller.NewTeam().GetLog)              // 团队日志信息
 	}
 

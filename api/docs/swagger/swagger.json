@@ -379,6 +379,23 @@
                 }
             }
         },
+        "/v1/team/": {
+            "get": {
+                "description": "用户团队列表",
+                "tags": [
+                    "团队管理"
+                ],
+                "summary": "用户团队列表 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/team/create": {
             "post": {
                 "description": "创建团队",

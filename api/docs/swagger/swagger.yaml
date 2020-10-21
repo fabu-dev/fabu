@@ -244,6 +244,17 @@ paths:
       summary: 注册 API
       tags:
       - 用户登录注册相关接口
+  /v1/team/:
+    get:
+      description: 用户团队列表
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 用户团队列表 API
+      tags:
+      - 团队管理
   /v1/team/create:
     post:
       description: 创建团队

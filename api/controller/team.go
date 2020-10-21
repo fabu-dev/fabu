@@ -21,8 +21,8 @@ func NewTeam() *Team {
 }
 
 // @Tags 团队管理
-// @Summary 团队列表 API
-// @Description 团队列表
+// @Summary 用户团队列表 API
+// @Description 用户团队列表
 // @Success 200 {string} string    "ok"
 // @Router /v1/team/ [GET]
 func (ctl *Team) GetList(c *gin.Context) {
@@ -78,12 +78,18 @@ func (ctl *Team) DelMember(c *gin.Context) {
 }
 
 // @Tags 团队管理
-// @Summary 获取团队信息 API
-// @Description 获取团队信息
+// @Summary 获取团队成员信息 API
+// @Description 获取团队成员信息
 // @Success 200 {string} string    "ok"
-// @Router /v1/team/member/del [GET]
-func (ctl *Team) View(c *gin.Context) {
-	api.SetResponse(c, http.StatusOK, 1, "")
+// @Router /v1/team/member/1 [GET]
+func (ctl *Team) GetMember(c *gin.Context) {
+	memberList, err := ctl.paramFilter.GetMemberList(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, code.ErrorRequest, "")
+		return
+	}
+
+	api.SetResponse(c, http.StatusOK, 1, memberList)
 }
 
 // @Tags 团队管理

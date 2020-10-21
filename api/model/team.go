@@ -17,13 +17,12 @@ type Operator struct {
 }
 
 type TeamInfo struct {
-	Id        uint64            `json:"id" gorm:"primary_key"`
-	Owner     int64             `json:"owner"`
-	Name      string            `json:"name"`
-	Status    uint8             `json:"status"`
-	CreatedBy string            `json:"created_by"`
-	CreatedAt utils.JSONTime    `json:"created_at" gorm:"-"` // 插入时忽略该字段
-	Member    []*TeamMemberInfo `json:"member" gorm:"-"`
+	Id        uint64         `json:"id" gorm:"primary_key"`
+	Owner     int64          `json:"owner"`
+	Name      string         `json:"name"`
+	Status    uint8          `json:"status"`
+	CreatedBy string         `json:"created_by"`
+	CreatedAt utils.JSONTime `json:"created_at" gorm:"-"` // 插入时忽略该字段
 }
 
 func NewTeam() *Team {
@@ -44,7 +43,7 @@ func (m *Team) GetListById(teamId []uint64) ([]*TeamInfo, *api.Error) {
 
 	teamSlice := make([]*TeamInfo, 0, len(teamId))
 
-	err := m.Db().Select(m.DetailColumns).Where("id = (?)", teamId).Find(&teamSlice).Error
+	err := m.Db().Select(m.DetailColumns).Where("id in (?)", teamId).Find(&teamSlice).Error
 	if err != nil {
 		return nil, api.NewError(code.ErrorDatabase, err.Error())
 	}
@@ -52,6 +51,7 @@ func (m *Team) GetListById(teamId []uint64) ([]*TeamInfo, *api.Error) {
 	return teamSlice, nil
 }
 
+// 创建团队
 func (m *Team) Add(team *TeamInfo) *api.Error {
 	err := m.Db().Create(team).Error
 	if err != nil {

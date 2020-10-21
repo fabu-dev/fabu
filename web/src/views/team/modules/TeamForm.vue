@@ -41,15 +41,15 @@ export default {
     this.record && this.form.setFieldsValue(pick(this.record, fields))
   },
   methods: {
-    ...mapActions(['Create']),
+    ...mapActions(['TeamCreate']),
     onOk () {
       console.log('监听了 modal ok 事件')
-      const { form: { validateFields }, Create } = this
+      const { form: { validateFields }, TeamCreate } = this
       this.visible = true
       validateFields((errors, values) => {
         if (!errors) {
           console.log('values', values)
-          Create(values)
+          TeamCreate(values)
             .then((res) => this.success(res))
             .catch(err => this.failed(err))
         } else {
