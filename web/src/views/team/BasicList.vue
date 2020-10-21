@@ -39,12 +39,11 @@
             <a slot="title">{{ item.member_name }}</a>
           </a-list-item-meta>
           <div slot="actions">
-            <a @click="edit(item)">退出</a>
+            <a @click="exit(item)">退出</a>
           </div>
           <div slot="actions">
             <a-dropdown>
               <a-menu slot="overlay">
-                <a-menu-item><a>退出</a></a-menu-item>
                 <a-menu-item v-if="item.role == 3"><a>解散</a></a-menu-item>
                 <a-menu-item v-if="item.role == 2 || item.role == 3" @click="edit(item)"><a>编辑团队名称</a></a-menu-item>
                 <a-menu-item v-if="item.role == 2 || item.role == 3"><a>邀请团队成员</a></a-menu-item>
@@ -97,7 +96,7 @@ export default {
 
   },
   methods: {
-    ...mapActions(['TeamIndex', 'TeamMember']),
+    ...mapActions(['TeamIndex', 'TeamMember', 'TeamMemberExit']),
     add () {
       this.$dialog(TeamForm,
         {
@@ -157,6 +156,29 @@ export default {
           centered: true,
           maskClosable: false
         })
+    },
+    exit (record) {
+      record = {
+        'id': record.id
+      }
+      const { TeamMemberExit } = this
+      this.$confirm({
+        title: '确定要退出团队么?',
+        content: '退出团队后，您将不能在维护APP。',
+        onOk () {
+          return TeamMemberExit(record).then(res => {
+            if (res.result.length > 0) {
+              this.selectTeam = res.result[0].id
+              this.teamData = res.result
+
+              this.getTeamMember(this.selectTeam)
+            }
+          }).catch((err) => {
+            console.log('team list', err)
+          })
+        },
+        onCancel () {}
+      })
     },
     getTeamData () {
       const { TeamIndex } = this

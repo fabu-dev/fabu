@@ -1,4 +1,4 @@
-import { create, edit, index, getMember } from '@/api/team'
+import { create, edit, index, getMember, exit } from '@/api/team'
 
 const team = {
   actions: {
@@ -32,6 +32,15 @@ const team = {
     TeamMember ({ commit }, params) {
       return new Promise((resolve, reject) => {
         getMember(params).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    TeamMemberExit ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        exit(params).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

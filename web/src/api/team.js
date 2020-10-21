@@ -4,7 +4,8 @@ const teamApi = {
   Create: '/team/create',
   Edit: '/team/edit',
   Index: '/team/',
-  Member: '/team/member/'
+  Member: '/team/member/',
+  MemberDel: '/team/member/del'
 }
 
 // 创建团队
@@ -40,6 +41,15 @@ export function edit (parameter) {
   return request({
     url: teamApi.Edit,
     method: 'put',
+    data: parameter
+  })
+}
+
+// 获取团队的成员信息
+export function exit (parameter) {
+  return request({
+    url: teamApi.MemberDel,
+    method: 'delete',
     data: parameter
   })
 }
