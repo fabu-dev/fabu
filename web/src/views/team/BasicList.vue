@@ -26,6 +26,16 @@
             {{ item.name }}
           </a-select-option>
         </a-select>
+
+        <a-button type="primary" style="margin: 0 5px 0 5px" v-if="role == 3" @click="dissolve()">
+          解散
+        </a-button>
+        <a-button type="primary" style="margin: 0 5px 0 5px" v-if="role > 1" @click="edit()">
+          编辑团队名称
+        </a-button>
+        <a-button type="primary" style="margin: 0 5px 0 5px" v-if="role > 1" @click="invite()">
+          邀请团队成员
+        </a-button>
       </div>
 
       <div class="operate">
@@ -72,6 +82,7 @@
 <script>
 // 演示如何使用 this.$dialog 封装 modal 组件
 import TeamForm from './modules/TeamForm'
+import InviteForm from './modules/InviteForm'
 import Info from './components/Info'
 import { mapActions } from 'vuex'
 
@@ -83,6 +94,7 @@ export default {
   },
   data () {
     return {
+      role: '',
       teamData: [],
       selectTeam: '', // 靠，这里不能给0
       data: [],
@@ -121,14 +133,14 @@ export default {
           maskClosable: false
         })
     },
-    edit (record) {
+    edit () {
       let name = ''
       for (const key in this.teamData) {
         if (this.teamData[key].id === this.selectTeam) {
           name = this.teamData[key].name
         }
       }
-      record = {
+      const record = {
         'id': this.selectTeam,
         'name': name
       }
@@ -151,7 +163,41 @@ export default {
         },
         // modal props
         {
-          title: '操作',
+          title: '编辑团队',
+          width: 700,
+          centered: true,
+          maskClosable: false
+        })
+    },
+    invite () {
+      let name = ''
+      for (const key in this.teamData) {
+        if (this.teamData[key].id === this.selectTeam) {
+          name = this.teamData[key].name
+        }
+      }
+      const record = {
+        'id': this.selectTeam,
+        'name': name
+      }
+      this.$dialog(InviteForm,
+        {
+          record,
+          on: {
+            ok () {
+              console.log('ok 回调')
+            },
+            cancel () {
+              console.log('cancel 回调')
+            },
+            close () {
+              console.log('modal close 回调')
+            }
+          }
+        },
+        // modal props
+        {
+          title: '邀请团队成员',
           width: 700,
           centered: true,
           maskClosable: false
@@ -180,8 +226,8 @@ export default {
         onCancel () {}
       })
     },
-    dissolve (record) {
-      record = {
+    dissolve () {
+      const record = {
         'id': this.selectTeam
       }
       const { TeamDelete } = this
@@ -206,7 +252,7 @@ export default {
     getTeamData () {
       const { TeamIndex } = this
       TeamIndex().then(res => {
-        console.log('length is ', res.result.length)
+        // TODO 要有全局的统一处理异常code。 否则这里在请求异常时， length会变成字符串长度
         if (res.result.length > 0) {
           this.selectTeam = res.result[0].id
           this.teamData = res.result
@@ -218,11 +264,12 @@ export default {
       })
     },
     getTeamMember (id) {
-      console.log('team id is', id)
       if (id) {
         const { TeamMember } = this
         TeamMember(id).then(res => {
-          this.data = res.result
+          this.data = res.result.member_list
+          this.role = res.result.role
+          console.log(this.role)
         }).catch((err) => {
           console.log('team list', err)
         })

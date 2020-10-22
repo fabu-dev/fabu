@@ -6,7 +6,8 @@ const teamApi = {
   Index: '/team/',
   Del: '/team/del',
   Member: '/team/member/',
-  MemberDel: '/team/member/del'
+  MemberDel: '/team/member/del',
+  MemberAdd: '/team/member/add'
 
 }
 
@@ -61,6 +62,16 @@ export function del (parameter) {
   console.log(process.env.VUE_APP_API_BASE_URL)
   return request({
     url: teamApi.Del,
+    method: 'delete',
+    data: parameter
+  })
+}
+
+// 邀请团队成员
+export function addMember (parameter) {
+  console.log(process.env.VUE_APP_API_BASE_URL)
+  return request({
+    url: teamApi.MemberAdd,
     method: 'delete',
     data: parameter
   })

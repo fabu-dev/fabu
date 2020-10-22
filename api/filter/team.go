@@ -39,6 +39,7 @@ func (f *Team) GetMemberList(c *gin.Context) ([]*model.TeamMemberInfo, *api.Erro
 	}
 
 	teamMemberList, err := f.service.GetMemberList(params.Id)
+
 	return teamMemberList, err
 }
 

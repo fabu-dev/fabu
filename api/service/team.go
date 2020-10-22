@@ -52,6 +52,7 @@ func (s *Team) GetMemberList(teamId uint64) ([]*model.TeamMemberInfo, *api.Error
 // 给团队成员列表应用用户名
 func (s *Team) ApplyMember(teamMemberList []*model.TeamMemberInfo) *api.Error {
 	memberIdList := make([]uint64, 0, len(teamMemberList))
+
 	for _, teamMember := range teamMemberList {
 		teamMember.RoleName = model.TeamRoleMap[teamMember.Role]
 		memberIdList = append(memberIdList, teamMember.MemberId)
