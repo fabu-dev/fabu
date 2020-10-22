@@ -4,8 +4,10 @@ const teamApi = {
   Create: '/team/create',
   Edit: '/team/edit',
   Index: '/team/',
+  Del: '/team/del',
   Member: '/team/member/',
   MemberDel: '/team/member/del'
+
 }
 
 // 创建团队
@@ -49,6 +51,16 @@ export function edit (parameter) {
 export function exit (parameter) {
   return request({
     url: teamApi.MemberDel,
+    method: 'delete',
+    data: parameter
+  })
+}
+
+// 解散团队
+export function del (parameter) {
+  console.log(process.env.VUE_APP_API_BASE_URL)
+  return request({
+    url: teamApi.Del,
     method: 'delete',
     data: parameter
   })

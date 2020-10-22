@@ -3,6 +3,7 @@ package service
 import (
 	"fabu.dev/api/model"
 	"fabu.dev/api/pkg/api"
+	"fabu.dev/api/pkg/api/code"
 	"fabu.dev/api/pkg/api/request"
 	"fabu.dev/api/pkg/constant"
 )
@@ -50,7 +51,7 @@ func (s *Team) GetMemberList(teamId uint64) ([]*model.TeamMemberInfo, *api.Error
 
 // 给团队成员列表应用用户名
 func (s *Team) ApplyMember(teamMemberList []*model.TeamMemberInfo) *api.Error {
-	memberIdList := make([]uint64, len(teamMemberList))
+	memberIdList := make([]uint64, 0, len(teamMemberList))
 	for _, teamMember := range teamMemberList {
 		teamMember.RoleName = model.TeamRoleMap[teamMember.Role]
 		memberIdList = append(memberIdList, teamMember.MemberId)
@@ -75,7 +76,7 @@ func (s *Team) ApplyMember(teamMemberList []*model.TeamMemberInfo) *api.Error {
 }
 
 // 获取单个团队的成员信息
-func (s *Team) DelMember(teamMemberId uint64) *api.Error {
+func (s *Team) DeleteMember(teamMemberId uint64) *api.Error {
 	// TODO 删除之前需要做一些验证，eg：团队是否没人了，团队是否还有APP 是否是创建者
 	objTeamMember := model.NewTeamMember()
 	err := objTeamMember.Delete(teamMemberId)
@@ -106,7 +107,7 @@ func (s *Team) Create(params *request.TeamCreateParams, operator *model.Operator
 	return teamInfo, err
 }
 
-// 创建团队
+// 编辑团队
 func (s *Team) Edit(params *request.TeamEditParams, operator *model.Operator) (*model.TeamInfo, *api.Error) {
 	teamInfo := &model.TeamInfo{
 		Id:        params.Id,
@@ -120,6 +121,31 @@ func (s *Team) Edit(params *request.TeamEditParams, operator *model.Operator) (*
 	}
 
 	return teamInfo, nil
+}
+
+// 删除团队
+func (s *Team) Delete(params *request.TeamDeleteParams, operator *model.Operator) *api.Error {
+	if isHas, _ := model.NewApp().HasByTeamId(params.Id); isHas {
+		return api.NewError(code.ErrorTeamHasApp, code.GetMessage(code.ErrorTeamHasApp))
+	}
+
+	teamInfo := &model.TeamInfo{
+		Id:        params.Id,
+		Status:    constant.StatusDisable,
+		UpdatedBy: operator.Account,
+	}
+
+	return s.DeleteTeam(teamInfo)
+}
+
+func (s *Team) DeleteTeam(teamInfo *model.TeamInfo) *api.Error {
+	objTeam := model.NewTeam()
+
+	if err := objTeam.Edit(teamInfo); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // 保存数据到team表

@@ -467,6 +467,23 @@ var doc = `{
                 }
             }
         },
+        "/v1/team/member/1": {
+            "get": {
+                "description": "获取团队成员信息",
+                "tags": [
+                    "团队管理"
+                ],
+                "summary": "获取团队成员信息 API",
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/team/member/add": {
             "post": {
                 "description": "添加团队成员",
@@ -485,44 +502,12 @@ var doc = `{
             }
         },
         "/v1/team/member/del": {
-            "get": {
-                "description": "获取团队信息",
-                "tags": [
-                    "团队管理"
-                ],
-                "summary": "获取团队信息 API",
-                "responses": {
-                    "200": {
-                        "description": "ok",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
             "delete": {
                 "description": "移除团队成员",
                 "tags": [
                     "团队管理"
                 ],
-                "summary": "移除团队成员 API",
-                "responses": {
-                    "200": {
-                        "description": "ok",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/user/group/1": {
-            "get": {
-                "description": "获取会员的团队信息",
-                "tags": [
-                    "用户管理"
-                ],
-                "summary": "获取会员的团队信息 API",
+                "summary": "解散团队成员 API",
                 "responses": {
                     "200": {
                         "description": "ok",

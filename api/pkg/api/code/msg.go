@@ -8,6 +8,8 @@ var Message = map[int]string{
 	ErrorSign:     "权限验证失败",
 	ErrorDatabase: "数据库异常",
 	ErrorSyntax:   "动态语法错误",
+
+	ErrorTeamHasApp: "团队在维护APP，无法删除",
 }
 
 func GetMessage(code int) string {

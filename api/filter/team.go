@@ -43,7 +43,7 @@ func (f *Team) GetMemberList(c *gin.Context) ([]*model.TeamMemberInfo, *api.Erro
 }
 
 // 获取一个团队的用户信息
-func (f *Team) DelMember(c *gin.Context) *api.Error {
+func (f *Team) DeleteMember(c *gin.Context) *api.Error {
 	params := &request.TeamMemberDeleteParams{}
 	if err := c.ShouldBindJSON(params); err != nil {
 		logrus.Error(err)
@@ -51,7 +51,7 @@ func (f *Team) DelMember(c *gin.Context) *api.Error {
 		return api.NewError(code.ErrorRequest, err.Error())
 	}
 
-	err := f.service.DelMember(params.Id)
+	err := f.service.DeleteMember(params.Id)
 	return err
 }
 
@@ -72,6 +72,25 @@ func (f *Team) Create(c *gin.Context) (*model.TeamInfo, *api.Error) {
 	teamInfo, err := f.service.Create(params, operator)
 
 	return teamInfo, err
+}
+
+// 解散团队
+func (f *Team) Delete(c *gin.Context) *api.Error {
+	params := &request.TeamDeleteParams{}
+
+	if err := c.ShouldBindJSON(params); err != nil {
+		return api.NewError(code.ErrorRequest, err.Error())
+	}
+
+	operator := &model.Operator{
+		Id:      c.GetInt64("member_id"),
+		Account: c.GetString("account"),
+	}
+
+	// 调用service对应的方法
+	err := f.service.Delete(params, operator)
+
+	return err
 }
 
 // 编辑团队

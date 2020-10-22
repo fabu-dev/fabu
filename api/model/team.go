@@ -3,6 +3,7 @@ package model
 import (
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
+	"fabu.dev/api/pkg/constant"
 	"fabu.dev/api/pkg/utils"
 )
 
@@ -44,7 +45,7 @@ func (m *Team) GetListById(teamId []uint64) ([]*TeamInfo, *api.Error) {
 
 	teamSlice := make([]*TeamInfo, 0, len(teamId))
 
-	err := m.Db().Select(m.DetailColumns).Where("id in (?)", teamId).Find(&teamSlice).Error
+	err := m.Db().Select(m.DetailColumns).Where("id in (?) and status = ?", teamId, constant.StatusEnable).Find(&teamSlice).Error
 	if err != nil {
 		return nil, api.NewError(code.ErrorDatabase, err.Error())
 	}

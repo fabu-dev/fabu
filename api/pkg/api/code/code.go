@@ -9,4 +9,7 @@ const (
 	ErrorSign     = 10003 // 签名错误
 	ErrorDatabase = 10004 // 数据库错误
 	ErrorSyntax   = 10005 // 动态语法错误
+
+	ErrorTeamHasApp = 20005 // 动态语法错误
+
 )

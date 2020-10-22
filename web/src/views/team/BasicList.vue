@@ -44,7 +44,7 @@
           <div slot="actions">
             <a-dropdown>
               <a-menu slot="overlay">
-                <a-menu-item v-if="item.role == 3"><a>解散</a></a-menu-item>
+                <a-menu-item v-if="item.role == 3" @click="dissolve(item)"><a>解散</a></a-menu-item>
                 <a-menu-item v-if="item.role == 2 || item.role == 3" @click="edit(item)"><a>编辑团队名称</a></a-menu-item>
                 <a-menu-item v-if="item.role == 2 || item.role == 3"><a>邀请团队成员</a></a-menu-item>
               </a-menu>
@@ -96,7 +96,7 @@ export default {
 
   },
   methods: {
-    ...mapActions(['TeamIndex', 'TeamMember', 'TeamMemberExit']),
+    ...mapActions(['TeamIndex', 'TeamMember', 'TeamMemberExit', 'TeamDelete']),
     add () {
       this.$dialog(TeamForm,
         {
@@ -180,9 +180,33 @@ export default {
         onCancel () {}
       })
     },
+    dissolve (record) {
+      record = {
+        'id': this.selectTeam
+      }
+      const { TeamDelete } = this
+      this.$confirm({
+        title: '确定要解散团队么?',
+        content: '退出团队后，您将不能在维护APP。有维护app的团队不可以解散！',
+        onOk () {
+          return TeamDelete(record).then(res => {
+            if (res.result.length > 0) {
+              this.selectTeam = res.result[0].id
+              this.teamData = res.result
+
+              this.getTeamMember(this.selectTeam)
+            }
+          }).catch((err) => {
+            console.log('team list', err)
+          })
+        },
+        onCancel () {}
+      })
+    },
     getTeamData () {
       const { TeamIndex } = this
       TeamIndex().then(res => {
+        console.log('length is ', res.result.length)
         if (res.result.length > 0) {
           this.selectTeam = res.result[0].id
           this.teamData = res.result
@@ -194,12 +218,15 @@ export default {
       })
     },
     getTeamMember (id) {
-      const { TeamMember } = this
-      TeamMember(id).then(res => {
-        this.data = res.result
-      }).catch((err) => {
-        console.log('team list', err)
-      })
+      console.log('team id is', id)
+      if (id) {
+        const { TeamMember } = this
+        TeamMember(id).then(res => {
+          this.data = res.result
+        }).catch((err) => {
+          console.log('team list', err)
+        })
+      }
     }
   }
 }

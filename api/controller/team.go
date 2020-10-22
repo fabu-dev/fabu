@@ -43,7 +43,7 @@ func (ctl *Team) GetList(c *gin.Context) {
 func (ctl *Team) Create(c *gin.Context) {
 	teamInfo, err := ctl.paramFilter.Create(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ErrorRequest, "")
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
 		return
 	}
 
@@ -79,8 +79,23 @@ func (ctl *Team) AddMember(c *gin.Context) {
 // @Description 移除团队成员
 // @Success 200 {string} string    "ok"
 // @Router /v1/team/member/del [DELETE]
-func (ctl *Team) DelMember(c *gin.Context) {
-	err := ctl.paramFilter.DelMember(c)
+func (ctl *Team) DeleteMember(c *gin.Context) {
+	err := ctl.paramFilter.DeleteMember(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, code.ErrorRequest, "")
+		return
+	}
+
+	api.SetResponse(c, http.StatusOK, 1, "")
+}
+
+// @Tags 团队管理
+// @Summary 解散团队成员 API
+// @Description 移除团队成员
+// @Success 200 {string} string    "ok"
+// @Router /v1/team/member/del [DELETE]
+func (ctl *Team) Delete(c *gin.Context) {
+	err := ctl.paramFilter.Delete(c)
 	if err != nil {
 		api.SetResponse(c, http.StatusOK, code.ErrorRequest, "")
 		return

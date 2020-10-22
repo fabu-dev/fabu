@@ -18,13 +18,14 @@ func CreateApiRouter() {
 	// 团队API路由配置
 	v1Team := Router.Group("/v1/team").Use(middleware.VerifyToken())
 	{
-		v1Team.GET("/", controller.NewTeam().GetList)                // 会员团队列表
-		v1Team.POST("/create", controller.NewTeam().Create)          // 创建团队
-		v1Team.PUT("/edit", controller.NewTeam().Edit)               // 编辑团队
-		v1Team.POST("/member/add", controller.NewTeam().AddMember)   // 邀请成员
-		v1Team.DELETE("/member/del", controller.NewTeam().DelMember) // 移除成员
-		v1Team.GET("/member/:id", controller.NewTeam().GetMember)    // 获取团队成员信息
-		v1Team.GET("/log", controller.NewTeam().GetLog)              // 团队日志信息
+		v1Team.GET("/", controller.NewTeam().GetList)                   // 会员团队列表
+		v1Team.POST("/create", controller.NewTeam().Create)             // 创建团队
+		v1Team.PUT("/edit", controller.NewTeam().Edit)                  // 编辑团队
+		v1Team.POST("/member/add", controller.NewTeam().AddMember)      // 邀请成员
+		v1Team.DELETE("/member/del", controller.NewTeam().DeleteMember) // 移除成员
+		v1Team.DELETE("/del", controller.NewTeam().Delete)              // 解散团队
+		v1Team.GET("/member/:id", controller.NewTeam().GetMember)       // 获取团队成员信息
+		v1Team.GET("/log", controller.NewTeam().GetLog)                 // 团队日志信息
 	}
 
 	// 登录认证API路由配置
