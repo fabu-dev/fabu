@@ -60,7 +60,7 @@ func (ctl *Team) Create(c *gin.Context) {
 func (ctl *Team) Edit(c *gin.Context) {
 	teamInfo, err := ctl.paramFilter.Edit(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ErrorRequest, "")
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
 		return
 	}
 
@@ -73,6 +73,12 @@ func (ctl *Team) Edit(c *gin.Context) {
 // @Success 200 {string} string    "ok"
 // @Router /v1/team/member/add [POST]
 func (ctl *Team) AddMember(c *gin.Context) {
+	err := ctl.paramFilter.AddMember(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
+		return
+	}
+
 	api.SetResponse(c, http.StatusOK, 1, "")
 }
 
@@ -84,7 +90,7 @@ func (ctl *Team) AddMember(c *gin.Context) {
 func (ctl *Team) DeleteMember(c *gin.Context) {
 	err := ctl.paramFilter.DeleteMember(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ErrorRequest, "")
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
 		return
 	}
 
@@ -99,7 +105,7 @@ func (ctl *Team) DeleteMember(c *gin.Context) {
 func (ctl *Team) Delete(c *gin.Context) {
 	err := ctl.paramFilter.Delete(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ErrorRequest, "")
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
 		return
 	}
 
@@ -119,7 +125,7 @@ type TeamMember struct {
 func (ctl *Team) GetMember(c *gin.Context) {
 	memberList, err := ctl.paramFilter.GetMemberList(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ErrorRequest, "")
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
 		return
 	}
 

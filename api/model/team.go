@@ -2,7 +2,6 @@ package model
 
 import (
 	"fabu.dev/api/pkg/api"
-	"fabu.dev/api/pkg/api/code"
 	"fabu.dev/api/pkg/constant"
 	"fabu.dev/api/pkg/utils"
 )
@@ -46,29 +45,20 @@ func (m *Team) GetListById(teamId []uint64) ([]*TeamInfo, *api.Error) {
 	teamSlice := make([]*TeamInfo, 0, len(teamId))
 
 	err := m.Db().Select(m.DetailColumns).Where("id in (?) and status = ?", teamId, constant.StatusEnable).Find(&teamSlice).Error
-	if err != nil {
-		return nil, api.NewError(code.ErrorDatabase, err.Error())
-	}
 
-	return teamSlice, nil
+	return teamSlice, m.ProcessError(err)
 }
 
 // 创建团队
 func (m *Team) Add(team *TeamInfo) *api.Error {
 	err := m.Db().Create(team).Error
-	if err != nil {
-		return api.NewError(code.ErrorDatabase, err.Error())
-	}
 
-	return nil
+	return m.ProcessError(err)
 }
 
 // 编辑团队
 func (m *Team) Edit(team *TeamInfo) *api.Error {
 	err := m.Db().Where("id = ?", team.Id).Updates(team).Error
-	if err != nil {
-		return api.NewError(code.ErrorDatabase, err.Error())
-	}
 
-	return nil
+	return m.ProcessError(err)
 }

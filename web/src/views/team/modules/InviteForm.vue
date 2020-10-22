@@ -15,8 +15,21 @@
       :labelCol="labelCol"
       :wrapperCol="wrapperCol"
     >
-
       <a-input v-decorator="['email', {rules: [{ required: true, type: 'email', message: '请输入邮箱地址' }], validateTrigger: ['change', 'blur']}]"/>
+    </a-form-item>
+    <a-form-item
+        label="角色"
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+    >
+    <a-select style="width: 120px" v-decorator="['role', {initialValue: 1, rules:[]}]">
+      <a-select-option :value="1">
+        团队成员
+      </a-select-option>
+      <a-select-option :value="2">
+        管理员
+      </a-select-option>
+    </a-select>
     </a-form-item>
   </a-form>
 </template>
@@ -53,7 +66,7 @@ export default {
     this.record && this.form.setFieldsValue(pick(this.record, fields))
   },
   methods: {
-    ...mapActions(['TeamCreate', 'TeamEdit']),
+    ...mapActions(['TeamMemberAdd']),
     onOk () {
       console.log('监听了 modal ok 事件')
       const { form: { validateFields }, TeamMemberAdd } = this

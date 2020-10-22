@@ -72,7 +72,7 @@ export function addMember (parameter) {
   console.log(process.env.VUE_APP_API_BASE_URL)
   return request({
     url: teamApi.MemberAdd,
-    method: 'delete',
+    method: 'post',
     data: parameter
   })
 }

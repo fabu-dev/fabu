@@ -9,7 +9,10 @@ var Message = map[int]string{
 	ErrorDatabase: "数据库异常",
 	ErrorSyntax:   "动态语法错误",
 
-	ErrorTeamHasApp: "团队在维护APP，无法删除",
+	ErrorTeamHasApp:      "团队在维护APP，无法删除",
+	ErrorTeamMemberExist: "该用户已经在团队中",
+
+	ErrorMemberNotExists: "会员不存在",
 }
 
 func GetMessage(code int) string {

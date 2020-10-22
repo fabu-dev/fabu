@@ -10,6 +10,8 @@ const (
 	ErrorDatabase = 10004 // 数据库错误
 	ErrorSyntax   = 10005 // 动态语法错误
 
-	ErrorTeamHasApp = 20005 // 动态语法错误
+	ErrorTeamHasApp      = 20001 // 团队还在维护APP
+	ErrorTeamMemberExist = 20002 // 用户已经在团队中
 
+	ErrorMemberNotExists = 30001 // 会员不存在
 )

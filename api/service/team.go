@@ -85,6 +85,30 @@ func (s *Team) DeleteMember(teamMemberId uint64) *api.Error {
 	return err
 }
 
+// 邀请团队成员
+func (s *Team) InviteMember(params *request.TeamMemberAddParams, operator *model.Operator) *api.Error {
+	// 检查会员是否存在
+	memberInfo, err := model.NewMember().GetDetailByEmail(params.Email)
+	if err != nil {
+		return err
+	}
+
+	if isIn, _ := model.NewTeamMember().IsInTeam(params.Id, memberInfo.Id); isIn {
+		return api.NewError(code.ErrorTeamMemberExist, code.GetMessage(code.ErrorTeamMemberExist))
+	}
+
+	// 将会员加入团队
+	teamMemberInfo := &model.TeamMemberInfo{
+		TeamId:    params.Id,
+		MemberId:  memberInfo.Id,
+		Role:      params.Role,
+		CreatedBy: operator.Account,
+	}
+	err = s.AddMember(teamMemberInfo)
+
+	return err
+}
+
 // 创建团队
 func (s *Team) Create(params *request.TeamCreateParams, operator *model.Operator) (*model.TeamInfo, *api.Error) {
 	teamInfo := &model.TeamInfo{

@@ -1,6 +1,8 @@
 package model
 
 import (
+	"fabu.dev/api/pkg/api"
+	"fabu.dev/api/pkg/api/code"
 	"fabu.dev/api/pkg/db"
 	"github.com/jinzhu/gorm"
 )
@@ -24,4 +26,12 @@ func (m *BaseModel) SetTableName(tableName string) {
 
 func (m *BaseModel) Db() *gorm.DB {
 	return db.Mysql.Table(m.TableName)
+}
+
+func (m *BaseModel) ProcessError(err error) *api.Error {
+	if err == nil {
+		return nil
+	}
+
+	return api.NewError(code.ErrorDatabase, err.Error())
 }

@@ -56,6 +56,23 @@ func (f *Team) DeleteMember(c *gin.Context) *api.Error {
 	return err
 }
 
+// 获取一个团队的用户信息
+func (f *Team) AddMember(c *gin.Context) *api.Error {
+	params := &request.TeamMemberAddParams{}
+	if err := c.ShouldBindJSON(params); err != nil {
+		logrus.Error("add member err : ", err)
+		return api.NewError(code.ErrorRequest, err.Error())
+	}
+
+	operator := &model.Operator{
+		Id:      c.GetInt64("member_id"),
+		Account: c.GetString("account"),
+	}
+
+	err := f.service.InviteMember(params, operator)
+	return err
+}
+
 // 创建团队
 func (f *Team) Create(c *gin.Context) (*model.TeamInfo, *api.Error) {
 	params := &request.TeamCreateParams{}

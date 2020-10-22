@@ -3,8 +3,6 @@ package model
 import (
 	"errors"
 
-	"fabu.dev/api/pkg/api/code"
-
 	"fabu.dev/api/pkg/api"
 
 	"github.com/jinzhu/gorm"
@@ -13,6 +11,10 @@ import (
 type App struct {
 	DetailColumns []string
 	BaseModel
+}
+
+type AppInfo struct {
+	Id uint64 `json:"id"`
 }
 
 func NewApp() *App {
@@ -27,18 +29,18 @@ func NewApp() *App {
 
 // 判断团队是否有APP
 func (m *App) HasByTeamId(teamId uint64) (bool, *api.Error) {
-	team := &struct {
-		Id uint64
-	}{}
-	err := m.Db().Select(m.DetailColumns).Where("team_id = ?", teamId).First(team).Error
-
+	appInfo := &AppInfo{}
+	err := m.Db().Select(m.DetailColumns).Where("team_id = ?", teamId).First(appInfo).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		return false, nil
 	}
 
-	if err != nil {
-		return true, api.NewError(code.ErrorDatabase, err.Error())
-	}
+	return true, m.ProcessError(err)
+}
 
-	return true, nil
+func (m *App) GetAppListByTeamId(teamId uint64) ([]*AppInfo, *api.Error) {
+	appList := make([]*AppInfo, 0, 8)
+	err := m.Db().Select(m.DetailColumns).Where("team_id = ?", teamId).Find(&appList).Error
+
+	return appList, m.ProcessError(err)
 }

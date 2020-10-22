@@ -1,15 +1,12 @@
 package filter
 
 import (
-	"net/http"
-
 	"fabu.dev/api/model"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
 	"fabu.dev/api/pkg/api/request"
 	"fabu.dev/api/service"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 type Filter func(c *gin.Context)
@@ -25,21 +22,16 @@ func NewMember() *Member {
 }
 
 // 验证获取用户详情
-func (f *Member) View(c *gin.Context) (*model.Member, error) {
+func (f *Member) View(c *gin.Context) (*model.MemberInfo, *api.Error) {
 	params := &request.ViewParams{}
 
 	if err := c.ShouldBindUri(params); err != nil {
-		logrus.Error(err)
 
-		return nil, err
+		return nil, api.NewError(code.ErrorRequest, err.Error())
 	}
 
 	// 调用service对应的方法
 	member, err := f.service.GetMemberInfo(params.Id)
-	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ErrorDatabase, err.Error())
-		return nil, err
-	}
 
-	return member, nil
+	return member, err
 }

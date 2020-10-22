@@ -20,3 +20,10 @@ type TeamDeleteParams struct {
 type TeamMemberDeleteParams struct {
 	Id uint64 `json:"id" binding:"required"`
 }
+
+type TeamMemberAddParams struct {
+	Id    uint64 `json:"id" binding:"required"`
+	Name  string `json:"name"`
+	Email string `json:"email" binding:"required,email"`
+	Role  uint8  `json:"role" binding:"required"`
+}

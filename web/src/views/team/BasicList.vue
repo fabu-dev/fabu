@@ -21,7 +21,7 @@
 
       <div slot="extra">
         团队：
-        <a-select v-model="selectTeam" style="width: 120px" @change="getTeamMember" v-decorator="[ 'team', {rules: []} ]">
+        <a-select v-model="selectTeam" style="width: 120px" @change="getTeamMember" v-decorator="[ 'team', {rules: []}]">
           <a-select-option v-for="item in teamData" :key="item.id" >
             {{ item.name }}
           </a-select-option>

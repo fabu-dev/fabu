@@ -28,7 +28,7 @@ func NewMember() *Member {
 func (ctl *Member) Info(c *gin.Context) {
 	member, err := ctl.paramFilter.View(c)
 	if err != nil {
-		api.SetResponse(c, http.StatusOK, code.ErrorRequest, "")
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
 		return
 	}
 
