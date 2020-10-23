@@ -17,7 +17,7 @@
     <a-card
       style="margin-top: 24px"
       :bordered="false"
-      title="标准列表">
+      title="团队成员">
       <div>
       </div>
       <div slot="extra">
@@ -53,6 +53,12 @@
           </a-list-item-meta>
           <div slot="actions">
             <a @click="exit(item)">退出</a>
+          </div>
+          <div class="list-content">
+            <div class="list-content-item">
+              <span>Email</span>
+              <p>{{ item.member_email }}</p>
+            </div>
           </div>
           <div class="list-content">
             <div class="list-content-item">

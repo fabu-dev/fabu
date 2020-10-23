@@ -18,6 +18,7 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 CREATE DATABASE IF NOT EXISTS `fabu.dev`;
+USE `fabu.dev`
 
 -- ----------------------------
 -- Table structure for app
@@ -101,7 +102,7 @@ CREATE TABLE `member`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uk_token` (`token`) USING BTREE,
   UNIQUE KEY `uk_email` (`email`) USING BTREE,
-  UNIQUE KEY `uk_account` (`account`) USING BTREE,
+  UNIQUE KEY `uk_account` (`account`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -149,7 +150,7 @@ CREATE TABLE `team_member`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uk_team_member_id` (`team_id`,`member_id`) USING BTREE,
   INDEX `idx_member_id`(`member_id`) USING BTREE,
-  INDEX `idx_group_id`(`group_id`) USING BTREE
+  INDEX `idx_team_id`(`team_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = '团队成员表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------

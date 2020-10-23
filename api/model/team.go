@@ -23,7 +23,8 @@ type TeamInfo struct {
 	Status    uint8          `json:"status"`
 	CreatedBy string         `json:"created_by"`
 	CreatedAt utils.JSONTime `json:"created_at" gorm:"-"` // 插入时忽略该字段
-	UpdatedBy string         `json:"updated_at"`          // 插入时忽略该字段
+	UpdatedBy string         `json:"updated_by"`
+	UpdatedAt string         `json:"updated_at" gorm:"-"` // 插入时忽略该字段
 }
 
 func NewTeam() *Team {

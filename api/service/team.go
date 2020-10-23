@@ -77,6 +77,7 @@ func (s *Team) ApplyMember(teamMemberList []*model.TeamMemberInfo) *api.Error {
 			if teamMember.MemberId == member.Id {
 				teamMember.MemberName = member.Name
 				teamMember.MemberAccount = member.Account
+				teamMember.MemberEmail = member.Email
 			}
 		}
 	}
