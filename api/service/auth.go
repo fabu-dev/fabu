@@ -15,6 +15,7 @@ func NewAuth() *Auth {
 	return &Auth{}
 }
 
+// 登录
 func (s *Auth) Login(params *request.LoginParams) (*model.MemberInfo, *api.Error) {
 	objMember := model.NewMember()
 
@@ -23,6 +24,7 @@ func (s *Auth) Login(params *request.LoginParams) (*model.MemberInfo, *api.Error
 	return member, err
 }
 
+// 注册
 func (s *Auth) Register(params *request.RegisterParams) (*model.MemberInfo, *api.Error) {
 	memberObj := model.NewMember()
 

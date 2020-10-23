@@ -36,6 +36,7 @@ func NewMember() *Member {
 	return member
 }
 
+// 添加会员
 func (m *Member) Add(member *MemberInfo) (*MemberInfo, *api.Error) {
 	err := m.Db().Create(member).Error
 

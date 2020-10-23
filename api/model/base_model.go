@@ -10,7 +10,7 @@ import (
 // gorm 文档：https://gorm.io/zh_CN/docs/models.html
 type IModel interface {
 	GetTableName() string
-	Find() *gorm.DB
+	SetTableName(tableName string)
 }
 
 type BaseModel struct {

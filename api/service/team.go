@@ -1,7 +1,7 @@
 package service
 
 import (
-	response2 "fabu.dev/api/controller/response"
+	"fabu.dev/api/controller/response"
 	"fabu.dev/api/model"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
@@ -17,7 +17,7 @@ func NewTeam() *Team {
 }
 
 // 获取会员的团队列表
-func (s *Team) GetListByMember(memberId uint64) (*response2.TeamList, *api.Error) {
+func (s *Team) GetListByMember(memberId uint64) (*response.TeamList, *api.Error) {
 	// 先获取会员所有的团队
 	objTeamMember := model.NewTeamMember()
 	teamIdSlice, err := objTeamMember.GetTeamId(memberId)
@@ -32,7 +32,7 @@ func (s *Team) GetListByMember(memberId uint64) (*response2.TeamList, *api.Error
 		return nil, err
 	}
 
-	result := &response2.TeamList{
+	result := &response.TeamList{
 		CountTeam:        len(teamSlice),
 		CountApp:         0,
 		CountAppDownload: 0,
@@ -172,6 +172,7 @@ func (s *Team) Delete(params *request.TeamDeleteParams, operator *model.Operator
 	return s.DeleteTeam(teamInfo)
 }
 
+// 逻辑删除team表的记录
 func (s *Team) DeleteTeam(teamInfo *model.TeamInfo) *api.Error {
 	objTeam := model.NewTeam()
 
