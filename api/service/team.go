@@ -1,11 +1,11 @@
 package service
 
 import (
+	response2 "fabu.dev/api/controller/response"
 	"fabu.dev/api/model"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
 	"fabu.dev/api/pkg/api/request"
-	"fabu.dev/api/pkg/api/response"
 	"fabu.dev/api/pkg/constant"
 )
 
@@ -17,7 +17,7 @@ func NewTeam() *Team {
 }
 
 // 获取会员的团队列表
-func (s *Team) GetListByMember(memberId uint64) (*response.TeamList, *api.Error) {
+func (s *Team) GetListByMember(memberId uint64) (*response2.TeamList, *api.Error) {
 	// 先获取会员所有的团队
 	objTeamMember := model.NewTeamMember()
 	teamIdSlice, err := objTeamMember.GetTeamId(memberId)
@@ -32,7 +32,7 @@ func (s *Team) GetListByMember(memberId uint64) (*response.TeamList, *api.Error)
 		return nil, err
 	}
 
-	result := &response.TeamList{
+	result := &response2.TeamList{
 		CountTeam:        len(teamSlice),
 		CountApp:         0,
 		CountAppDownload: 0,

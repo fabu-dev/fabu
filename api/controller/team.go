@@ -3,7 +3,7 @@ package controller
 import (
 	"net/http"
 
-	"fabu.dev/api/pkg/api/response"
+	"fabu.dev/api/controller/response"
 
 	"fabu.dev/api/filter"
 	"fabu.dev/api/pkg/api"
@@ -28,7 +28,7 @@ func NewTeam() *Team {
 // @Success 200 {string} string    "ok"
 // @Router /v1/team/ [GET]
 func (ctl *Team) GetList(c *gin.Context) {
-	teamSlice, err := ctl.paramFilter.GetList(c)
+	result, err := ctl.paramFilter.GetList(c)
 	if err != nil {
 		api.SetResponse(c, http.StatusOK, code.ErrorRequest, err.Message)
 		return
