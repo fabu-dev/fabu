@@ -29,6 +29,7 @@ func (s *Auth) Register(params *request.RegisterParams) (*model.MemberInfo, *api
 	member := &model.MemberInfo{
 		Account:  params.Account,
 		Email:    params.Email,
+		Name:     params.Name,
 		Password: utils.GetMd5(params.Password),
 		Status:   constant.StatusEnable,
 		Token:    utils.GetRandom(20),

@@ -3,7 +3,7 @@ package controller
 import (
 	"net/http"
 
-	"fabu.dev/api/model"
+	"fabu.dev/api/pkg/api/response"
 
 	"fabu.dev/api/filter"
 	"fabu.dev/api/pkg/api"
@@ -34,7 +34,7 @@ func (ctl *Team) GetList(c *gin.Context) {
 		return
 	}
 
-	api.SetResponse(c, http.StatusOK, 1, teamSlice)
+	api.SetResponse(c, http.StatusOK, 1, result)
 }
 
 // @Tags 团队管理
@@ -112,11 +112,6 @@ func (ctl *Team) Delete(c *gin.Context) {
 	api.SetResponse(c, http.StatusOK, 1, "")
 }
 
-type TeamMember struct {
-	Role       uint8                   `json:"role"`
-	MemberList []*model.TeamMemberInfo `json:"member_list"`
-}
-
 // @Tags 团队管理
 // @Summary 获取团队成员信息 API
 // @Description 获取团队成员信息
@@ -136,7 +131,7 @@ func (ctl *Team) GetMember(c *gin.Context) {
 		}
 	}
 
-	var result = &TeamMember{
+	var result = &response.TeamMember{
 		Role:       memberRole,
 		MemberList: memberList,
 	}

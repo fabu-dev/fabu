@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// gorm 文档：https://gorm.io/zh_CN/docs/models.html
 type IModel interface {
 	GetTableName() string
 	Find() *gorm.DB
@@ -28,6 +29,7 @@ func (m *BaseModel) Db() *gorm.DB {
 	return db.Mysql.Table(m.TableName)
 }
 
+// 对数据库的err做统计处理
 func (m *BaseModel) ProcessError(err error) *api.Error {
 	if err == nil {
 		return nil

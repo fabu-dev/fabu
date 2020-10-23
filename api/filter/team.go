@@ -5,6 +5,7 @@ import (
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
 	"fabu.dev/api/pkg/api/request"
+	"fabu.dev/api/pkg/api/response"
 	"fabu.dev/api/service"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -21,12 +22,12 @@ func NewTeam() *Team {
 }
 
 // 获取一个用户的团队列表
-func (f *Team) GetList(c *gin.Context) ([]*model.TeamInfo, *api.Error) {
+func (f *Team) GetList(c *gin.Context) (*response.TeamList, *api.Error) {
 	memberId := c.GetInt64("member_id")
 
-	teamSlice, err := f.service.GetListByMember(uint64(memberId))
+	result, err := f.service.GetListByMember(uint64(memberId))
 
-	return teamSlice, err
+	return result, err
 }
 
 // 获取一个团队的用户信息

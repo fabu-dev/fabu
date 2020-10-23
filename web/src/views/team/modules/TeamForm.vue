@@ -1,6 +1,6 @@
 <template>
   <a-form @submit="handleSubmit" :form="form">
-    <a-form-item label="ID" v-if= "record.id" :labelCol="labelCol" :wrapperCol="wrapperCol">
+    <a-form-item label="ID" v-if="record.id" :labelCol="labelCol" :wrapperCol="wrapperCol">
       <a-input v-decorator="['id', {initialValue: record.id, rules:[]}]" :allowClear="true" :disabled="true" />
     </a-form-item>
     <a-form-item

@@ -13,13 +13,20 @@
 
       <a-form-item>
         <a-input
-            size="large"
-            type="text"
-            placeholder="用户名"
-            v-decorator="['account', {rules: [{ required: true, message: '请输入登录用户名' }], validateTrigger: ['change', 'blur']}]"
+          size="large"
+          type="text"
+          placeholder="用户名"
+          v-decorator="['account', {rules: [{ required: true, message: '请输入登录用户名' }], validateTrigger: ['change', 'blur']}]"
         ></a-input>
       </a-form-item>
-
+      <a-form-item>
+        <a-input
+          size="large"
+          type="text"
+          placeholder="姓名"
+          v-decorator="['name', {rules: [{ required: true, message: '请输入姓名' }], validateTrigger: ['change', 'blur']}]"
+        ></a-input>
+      </a-form-item>
       <a-popover
         placement="rightTop"
         :trigger="['focus']"

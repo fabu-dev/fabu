@@ -5,6 +5,7 @@ import (
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
 	"fabu.dev/api/pkg/api/request"
+	"fabu.dev/api/pkg/api/response"
 	"fabu.dev/api/pkg/constant"
 )
 
@@ -16,7 +17,7 @@ func NewTeam() *Team {
 }
 
 // 获取会员的团队列表
-func (s *Team) GetListByMember(memberId uint64) ([]*model.TeamInfo, *api.Error) {
+func (s *Team) GetListByMember(memberId uint64) (*response.TeamList, *api.Error) {
 	// 先获取会员所有的团队
 	objTeamMember := model.NewTeamMember()
 	teamIdSlice, err := objTeamMember.GetTeamId(memberId)
@@ -31,7 +32,14 @@ func (s *Team) GetListByMember(memberId uint64) ([]*model.TeamInfo, *api.Error) 
 		return nil, err
 	}
 
-	return teamSlice, err
+	result := &response.TeamList{
+		CountTeam:        len(teamSlice),
+		CountApp:         0,
+		CountAppDownload: 0,
+		Team:             teamSlice,
+	}
+
+	return result, err
 }
 
 // 获取单个团队的成员信息
@@ -67,7 +75,7 @@ func (s *Team) ApplyMember(teamMemberList []*model.TeamMemberInfo) *api.Error {
 	for _, teamMember := range teamMemberList {
 		for _, member := range memberList {
 			if teamMember.MemberId == member.Id {
-				teamMember.MemberName = member.UserName
+				teamMember.MemberName = member.Name
 				teamMember.MemberAccount = member.Account
 			}
 		}

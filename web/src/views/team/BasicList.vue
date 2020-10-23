@@ -3,13 +3,13 @@
     <a-card :bordered="false">
       <a-row>
         <a-col :sm="8" :xs="24">
-          <info title="我的团队" value="8个团队" :bordered="true" />
+          <info title="我的团队" :value="this.CountTeam" :bordered="true" />
         </a-col>
         <a-col :sm="8" :xs="24">
-          <info title="本周团队平均处理时间" value="32分钟" :bordered="true" />
+          <info title="我的APP" :value="this.CountApp" :bordered="true" />
         </a-col>
         <a-col :sm="8" :xs="24">
-          <info title="本周完成团队数" value="24个" />
+          <info title="APP本周下载" :value="this.CountAppDownload" />
         </a-col>
       </a-row>
     </a-card>
@@ -18,7 +18,8 @@
       style="margin-top: 24px"
       :bordered="false"
       title="标准列表">
-
+      <div>
+      </div>
       <div slot="extra">
         团队：
         <a-select v-model="selectTeam" style="width: 120px" @change="getTeamMember" v-decorator="[ 'team', {rules: []}]">
@@ -42,24 +43,16 @@
         <a-button type="dashed" style="width: 100%" icon="plus" @click="add">创建团队</a-button>
       </div>
 
-      <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
+      <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 50, total: 50}">
         <a-list-item :key="index" v-for="(item, index) in data">
           <a-list-item-meta :description="item.member_account">
-            <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>
+            <a-avatar slot="avatar" shape="square" size="large" :style="{ backgroundColor: color, verticalAlign: 'middle' }">
+              {{ item.member_name }}
+            </a-avatar>
             <a slot="title">{{ item.member_name }}</a>
           </a-list-item-meta>
           <div slot="actions">
             <a @click="exit(item)">退出</a>
-          </div>
-          <div slot="actions">
-            <a-dropdown>
-              <a-menu slot="overlay">
-                <a-menu-item v-if="item.role == 3" @click="dissolve(item)"><a>解散</a></a-menu-item>
-                <a-menu-item v-if="item.role == 2 || item.role == 3" @click="edit(item)"><a>编辑团队名称</a></a-menu-item>
-                <a-menu-item v-if="item.role == 2 || item.role == 3"><a>邀请团队成员</a></a-menu-item>
-              </a-menu>
-              <a>更多<a-icon type="down"/></a>
-            </a-dropdown>
           </div>
           <div class="list-content">
             <div class="list-content-item">
@@ -86,6 +79,8 @@ import InviteForm from './modules/InviteForm'
 import Info from './components/Info'
 import { mapActions } from 'vuex'
 
+const colorList = ['#90D9FF', '#f56a00', '#7265e6', '#ffbf00', '#00a2ae']
+
 export default {
   name: 'StandardList',
   components: {
@@ -94,7 +89,11 @@ export default {
   },
   data () {
     return {
+      color: colorList[0],
       role: '',
+      CountTeam: '',
+      CountApp: '',
+      CountAppDownload: '',
       teamData: [],
       selectTeam: '', // 靠，这里不能给0
       data: [],
@@ -253,9 +252,12 @@ export default {
       const { TeamIndex } = this
       TeamIndex().then(res => {
         // TODO 要有全局的统一处理异常code。 否则这里在请求异常时， length会变成字符串长度
-        if (res.result.length > 0) {
-          this.selectTeam = res.result[0].id
-          this.teamData = res.result
+        if (res.result['team'].length > 0) {
+          this.selectTeam = res.result['team'][0].id
+          this.teamData = res.result['team']
+          this.CountApp = res.result['count_app'] + '个'
+          this.CountTeam = res.result['count_team'] + '个'
+          this.CountAppDownload = res.result['count_app_download'] + '次'
 
           this.getTeamMember(this.selectTeam)
         }
@@ -268,8 +270,12 @@ export default {
         const { TeamMember } = this
         TeamMember(id).then(res => {
           this.data = res.result.member_list
+          for (const key in this.data) {
+            if (this.data[key].avatar === '') {
+              this.data[key].avatar = '/public/man.png'
+            }
+          }
           this.role = res.result.role
-          console.log(this.role)
         }).catch((err) => {
           console.log('team list', err)
         })

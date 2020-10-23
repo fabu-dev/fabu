@@ -1,12 +1,12 @@
 <template>
   <a-form @submit="handleSubmit" :form="form">
-    <a-form-item label="ID" v-if= "record.id" :labelCol="labelCol" :wrapperCol="wrapperCol">
+    <a-form-item label="ID" v-if="record.id" :labelCol="labelCol" :wrapperCol="wrapperCol">
       <a-input v-decorator="['id', {initialValue: record.id, rules:[]}]" :allowClear="true" :disabled="true" />
     </a-form-item>
     <a-form-item
-        label="团队名称"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
+      label="团队名称"
+      :labelCol="labelCol"
+      :wrapperCol="wrapperCol"
     >
       <a-input v-decorator="['name', {rules:[{required: true, message: '请输入团队名称'}]}]" :allowClear="true" :disabled="true"/>
     </a-form-item>
@@ -18,18 +18,18 @@
       <a-input v-decorator="['email', {rules: [{ required: true, type: 'email', message: '请输入邮箱地址' }], validateTrigger: ['change', 'blur']}]"/>
     </a-form-item>
     <a-form-item
-        label="角色"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
+      label="角色"
+      :labelCol="labelCol"
+      :wrapperCol="wrapperCol"
     >
-    <a-select style="width: 120px" v-decorator="['role', {initialValue: 1, rules:[]}]">
-      <a-select-option :value="1">
-        团队成员
-      </a-select-option>
-      <a-select-option :value="2">
-        管理员
-      </a-select-option>
-    </a-select>
+      <a-select style="width: 120px" v-decorator="['role', {initialValue: 1, rules:[]}]">
+        <a-select-option :value="1">
+          团队成员
+        </a-select-option>
+        <a-select-option :value="2">
+          管理员
+        </a-select-option>
+      </a-select>
     </a-form-item>
   </a-form>
 </template>

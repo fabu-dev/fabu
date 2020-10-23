@@ -18,17 +18,17 @@ type MemberInfo struct {
 	Id       uint64 `json:"id" gorm:"primary_key"`
 	Mobile   string `json:"mobile"`
 	Account  string `json:"account"`
-	UserName string `json:"user_name"`
+	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
-	// Avatar   string `json:"avatar"`
-	Status uint8  `json:"status"`
-	Token  string `json:"token"`
+	Avatar   string `json:"avatar" gorm:"default:''"` // 指定默认值
+	Status   uint8  `json:"status"`
+	Token    string `json:"token"`
 }
 
 func NewMember() *Member {
 	member := &Member{
-		DetailColumns: []string{"id", "mobile", "account", "user_name", "email", "password", "status", "token"},
+		DetailColumns: []string{"id", "mobile", "account", "name", "email", "password", "status", "token"},
 	}
 
 	member.SetTableName("member")

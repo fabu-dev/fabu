@@ -88,8 +88,9 @@ CREATE TABLE `member`  (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `mobile` varchar(15) NOT NULL DEFAULT '' COMMENT '手机',
   `account` varchar(50) NOT NULL DEFAULT '' COMMENT '登录账户',
-  `user_name` varchar(50) NOT NULL DEFAULT '' COMMENT '昵称',
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '姓名',
   `password` varchar(80) NOT NULL DEFAULT '' COMMENT '密码',
+  `avatar` varchar(255) NOT NULL DEFAULT '' COMMENT '头像',
   `email` varchar(80) NOT NULL DEFAULT '' COMMENT '邮箱',
   `token` varchar(80) NOT NULL DEFAULT '' COMMENT 'API Token',
   `status` tinyint(1) NOT NULL COMMENT '状态（1：删除，2有效）',
@@ -102,6 +103,19 @@ CREATE TABLE `member`  (
   UNIQUE KEY `uk_email` (`email`) USING BTREE,
   UNIQUE KEY `uk_account` (`account`) USING BTREE,
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for member_statistics
+-- ----------------------------
+DROP TABLE IF EXISTS `member_statistics`;
+CREATE TABLE `member_statistics` (
+  `member_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '会员ID',
+  `count_team` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '参与的团队数量',
+  `count_app` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '维护的app数量',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`member_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='用户的信息统计表';
 
 -- ----------------------------
 -- Table structure for team
@@ -137,5 +151,18 @@ CREATE TABLE `team_member`  (
   INDEX `idx_member_id`(`member_id`) USING BTREE,
   INDEX `idx_group_id`(`group_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = '团队成员表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for team_statistics
+-- ----------------------------
+DROP TABLE IF EXISTS `team_statistics`;
+CREATE TABLE `team_statistics` (
+  `team_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '团队ID',
+  `count_member` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '团队成员数量',
+  `count_app` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '维护的app数量',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`team_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='团队的信息统计表';
 
 SET FOREIGN_KEY_CHECKS = 1;
