@@ -24,10 +24,10 @@ services:
     container_name: fabuex-redis
     image: redis:alpine
     restart: always
-    networks:
-      - fabu
     ports:
       - '8806:6379'
+    networks:
+      - fabu
 
   # 后台API服务
   api:

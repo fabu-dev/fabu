@@ -38,6 +38,7 @@ func (m *App) HasByTeamId(teamId uint64) (bool, *api.Error) {
 	return true, m.ProcessError(err)
 }
 
+// 查询团队的app列表
 func (m *App) GetAppListByTeamId(teamId uint64) ([]*AppInfo, *api.Error) {
 	appList := make([]*AppInfo, 0, 8)
 	err := m.Db().Select(m.DetailColumns).Where("team_id = ?", teamId).Find(&appList).Error
