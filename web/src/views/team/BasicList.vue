@@ -102,15 +102,11 @@ export default {
       CountAppDownload: '',
       teamData: [],
       selectTeam: '', // 靠，这里不能给0
-      data: [],
-      status: 'all'
+      data: []
     }
   },
   created () {
     this.getTeamData()
-  },
-  mounted () {
-
   },
   methods: {
     ...mapActions(['TeamIndex', 'TeamMember', 'TeamMemberExit', 'TeamDelete']),

@@ -17,19 +17,25 @@
     <a-card
       style="margin-top: 24px"
       :bordered="false"
-      title="标准列表">
+      title="应用列表">
 
       <div slot="extra">
-        <a-radio-group v-model="status">
-          <a-radio-button value="all">全部</a-radio-button>
-          <a-radio-button value="processing">进行中</a-radio-button>
-          <a-radio-button value="waiting">等待中</a-radio-button>
-        </a-radio-group>
-        <a-input-search style="margin-left: 16px; width: 272px;" />
+        团队：
+        <a-select v-model="selectTeam" style="width: 120px" @change="getTeamApp" v-decorator="[ 'team', {rules: []}]">
+          <a-select-option v-for="item in teamData" :key="item.id" >
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
+
+        <a-button type="primary" style="margin: 0 5px 0 5px" v-if="role == 3" @click="dissolve()">
+          上传
+        </a-button>
       </div>
 
       <div class="operate">
-        <a-button type="dashed" style="width: 100%" icon="plus" @click="add">添加</a-button>
+        <a-button type="dashed" style="width: 100%" icon="plus">
+          <router-link :to="{ name: 'AppUpload' }"> <a>上传APP</a> </router-link>
+        </a-button>
       </div>
 
       <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
@@ -73,76 +79,34 @@
 // 演示如何使用 this.$dialog 封装 modal 组件
 import TaskForm from './modules/TaskForm'
 import Info from './components/Info'
-
-const data = []
-data.push({
-  title: 'Alipay',
-  avatar: 'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png',
-  description: '那是一种内在的东西， 他们到达不了，也无法触及的',
-  owner: '付晓晓',
-  startAt: '2018-07-26 22:44',
-  progress: {
-    value: 90
-  }
-})
-data.push({
-  title: 'Angular',
-  avatar: 'https://gw.alipayobjects.com/zos/rmsportal/zOsKZmFRdUtvpqCImOVY.png',
-  description: '希望是一个好东西，也许是最好的，好东西是不会消亡的',
-  owner: '曲丽丽',
-  startAt: '2018-07-26 22:44',
-  progress: {
-    value: 54
-  }
-})
-data.push({
-  title: 'Ant Design',
-  avatar: 'https://gw.alipayobjects.com/zos/rmsportal/dURIMkkrRFpPgTuzkwnB.png',
-  description: '生命就像一盒巧克力，结果往往出人意料',
-  owner: '林东东',
-  startAt: '2018-07-26 22:44',
-  progress: {
-    value: 66
-  }
-})
-data.push({
-  title: 'Ant Design Pro',
-  avatar: 'https://gw.alipayobjects.com/zos/rmsportal/sfjbOqnsXXJgNCjCzDBL.png',
-  description: '城镇中有那么多的酒馆，她却偏偏走进了我的酒馆',
-  owner: '周星星',
-  startAt: '2018-07-26 22:44',
-  progress: {
-    value: 30
-  }
-})
-data.push({
-  title: 'Bootstrap',
-  avatar: 'https://gw.alipayobjects.com/zos/rmsportal/siCrBXXhmvTQGWPNLBow.png',
-  description: '那时候我只会想自己想要什么，从不想自己拥有什么',
-  owner: '吴加好',
-  startAt: '2018-07-26 22:44',
-  progress: {
-    status: 'exception',
-    value: 100
-  }
-})
+import { mapActions } from 'vuex'
+import { RouteView } from '@/layouts'
 
 export default {
   name: 'StandardList',
   components: {
     TaskForm,
-    Info
+    Info,
+    RouteView
   },
   data () {
     return {
-      data,
-      status: 'all'
+      role: '',
+      data: [],
+      teamData: [],
+      selectTeam: '', // 靠，这里不能给0
+      CountTeam: '',
+      CountApp: '',
+      CountAppDownload: ''
     }
   },
+  created () {
+    this.getTeamData()
+  },
   methods: {
+    ...mapActions(['TeamIndex']),
     add () {
       this.$dialog(TaskForm,
-        // component props
         {
           record: {},
           on: {
@@ -190,6 +154,26 @@ export default {
           centered: true,
           maskClosable: false
         })
+    },
+    getTeamData () {
+      const { TeamIndex } = this
+      TeamIndex().then(res => {
+        // TODO 要有全局的统一处理异常code。 否则这里在请求异常时， length会变成字符串长度
+        if (res.result['team'].length > 0) {
+          this.selectTeam = res.result['team'][0].id
+          this.teamData = res.result['team']
+          this.CountApp = res.result['count_app'] + '个'
+          this.CountTeam = res.result['count_team'] + '个'
+          this.CountAppDownload = res.result['count_app_download'] + '次'
+
+          this.getTeamApp(this.selectTeam)
+        }
+      }).catch((err) => {
+        console.log('team list', err)
+      })
+    },
+    getTeamApp (teamId) {
+
     }
   }
 }
