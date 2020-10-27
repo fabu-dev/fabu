@@ -1,49 +1,28 @@
 <template>
   <div>
-    <a-form :form="form" style="max-width: 500px; margin: 40px auto 0;">
+    <a-form :form="form" style="max-width: 800px; margin: 40px auto 0;">
       <a-form-item
-        label="付款账户"
+        label=""
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
       >
-        <a-select
-          placeholder="ant-design@alipay.com"
-          v-decorator="['paymentUser', { rules: [{required: true, message: '付款账户必须填写'}] }]">
-          <a-select-option value="1">ant-design@alipay.com</a-select-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item
-        label="收款账户"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
-      >
-        <a-input-group
-          style="display: inline-block; vertical-align: middle"
-          :compact="true"
+        <a-upload-dragger
+          name="file"
+          :multiple="false"
+          :before-upload="beforeUpload"
+          :customRequest="upload"
+          @change="handleChange"
         >
-          <a-select defaultValue="alipay" style="width: 100px">
-            <a-select-option value="alipay">支付宝</a-select-option>
-            <a-select-option value="wexinpay">微信</a-select-option>
-          </a-select>
-          <a-input
-            :style="{width: 'calc(100% - 100px)'}"
-            v-decorator="['payType', { initialValue: 'test@example.com', rules: [{required: true, message: '收款账户必须填写'}]}]"
-          />
-        </a-input-group>
-      </a-form-item>
-      <a-form-item
-        label="收款人姓名"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
-      >
-        <a-input v-decorator="['name', { initialValue: 'Alex', rules: [{required: true, message: '收款人名称必须核对'}] }]"/>
-      </a-form-item>
-      <a-form-item
-        label="转账金额"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
-      >
-        <a-input prefix="￥" v-decorator="['momey', { initialValue: '5000', rules: [{required: true, message: '转账金额必须填写'}] }]"/>
+          <p class="ant-upload-drag-icon">
+            <a-icon type="inbox" />
+          </p>
+          <p class="ant-upload-text">
+            点击或者拖拽APP文件开始上传
+          </p>
+          <p class="ant-upload-hint">
+            一次仅支持上传一个文件，支持IPA、APK文件类型。
+          </p>
+        </a-upload-dragger>
       </a-form-item>
       <a-form-item :wrapperCol="{span: 19, offset: 5}">
         <a-button type="primary" @click="nextStep">下一步</a-button>
@@ -61,25 +40,70 @@
 </template>
 
 <script>
+
+import { mapActions } from 'vuex'
+// import { appApi } from '@/api/app'
+
 export default {
   name: 'Step1',
   data () {
     return {
+      uploadUrl: process.env.VUE_APP_API_BASE_URL + '/app/upload',
       labelCol: { lg: { span: 5 }, sm: { span: 5 } },
       wrapperCol: { lg: { span: 19 }, sm: { span: 19 } },
       form: this.$form.createForm(this)
     }
   },
+  created () {
+  },
   methods: {
-    nextStep () {
-      const { form: { validateFields } } = this
-      // 先校验，通过表单校验后，才进入下一步
-      validateFields((err, values) => {
-        if (!err) {
-          this.$emit('nextStep')
-        }
+    ...mapActions(['UploadApp']),
+    handleChange (info) {
+      const status = info.file.status
+      if (status !== 'uploading') {
+        console.log(info.file, info.fileList)
+      }
+      if (status === 'done') {
+        this.$message.success(`${info.file.name} file uploaded successfully.`)
+      } else if (status === 'error') {
+        this.$message.error(`${info.file.name} file upload failed.`)
+      }
+    },
+    beforeUpload (file) {
+      const isJpgOrPng = file.type === 'application/vnd.android.package-archive' || file.type === ''
+      // if (!isJpgOrPng) {
+      //   this.$message.error('文件不是APK或IPA')
+      // }
+      const isLt2M = file.size / 1024 / 1024 / 1024 < 1
+      if (!isLt2M) {
+        this.$message.error('上传文件能能超过1GB!')
+      }
+      return isJpgOrPng && isLt2M
+    },
+    upload (data) {
+      const { UploadApp } = this
+      const params = new FormData()
+
+      console.log('upload data', data)
+
+      params.append('file', data.file)
+
+      console.log('upload params data', params)
+      UploadApp(params).then(res => {
+        console.log('upload res', res)
+      }).catch((err) => {
+        console.log('team list', err)
       })
-    }
+    },
+    nextStep () {
+    const { form: { validateFields } } = this
+    // 先校验，通过表单校验后，才进入下一步
+    validateFields((err, values) => {
+      if (!err) {
+        this.$emit('nextStep')
+      }
+    })
+  }
   }
 }
 </script>
