@@ -15,6 +15,27 @@ swag init -o ./docs/swagger
 ```
 访问：127.0.0.1:8803/swagger/index.html 查看(ip根据实际情况修改)
 
+# 前端项目启动
+```bash
+yarn install
+
+yarn run serve
+```
+
+# 通过docker部署
+```bash
+# cd 到根目录
+
+# 构建镜像，并创建容器
+docker-compose up -d
+
+# 关闭服务器
+docker-compose stop
+
+# 启动容器
+docker-compose start
+
+```
 
 # 端口说明
 | 端口 | 说明 |
