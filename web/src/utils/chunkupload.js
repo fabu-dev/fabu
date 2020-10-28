@@ -1,6 +1,8 @@
 import SparkMD5 from 'spark-md5'
 import Axios from 'axios'
 import QS from 'qs'
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 // 错误信息
 function getError (action, option, xhr) {
@@ -39,7 +41,7 @@ export default function upload (option) {
   const spark = new SparkMD5.ArrayBuffer()// md5的ArrayBuffer加密类
   const fileReader = new FileReader()// 文件读取类
   const action = option.action // 文件上传上传路径
-  const chunkSize = 1024 * 1024 * 1 // 单个分片大小，这里测试用1m
+  const chunkSize = 1024 * 512 // 单个分片大小，这里测试用1m
   let md5 = ''// 文件的唯一标识
   const optionFile = option.file // 需要分片的文件
   let fileChunkedList = [] // 文件分片完成之后的数组
@@ -140,11 +142,15 @@ export default function upload (option) {
               xhr.withCredentials = true
             }
             const headers = option.headers || {}
+
             for (const item in headers) {
               if (headers.hasOwnProperty(item) && headers[ item ] !== null) {
+                console.log(item, headers[ item ])
                 xhr.setRequestHeader(item, headers[ item ])
               }
             }
+            xhr.setRequestHeader('Access-Token', storage.get(ACCESS_TOKEN))
+            xhr.setRequestHeader('Accept', '*/*')
             // 文件开始上传
             xhr.send(item.formData)
           }
@@ -177,7 +183,9 @@ export default function upload (option) {
         data: QS.stringify(data)
       }, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          'Accept': '*/*',
+          'Access-Token': storage.get(ACCESS_TOKEN)
         }
       }).catch(error => {
         console.log('ERRRR:: ', error.response.data)

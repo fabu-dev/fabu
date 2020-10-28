@@ -10,7 +10,6 @@
           name="file"
           :action="uploadUrl"
           :multiple="false"
-          :before-upload="beforeUpload"
           :defaultFileList="defaultFileList"
           :customRequest="chunkUpload"
           @change="handleChange"

@@ -3,8 +3,6 @@ package middleware
 import (
 	"time"
 
-	"github.com/sirupsen/logrus"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,7 +14,6 @@ func Consuming() gin.HandlerFunc {
 func ControllerConsuming() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Set("startTime", time.Now())
-		logrus.Info("start controller middleware")
 		c.Next()
 	}
 }

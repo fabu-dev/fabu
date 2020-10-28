@@ -3,8 +3,6 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/sirupsen/logrus"
-
 	"fabu.dev/api/model"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
@@ -15,7 +13,6 @@ import (
 func VerifyToken() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Access-Token")
-		logrus.Info("start token middleware")
 		if len(token) < 1 {
 			api.SetResponse(c, http.StatusForbidden, code.ErrorSign, "")
 			return

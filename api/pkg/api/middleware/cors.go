@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 // 处理跨域中间件
@@ -17,8 +16,6 @@ func Cors() gin.HandlerFunc {
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, access-token")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE")
 		c.Writer.Header().Set("Content-Type", "application/json; charset=utf-8")
-
-		logrus.Info("start cors middleware")
 
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(204)
