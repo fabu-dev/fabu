@@ -1,10 +1,12 @@
 package controller
 
 import (
+	"net/http"
+
 	"fabu.dev/api/filter"
 	"fabu.dev/api/pkg/api"
 	"github.com/gin-gonic/gin"
-	"net/http"
+	"github.com/sirupsen/logrus"
 )
 
 type App struct {
@@ -32,6 +34,7 @@ func (ctl *App) GetList(c *gin.Context) {
 // @Success 200 {string} string    "ok"
 // @Router /v1/app/upload [POST]
 func (ctl *App) Upload(c *gin.Context) {
+	logrus.Info("start upload.......")
 	api.SetResponse(c, http.StatusOK, 1, "")
 }
 

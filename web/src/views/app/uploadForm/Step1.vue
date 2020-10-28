@@ -8,9 +8,11 @@
       >
         <a-upload-dragger
           name="file"
+          :action="uploadUrl"
           :multiple="false"
           :before-upload="beforeUpload"
-          :customRequest="upload"
+          :defaultFileList="defaultFileList"
+          :customRequest="chunkUpload"
           @change="handleChange"
         >
           <p class="ant-upload-drag-icon">
@@ -42,15 +44,18 @@
 <script>
 
 import { mapActions } from 'vuex'
+import chunkUpload from '@/utils/chunkupload'
 // import { appApi } from '@/api/app'
 
 export default {
   name: 'Step1',
   data () {
     return {
+      defaultFileList: [],
       uploadUrl: process.env.VUE_APP_API_BASE_URL + '/app/upload',
       labelCol: { lg: { span: 5 }, sm: { span: 5 } },
       wrapperCol: { lg: { span: 19 }, sm: { span: 19 } },
+      chunkUpload: chunkUpload, // 分片上传自定义方法，在头部引入了
       form: this.$form.createForm(this)
     }
   },
@@ -87,12 +92,19 @@ export default {
       console.log('upload data', data)
 
       params.append('file', data.file)
-
+      this.uploading = true
       console.log('upload params data', params)
       UploadApp(params).then(res => {
+        this.uploading = false
         console.log('upload res', res)
       }).catch((err) => {
+        this.uploading = false
         console.log('team list', err)
+      })
+    },
+    onError () {
+      this.$alert('文件上传失败，请重试', '错误', {
+        confirmButtonText: '确定'
       })
     },
     nextStep () {

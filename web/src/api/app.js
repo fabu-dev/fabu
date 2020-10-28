@@ -11,6 +11,7 @@ export function upload (parameter) {
   return request({
     url: appApi.Upload,
     method: 'POST',
+    timeout: 0,
     data: parameter
   })
 }
