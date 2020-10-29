@@ -71,13 +71,13 @@ export default function upload (option) {
         })
         // 这些字段看后端需要哪些，就传哪些，也可以自己追加额外参数
         formData.append(option.filename, item, option.file.name)// 文件
-        formData.append('chunkNumber', index + 1)// 当前文件块
-        formData.append('chunkSize', chunkSize)// 单个分块大小
-        formData.append('currentChunkSize', item.size)// 当前分块大小
-        formData.append('totalSize', optionFile.size)// 文件总大小
+        formData.append('chunk_number', index + 1)// 当前文件块
+        formData.append('chunk_size', chunkSize)// 单个分块大小
+        formData.append('current_chunk_size', item.size)// 当前分块大小
+        formData.append('total_size', optionFile.size)// 文件总大小
         formData.append('identifier', md5)// 文件标识
         formData.append('filename', option.file.name)// 文件名
-        formData.append('totalChunks', fileChunkedList.length)// 总块数
+        formData.append('chunk_total', fileChunkedList.length)// 总块数
       }
       return { formData: formData, index: index }
     })

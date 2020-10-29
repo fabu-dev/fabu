@@ -3,7 +3,9 @@ module fabu.dev/api
 go 1.14
 
 require (
+	github.com/EDDYCJY/go-gin-example v0.0.0-20200505102242-63963976dee0
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
+	github.com/astaxie/beego v1.12.2
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/gin-contrib/pprof v1.3.0
 	github.com/gin-gonic/gin v1.6.3

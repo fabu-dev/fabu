@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fabu.dev/api/job"
 	"fabu.dev/api/pkg/db"
 	"fabu.dev/api/pkg/web"
 )
@@ -13,8 +14,11 @@ func init() {
 func main() {
 	// gin.SetMode(setting.ServerSetting.RunMode)
 
+	job.NewCommand().Process()
+
 	web.StartWebServer()
 	destroy()
+
 }
 
 func destroy() {

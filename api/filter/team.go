@@ -12,6 +12,7 @@ import (
 )
 
 type Team struct {
+	BaseFilter
 	service *service.Team
 }
 
@@ -65,10 +66,7 @@ func (f *Team) AddMember(c *gin.Context) *api.Error {
 		return api.NewError(code.ErrorRequest, err.Error())
 	}
 
-	operator := &model.Operator{
-		Id:      c.GetInt64("member_id"),
-		Account: c.GetString("account"),
-	}
+	operator := f.GetOperator(c)
 
 	err := f.service.InviteMember(params, operator)
 	return err
@@ -82,10 +80,7 @@ func (f *Team) Create(c *gin.Context) (*model.TeamInfo, *api.Error) {
 		return nil, api.NewError(code.ErrorRequest, err.Error())
 	}
 
-	operator := &model.Operator{
-		Id:      c.GetInt64("member_id"),
-		Account: c.GetString("account"),
-	}
+	operator := f.GetOperator(c)
 
 	// 调用service对应的方法
 	teamInfo, err := f.service.Create(params, operator)
@@ -101,10 +96,7 @@ func (f *Team) Delete(c *gin.Context) *api.Error {
 		return api.NewError(code.ErrorRequest, err.Error())
 	}
 
-	operator := &model.Operator{
-		Id:      c.GetInt64("member_id"),
-		Account: c.GetString("account"),
-	}
+	operator := f.GetOperator(c)
 
 	// 调用service对应的方法
 	err := f.service.Delete(params, operator)
@@ -120,10 +112,7 @@ func (f *Team) Edit(c *gin.Context) (*model.TeamInfo, *api.Error) {
 		return nil, api.NewError(code.ErrorRequest, err.Error())
 	}
 
-	operator := &model.Operator{
-		Id:      c.GetInt64("member_id"),
-		Account: c.GetString("account"),
-	}
+	operator := f.GetOperator(c)
 
 	// 调用service对应的方法
 	teamInfo, err := f.service.Edit(params, operator)
