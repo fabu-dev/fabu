@@ -36,7 +36,7 @@ func (s *App) Upload(params *request.UploadParams, operator *model.Operator) *ap
 }
 
 func (s *App) GetAppInfo(params *request.AppInfoParams, operator *model.Operator) (*parser.AppInfo, *api.Error) {
-	apk, err := parser.NewAppParser(params.Filename)
+	apk, err := parser.NewAppParser("一米市集_3.12.0.5.ipa")
 	logrus.Info(params.Filename)
 	logrus.Info(apk, err)
 	if err != nil {

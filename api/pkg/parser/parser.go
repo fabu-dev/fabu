@@ -76,7 +76,7 @@ func NewAppParser(name string) (*AppInfo, error) {
 			xmlFile = f
 		case reInfoPlist.MatchString(f.Name):
 			plistFile = f
-		case strings.Contains(f.Name, "AppIcon60x60"):
+		case strings.Contains(f.Name, "AppIcon"):
 			iosIconFile = f
 		}
 	}
