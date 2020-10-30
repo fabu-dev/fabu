@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"fabu.dev/api/pkg/db"
+
 	"fabu.dev/api/service"
 	"github.com/sirupsen/logrus"
 )
@@ -34,6 +36,7 @@ func (t *CombineApp) Execute() {
 func (t *CombineApp) Save(data *service.UploadInfo) error {
 	logrus.Info("get save date is :", data)
 
+	// todo 验证是不是下一个分片，如果不是要仍会channel，或者暂存到sync.map
 	filename := filepath.Base(data.Params.File.Filename)
 
 	src, err := data.Params.File.Open()
@@ -42,7 +45,7 @@ func (t *CombineApp) Save(data *service.UploadInfo) error {
 	}
 	defer src.Close()
 
-	out, err := os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0666)
+	out, err := os.OpenFile("./static/app/"+filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0666)
 	if err != nil {
 		return err
 	}
@@ -51,6 +54,11 @@ func (t *CombineApp) Save(data *service.UploadInfo) error {
 	_, err = io.Copy(out, src)
 	if err != nil {
 		logrus.Info("write file err ", err)
+		panic(err)
 	}
+
+	// 通过redis记录每个app上传进度
+	db.Redis.Incr("app:upload:process:" + data.Params.Identifier)
+
 	return err
 }

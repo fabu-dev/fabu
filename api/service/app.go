@@ -1,9 +1,14 @@
 package service
 
 import (
+	"github.com/sirupsen/logrus"
+
+	"fabu.dev/api/pkg/api/code"
+
 	"fabu.dev/api/model"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/request"
+	"fabu.dev/api/pkg/parser"
 )
 
 type UploadInfo struct {
@@ -28,4 +33,15 @@ func (s *App) Upload(params *request.UploadParams, operator *model.Operator) *ap
 	}
 
 	return nil
+}
+
+func (s *App) GetAppInfo(params *request.AppInfoParams, operator *model.Operator) (*parser.AppInfo, *api.Error) {
+	apk, err := parser.NewAppParser(params.Filename)
+	logrus.Info(params.Filename)
+	logrus.Info(apk, err)
+	if err != nil {
+		return nil, api.NewError(code.ErrorAppFileParserFail, code.GetMessage(code.ErrorAppFileParserFail))
+	}
+
+	return apk, nil
 }

@@ -46,6 +46,21 @@ func (ctl *App) Upload(c *gin.Context) {
 // @Summary App详情 API
 // @Description App详情
 // @Success 200 {string} string    "ok"
+// @Router /v1/app/info [GET]
+func (ctl *App) GetAppInfo(c *gin.Context) {
+	appInfo, err := ctl.paramFilter.GetAppInfo(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
+		return
+	}
+
+	api.SetResponse(c, http.StatusOK, 1, appInfo)
+}
+
+// @Tags APP管理
+// @Summary App详情 API
+// @Description App详情
+// @Success 200 {string} string    "ok"
 // @Router /v1/app/info/1 [GET]
 func (ctl *App) View(c *gin.Context) {
 	api.SetResponse(c, http.StatusOK, 1, "")

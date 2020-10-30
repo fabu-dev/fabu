@@ -44,7 +44,6 @@
 
 import { mapActions } from 'vuex'
 import chunkUpload from '@/utils/chunkupload'
-// import { appApi } from '@/api/app'
 
 export default {
   name: 'Step1',
@@ -61,7 +60,7 @@ export default {
   created () {
   },
   methods: {
-    ...mapActions(['UploadApp']),
+    ...mapActions(['UploadApp', 'getBase']),
     handleChange (info) {
       const status = info.file.status
       if (status !== 'uploading') {

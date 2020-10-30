@@ -5,3 +5,5 @@ api.exe
 api.exe~
 
 runtime/logs/*
+
+static/file/

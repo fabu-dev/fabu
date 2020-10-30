@@ -1,8 +1,9 @@
 import SparkMD5 from 'spark-md5'
 import Axios from 'axios'
-import QS from 'qs'
+// import QS from 'qs'
 import storage from 'store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+// import { GetBase } from '@/store/modules/apps'
 
 // 错误信息
 function getError (action, option, xhr) {
@@ -20,6 +21,7 @@ function getError (action, option, xhr) {
   err.url = action
   return err
 }
+
 // 上传成功完成合并之后，获取服务器返回的json
 function getBody (xhr) {
   const text = xhr.responseText || xhr.response
@@ -38,6 +40,7 @@ export default function upload (option) {
   if (typeof XMLHttpRequest === 'undefined') {
     return
   }
+
   const spark = new SparkMD5.ArrayBuffer()// md5的ArrayBuffer加密类
   const fileReader = new FileReader()// 文件读取类
   const action = option.action // 文件上传上传路径
@@ -83,7 +86,7 @@ export default function upload (option) {
     })
 
     // 更新上传进度条百分比的方法
-    const updataPercentage = (e) => {
+    const updatePercentage = (e) => {
       let loaded = 0// 当前已经上传文件的总大小
       percentage.forEach(item => {
         loaded += item
@@ -103,7 +106,6 @@ export default function upload (option) {
             return
           }
           const item = chunks.shift()
-          console.log()
           if (item) {
             const xhr = new XMLHttpRequest()
             const index = item.index
@@ -133,8 +135,7 @@ export default function upload (option) {
                   e.percent = e.loaded / e.total * 100
                 }
                 percentage[ index ] = e.loaded
-                console.log(index)
-                updataPercentage(e)
+                updatePercentage(e)
               }
             }
             xhr.open('post', action, true)
@@ -172,20 +173,18 @@ export default function upload (option) {
       const data = {
         identifier: md5,
         filename: option.file.name,
-        totalSize: optionFile.size,
-        totalChunks: totalChunks
+        total_size: optionFile.size,
+        chunk_total: totalChunks
       }
-      console.log(data)
       // 给后端发送文件合并请求
       const fileInfo = await Axios({
-        method: 'post',
-        url: 'http://localhost:8000/mergefile',
-        data: QS.stringify(data)
-      }, {
+        method: 'get',
+        url: process.env.VUE_APP_API_BASE_URL + '/app/base',
+        data: data,
         headers: {
-          'Content-Type': 'multipart/form-data',
-          'Accept': '*/*',
-          'Access-Token': storage.get(ACCESS_TOKEN)
+          'Content-Type': 'application/json',
+          'Access-Token': storage.get(ACCESS_TOKEN),
+          'Accept': '*/*'
         }
       }).catch(error => {
         console.log('ERRRR:: ', error.response.data)

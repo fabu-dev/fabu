@@ -12,3 +12,10 @@ type UploadParams struct {
 	Filename         string                `form:"filename" binding:"required"`
 	ChunkTotal       uint32                `form:"chunk_total" binding:"required,numeric"`
 }
+
+type AppInfoParams struct {
+	TotalSize  uint64 `json:"total_size" binding:"required,numeric"`
+	Identifier string `json:"identifier" binding:"required"`
+	Filename   string `json:"filename" binding:"required"`
+	ChunkTotal uint32 `json:"chunk_total" binding:"required,numeric"`
+}

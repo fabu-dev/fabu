@@ -1,10 +1,20 @@
-import { upload } from '@/api/app'
+import { upload, getBase } from '@/api/app'
 
 const apps = {
   actions: {
     UploadApp ({ commit }, params) {
       return new Promise((resolve, reject) => {
         upload(params).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    GetBase ({ commit }, params) {
+      console.log('apps get base params', params)
+      return new Promise((resolve, reject) => {
+        getBase(params).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)
