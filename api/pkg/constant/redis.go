@@ -1,6 +1,8 @@
 package constant
 
 const (
-	AppUploadProgress = "app:upload:Progress"
-	AppFileInfo       = "app:file:info"
+	AppUploadProgress = "fabu:app:upload:Progress"
+	AppFileInfo       = "fabu:app:file:info"
+
+	MemberCacheKey = "fabu:member:info:"
 )
