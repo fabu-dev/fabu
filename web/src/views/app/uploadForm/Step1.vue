@@ -10,7 +10,7 @@
           name="file"
           :action="uploadUrl"
           :multiple="false"
-          :defaultFileList="defaultFileList"
+          :fileList="fileList"
           :customRequest="chunkUpload"
           @change="handleChange"
         >
@@ -49,7 +49,7 @@ export default {
   name: 'Step1',
   data () {
     return {
-      defaultFileList: [],
+      fileList: [],
       uploadUrl: process.env.VUE_APP_API_BASE_URL + '/app/upload',
       labelCol: { lg: { span: 5 }, sm: { span: 5 } },
       wrapperCol: { lg: { span: 19 }, sm: { span: 19 } },
@@ -62,10 +62,17 @@ export default {
   methods: {
     ...mapActions(['UploadApp', 'getBase']),
     handleChange (info) {
+      let fileList = [...info.fileList]
+      fileList = fileList.slice(-1)
+      this.fileList = fileList
+
       const status = info.file.status
+      console.log('info file list', info.fileList)
+
       if (status !== 'uploading') {
         console.log(info.file, info.fileList)
       }
+
       if (status === 'done') {
         this.$message.success(`${info.file.name} file uploaded successfully.`)
       } else if (status === 'error') {
@@ -82,23 +89,6 @@ export default {
         this.$message.error('上传文件能能超过1GB!')
       }
       return isJpgOrPng && isLt2M
-    },
-    upload (data) {
-      const { UploadApp } = this
-      const params = new FormData()
-
-      console.log('upload data', data)
-
-      params.append('file', data.file)
-      this.uploading = true
-      console.log('upload params data', params)
-      UploadApp(params).then(res => {
-        this.uploading = false
-        console.log('upload res', res)
-      }).catch((err) => {
-        this.uploading = false
-        console.log('team list', err)
-      })
     },
     onError () {
       this.$alert('文件上传失败，请重试', '错误', {

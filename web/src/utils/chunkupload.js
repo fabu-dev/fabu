@@ -44,7 +44,7 @@ export default function upload (option) {
   const spark = new SparkMD5.ArrayBuffer()// md5的ArrayBuffer加密类
   const fileReader = new FileReader()// 文件读取类
   const action = option.action // 文件上传上传路径
-  const chunkSize = 1024 * 512 // 单个分片大小，这里测试用1m
+  const chunkSize = 1024 * 1024 * 2 // 单个分片大小，这里测试用1m
   let md5 = ''// 文件的唯一标识
   const optionFile = option.file // 需要分片的文件
   let fileChunkedList = [] // 文件分片完成之后的数组
@@ -168,8 +168,8 @@ export default function upload (option) {
     try {
       const totalChunks = fileChunkedList.length
       // 调用上传队列方法 等待所有文件上传完成
-      await sendRequest(fileChunkedList, 2)
-      option.onSuccess()
+      await sendRequest(fileChunkedList, 5)
+      // option.onSuccess()
       // 这里的参数根据自己实际情况写
       const data = {
         identifier: md5,
@@ -191,9 +191,7 @@ export default function upload (option) {
         console.log('ERRRR:: ', error.response.data)
       })
 
-      console.log(fileInfo)
-
-      if (fileInfo.data.code === 200) {
+      if (fileInfo.data.code === 1) {
         const success = getBody(fileInfo.request)
         option.onSuccess(success)
         return

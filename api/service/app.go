@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"time"
 
 	"fabu.dev/api/pkg/api/global"
 
@@ -37,6 +38,16 @@ func (s *App) Upload(params *request.UploadParams, operator *model.Operator) *ap
 	FileChannel <- &UploadInfo{
 		Params:   params,
 		Operator: operator,
+	}
+
+	// 当最后一个分片到达服务器后，等待文件合并完成
+	if params.ChunkNumber == params.ChunkTotal {
+		for {
+			if ok, _ := db.Redis.HExists(constant.AppFileInfo, params.Identifier).Result(); ok {
+				break
+			}
+			time.Sleep(time.Millisecond * 200)
+		}
 	}
 
 	return nil
