@@ -1,7 +1,12 @@
 package service
 
 import (
+	"encoding/json"
+
 	"github.com/sirupsen/logrus"
+
+	"fabu.dev/api/pkg/constant"
+	"fabu.dev/api/pkg/db"
 
 	"fabu.dev/api/pkg/api/code"
 
@@ -25,6 +30,7 @@ func NewApp() *App {
 	return &App{}
 }
 
+// 将文件保存到channel中
 func (s *App) Upload(params *request.UploadParams, operator *model.Operator) *api.Error {
 	// 将数据写入到channel中
 	FileChannel <- &UploadInfo{
@@ -35,11 +41,17 @@ func (s *App) Upload(params *request.UploadParams, operator *model.Operator) *ap
 	return nil
 }
 
+// 获取APP信息
 func (s *App) GetAppInfo(params *request.AppInfoParams, operator *model.Operator) (*parser.AppInfo, *api.Error) {
-	apk, err := parser.NewAppParser("一米市集_3.12.0.5.ipa")
-	logrus.Info(params.Filename)
-	logrus.Info(apk, err)
+	apkString, err := db.Redis.HGet(constant.AppFileInfo, params.Identifier).Bytes()
 	if err != nil {
+		logrus.Error("read redis err", err)
+		return nil, api.NewError(code.ErrorAppFileParserFail, code.GetMessage(code.ErrorAppFileParserFail))
+	}
+
+	apk := &parser.AppInfo{}
+	if err := json.Unmarshal(apkString, apk); err != nil {
+		logrus.Error("json err", err)
 		return nil, api.NewError(code.ErrorAppFileParserFail, code.GetMessage(code.ErrorAppFileParserFail))
 	}
 

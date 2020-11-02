@@ -21,19 +21,12 @@ func NewApp() *App {
 	}
 }
 
+// 上传文件
 func (f *App) Upload(c *gin.Context) *api.Error {
 	params := &request.UploadParams{}
 	if err := c.ShouldBind(params); err != nil {
-		logrus.Error("add member err : ", err)
 		return api.NewError(code.ErrorRequest, err.Error())
 	}
-
-	//file, errs := c.FormFile("file")
-	//if errs != nil {
-	//	return api.NewError(code.ErrorRequest, fmt.Sprintf("get form err: %s", errs.Error()))
-	//}
-
-	//params.File = file
 
 	operator := f.GetOperator(c)
 

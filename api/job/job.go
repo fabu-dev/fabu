@@ -32,10 +32,7 @@ func (i *Command) execute(creator Task) {
 
 	for {
 		creator.Execute()
-
-		//s := reflect.TypeOf(creator).String()
-		//fmt.Printf("%s 执行一次\n", s)
-		time.Sleep(creator.GetDelayTime())
+		time.Sleep(creator.GetDelayTime()) // 执行完成后，sleep一点时间
 	}
 }
 

@@ -51,7 +51,9 @@ type System struct {
 
 	RuntimeRootPath string
 
-	ImageSavePath string
+	AppSaveRootPath string
+
+	ImagePath     string
 	ImageMaxSize  uint32
 	ImageAllowExt []string
 
