@@ -3,6 +3,8 @@ package service
 import (
 	"encoding/json"
 
+	"fabu.dev/api/pkg/api/global"
+
 	"github.com/sirupsen/logrus"
 
 	"fabu.dev/api/pkg/constant"
@@ -13,7 +15,6 @@ import (
 	"fabu.dev/api/model"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/request"
-	"fabu.dev/api/pkg/parser"
 )
 
 type UploadInfo struct {
@@ -42,14 +43,14 @@ func (s *App) Upload(params *request.UploadParams, operator *model.Operator) *ap
 }
 
 // 获取APP信息
-func (s *App) GetAppInfo(params *request.AppInfoParams, operator *model.Operator) (*parser.AppInfo, *api.Error) {
+func (s *App) GetAppInfo(params *request.AppInfoParams, operator *model.Operator) (*global.AppInfo, *api.Error) {
 	apkString, err := db.Redis.HGet(constant.AppFileInfo, params.Identifier).Bytes()
 	if err != nil {
-		logrus.Error("read redis err", err)
+		logrus.Error("read redis err：", err)
 		return nil, api.NewError(code.ErrorAppFileParserFail, code.GetMessage(code.ErrorAppFileParserFail))
 	}
 
-	apk := &parser.AppInfo{}
+	apk := &global.AppInfo{}
 	if err := json.Unmarshal(apkString, apk); err != nil {
 		logrus.Error("json err", err)
 		return nil, api.NewError(code.ErrorAppFileParserFail, code.GetMessage(code.ErrorAppFileParserFail))

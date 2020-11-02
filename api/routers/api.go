@@ -49,7 +49,7 @@ func CreateApiRouter() {
 		v1App.POST("/combine", controller.NewApp().Combine) // APP 合并
 		v1App.GET("/stat", controller.NewApp().GetStat)     // APP 统计
 		v1App.GET("/log", controller.NewApp().GetLog)       // APP 统计
-		v1App.GET("/base", controller.NewApp().GetAppInfo)  // APP 统计
+		v1App.POST("/base", controller.NewApp().GetAppInfo) // APP 统计
 
 	}
 

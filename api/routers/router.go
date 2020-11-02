@@ -2,6 +2,7 @@ package routers
 
 import (
 	"io"
+	"net/http"
 	"os"
 
 	"fabu.dev/api/pkg/api/middleware"
@@ -39,7 +40,7 @@ func SetLogs() {
 }
 
 func InitRouter() {
-	Router = gin.New()
+	Router = gin.Default()
 
 	if gin.Mode() != gin.ReleaseMode {
 		prefix := "/pprof"
@@ -48,8 +49,10 @@ func InitRouter() {
 
 	Router.Use(gin.Logger())
 	Router.Use(gin.Recovery())
-	Router.Use(middleware.Cors())  // 跨域
+	Router.Use(middleware.Cors()) // 跨域
 	Router.Use(middleware.Consuming())
 
 	Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	Router.StaticFS("/file/app", http.Dir("./static/app"))
 }

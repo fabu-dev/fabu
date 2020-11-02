@@ -12,6 +12,8 @@ var Message = map[int]string{
 	ErrorTeamHasApp:      "团队在维护APP，无法删除",
 	ErrorTeamMemberExist: "该用户已经在团队中",
 
+	ErrorAppFileParserFail: "解析失败",
+
 	ErrorMemberNotExists: "会员不存在",
 }
 

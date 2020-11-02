@@ -2,9 +2,11 @@ package task
 
 import (
 	"encoding/json"
+	"image/png"
 	"io"
 	"os"
 
+	"fabu.dev/api/pkg/api/global"
 	"fabu.dev/api/pkg/parser"
 
 	"fabu.dev/api/pkg/config"
@@ -108,7 +110,6 @@ func (t *CombineApp) BufferFragment(data *service.UploadInfo) {
 // 保存文件到硬盘上
 func (t *CombineApp) Save(data *service.UploadInfo) error {
 	filename := t.AppSaveRootPath + data.Params.Identifier + data.Params.Filename
-	logrus.Info("file is", filename)
 	out, err := os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0666) // TODO 这里感觉还可以优化，避免多次打开关闭文件
 	if err != nil {
 		return err
@@ -148,17 +149,39 @@ func (t *CombineApp) CombineFinished(filename, identifier string) error {
 		return err
 	}
 
-	data, err := json.Marshal(apk)
+	iconName := t.AppSaveRootPath + identifier + ".png"
+	out, err := os.Create(iconName)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	err = png.Encode(out, apk.Icon)
 	if err != nil {
 		return err
 	}
 
-	if err := db.Redis.HSet("app:file:info", identifier, data).Err(); err != nil { // TODO 这里是否要改用string？
+	appInfo := &global.AppInfo{
+		Name:     apk.Name,
+		BundleId: apk.BundleId,
+		Version:  apk.Version,
+		Build:    apk.Build,
+		Icon:     iconName,
+		Size:     apk.Size,
+	}
+	data, err := json.Marshal(appInfo)
+	if err != nil {
+		return err
+	}
+
+	if err := db.Redis.HSet(constant.AppFileInfo, identifier, data).Err(); err != nil { // TODO 这里是否要改用string？
 		logrus.Error("save file info err", err)
 		return err
 	}
 
 	delete(t.FileBuffer, identifier) // 完成后删除buffer内的缓存
+
+	db.Redis.HDel(constant.AppUploadProgress, identifier)
 
 	return nil
 }

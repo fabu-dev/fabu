@@ -169,6 +169,7 @@ export default function upload (option) {
       const totalChunks = fileChunkedList.length
       // 调用上传队列方法 等待所有文件上传完成
       await sendRequest(fileChunkedList, 2)
+      option.onSuccess()
       // 这里的参数根据自己实际情况写
       const data = {
         identifier: md5,
@@ -178,7 +179,7 @@ export default function upload (option) {
       }
       // 给后端发送文件合并请求
       const fileInfo = await Axios({
-        method: 'get',
+        method: 'post',
         url: process.env.VUE_APP_API_BASE_URL + '/app/base',
         data: data,
         headers: {
