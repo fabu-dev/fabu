@@ -162,12 +162,13 @@ func (t *CombineApp) CombineFinished(filename, identifier string) error {
 	}
 
 	appInfo := &global.AppInfo{
-		Name:     apk.Name,
-		BundleId: apk.BundleId,
-		Version:  apk.Version,
-		Build:    apk.Build,
-		Icon:     iconName,
-		Size:     apk.Size,
+		Name:       apk.Name,
+		BundleId:   apk.BundleId,
+		Version:    apk.Version,
+		Build:      apk.Build,
+		Icon:       iconName,
+		Size:       apk.Size,
+		Identifier: identifier,
 	}
 	data, err := json.Marshal(appInfo)
 	if err != nil {

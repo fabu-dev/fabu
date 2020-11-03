@@ -12,7 +12,7 @@
       </a-steps>
       <div class="content">
         <step1 v-if="currentTab === 0" @nextStep="nextStep"/>
-        <step2 v-if="currentTab === 1" @nextStep="nextStep" @prevStep="prevStep"/>
+        <step2 v-if="currentTab === 1" @nextStep="nextStep" @prevStep="prevStep" :sendData="stepOne"/>
         <step3 v-if="currentTab === 2" @prevStep="prevStep" @finish="finish"/>
       </div>
     </a-card>
@@ -33,6 +33,7 @@ export default {
   },
   data () {
     return {
+      stepOne: {},
       currentTab: 0,
       // form
       form: null
@@ -41,7 +42,28 @@ export default {
   methods: {
 
     // handler
-    nextStep () {
+    nextStep (data) {
+      console.log('tab is: ', this.currentTab)
+      if (this.currentTab === 0) {
+        console.log('target:', data.file.file.response)
+        console.log('target:', data.file.file.response.result)
+        const result = data.file.file.response.result
+        const stepOneData = {
+          team_id: result.team_id,
+          build: result.build,
+          bundle_id: result.bundle_id,
+          icon: result.icon,
+          identifier: result.identifier,
+          name: result.name,
+          size: result.size,
+          version: result.version
+        }
+        this.stepOne = stepOneData
+        console.log('step one:', stepOneData)
+      }
+
+      console.log('step 1 data:', data)
+      console.log('stepOne:', this.stepOne)
       if (this.currentTab < 2) {
         this.currentTab += 1
       }

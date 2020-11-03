@@ -7,48 +7,52 @@
         style="margin-bottom: 24px;"
       />
       <a-form-item
-        label="付款账户"
+        label="APP名称"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         class="stepFormText"
       >
-        ant-design@alipay.com
+        {{ sendData.name }}
       </a-form-item>
       <a-form-item
-        label="收款账户"
+        label="团队"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         class="stepFormText"
       >
-        test@example.com
+        {{ sendData.team_id }}
       </a-form-item>
       <a-form-item
-        label="收款人姓名"
+        label="BundleID"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         class="stepFormText"
       >
-        Alex
+        {{ sendData.bundle_id }}
       </a-form-item>
       <a-form-item
-        label="转账金额"
+        label="版本"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         class="stepFormText"
       >
-        ￥ 5,000.00
+        {{ sendData.version }}
       </a-form-item>
-      <a-divider />
       <a-form-item
-        label="支付密码"
+        label="ICON"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         class="stepFormText"
       >
-        <a-input
-          type="password"
-          style="width: 80%;"
-          v-decorator="['paymentPassword', { initialValue: '123456', rules: [{required: true, message: '请输入支付密码'}] }]" />
+        {{ sendData.icon }}
+      </a-form-item>
+      <a-form-item
+        label="大小"
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+        class="stepFormText"
+      >
+        {{ (sendData.size/1024/1024).toFixed(2) }} m
       </a-form-item>
       <a-form-item :wrapperCol="{span: 19, offset: 5}">
         <a-button :loading="loading" type="primary" @click="nextStep">提交</a-button>
@@ -61,6 +65,7 @@
 <script>
 export default {
   name: 'Step2',
+  props: ['sendData'], // 用来接收父组件传给子组件的数据
   data () {
     return {
       labelCol: { lg: { span: 5 }, sm: { span: 5 } },
@@ -69,6 +74,9 @@ export default {
       loading: false,
       timer: 0
     }
+  },
+  created () {
+    console.log('team id', this.sendData)
   },
   methods: {
     nextStep () {

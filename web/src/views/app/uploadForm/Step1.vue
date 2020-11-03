@@ -13,7 +13,7 @@
           :fileList="fileList"
           :customRequest="chunkUpload"
           @change="handleChange"
-        >
+          v-decorator="['file', { rules: [{required: true, message: '请上传文件'}] }]">
           <p class="ant-upload-drag-icon">
             <a-icon type="inbox" />
           </p>
@@ -24,6 +24,9 @@
             一次仅支持上传一个文件，支持IPA、APK文件类型。
           </p>
         </a-upload-dragger>
+      </a-form-item>
+      <a-form-item>
+        <a-input type="hidden" v-decorator="['team_id', { initialValue: this.$route.params.teamId, rules: [{required: true, message: ''}] }]"/>
       </a-form-item>
       <a-form-item :wrapperCol="{span: 19, offset: 5}">
         <a-button type="primary" @click="nextStep">下一步</a-button>
@@ -58,6 +61,7 @@ export default {
     }
   },
   created () {
+    console.log('team id', this.$route.params.teamId)
   },
   methods: {
     ...mapActions(['UploadApp', 'getBase']),
@@ -67,8 +71,6 @@ export default {
       this.fileList = fileList
 
       const status = info.file.status
-      console.log('info file list', info.fileList)
-
       if (status !== 'uploading') {
         console.log(info.file, info.fileList)
       }
@@ -99,8 +101,9 @@ export default {
     const { form: { validateFields } } = this
     // 先校验，通过表单校验后，才进入下一步
     validateFields((err, values) => {
+      console.log('values', values)
       if (!err) {
-        this.$emit('nextStep')
+        this.$emit('nextStep', values)
       }
     })
   }

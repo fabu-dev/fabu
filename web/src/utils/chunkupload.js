@@ -146,7 +146,6 @@ export default function upload (option) {
 
             for (const item in headers) {
               if (headers.hasOwnProperty(item) && headers[ item ] !== null) {
-                console.log(item, headers[ item ])
                 xhr.setRequestHeader(item, headers[ item ])
               }
             }
@@ -168,7 +167,7 @@ export default function upload (option) {
     try {
       const totalChunks = fileChunkedList.length
       // 调用上传队列方法 等待所有文件上传完成
-      await sendRequest(fileChunkedList, 5)
+      await sendRequest(fileChunkedList, 1)
       // option.onSuccess()
       // 这里的参数根据自己实际情况写
       const data = {

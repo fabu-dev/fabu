@@ -34,7 +34,7 @@
 
       <div class="operate">
         <a-button type="dashed" style="width: 100%" icon="plus">
-          <router-link :to="{ name: 'AppUpload' }"> <a>上传APP</a> </router-link>
+          <router-link :to="{ name: 'AppUpload', params:{ teamId: selectTeam } }"> <a>上传APP</a> </router-link>
         </a-button>
       </div>
 
