@@ -1,6 +1,7 @@
 package filter
 
 import (
+	"fabu.dev/api/controller/response"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
 	"fabu.dev/api/pkg/api/global"
@@ -19,6 +20,19 @@ func NewApp() *App {
 	return &App{
 		service: service.NewApp(),
 	}
+}
+
+// 获取一个用户的团队列表
+func (f *App) GetList(c *gin.Context) (*response.AppList, *api.Error) {
+	params := &request.TeamIndexParams{}
+	if err := c.ShouldBind(params); err != nil {
+		return nil, api.NewError(code.ErrorRequest, err.Error())
+	}
+
+	logrus.Info("getList params", params)
+	result, err := f.service.GetListByTeamId(params)
+
+	return result, err
 }
 
 // 上传文件

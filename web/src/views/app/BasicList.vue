@@ -40,9 +40,9 @@
 
       <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
         <a-list-item :key="index" v-for="(item, index) in data">
-          <a-list-item-meta :description="item.description">
-            <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>
-            <a slot="title">{{ item.title }}</a>
+          <a-list-item-meta :description="item.name" style="flex: 0.25">
+            <a-avatar slot="avatar" size="large" shape="square" :src="item.name"/>
+            <a slot="title">{{ item.name }}</a>
           </a-list-item-meta>
           <div slot="actions">
             <a @click="edit(item)">编辑</a>
@@ -58,15 +58,32 @@
           </div>
           <div class="list-content">
             <div class="list-content-item">
-              <span>Owner</span>
-              <p>{{ item.owner }}</p>
+              <span>BundleID</span>
+              <p>{{ item.bundle_id }}</p>
             </div>
             <div class="list-content-item">
-              <span>开始时间</span>
-              <p>{{ item.startAt }}</p>
+              <span>平台</span>
+              <p>{{ item.platform }}</p>
             </div>
             <div class="list-content-item">
-              <a-progress :percent="item.progress.value" :status="!item.progress.status ? null : item.progress.status" style="width: 180px" />
+              <span>下载次数</span>
+              <p>{{ 0 }}</p>
+            </div>
+            <div class="list-content-item">
+              <span>浏览次数</span>
+              <p>{{ 0 }}</p>
+            </div>
+            <div class="list-content-item">
+              <span>identifier</span>
+              <p>{{ item.identifier ? item.identifier : ' 1' }}</p>
+            </div>
+            <div class="list-content-item">
+              <span>短连接</span>
+              <p>{{ item.short_url ? item.short_url : ' 1' }}</p>
+            </div>
+            <div class="list-content-item">
+              <span>当前版本</span>
+              <p>{{ item.current_version }}</p>
             </div>
           </div>
         </a-list-item>
@@ -105,7 +122,7 @@ export default {
     this.getTeamData()
   },
   methods: {
-    ...mapActions(['TeamIndex']),
+    ...mapActions(['TeamIndex', 'GetList']),
     add () {
       this.$dialog(TaskForm,
         {
@@ -180,7 +197,18 @@ export default {
       })
     },
     getTeamApp (teamId) {
-
+      if (teamId) {
+        const { GetList } = this
+        const params = {
+          'team_id': teamId
+        }
+        GetList(params).then(res => {
+          this.data = res.result.app
+          console.log('data', this.data)
+        }).catch((err) => {
+          console.log('team list', err)
+        })
+      }
     }
   }
 }

@@ -2,6 +2,10 @@ package request
 
 import "mime/multipart"
 
+type TeamIndexParams struct {
+	TeamId uint64 `form:"team_id" binding:"required,numeric"`
+}
+
 type UploadParams struct {
 	File             *multipart.FileHeader `form:"file" binding:"required"`
 	ChunkNumber      int                   `form:"chunk_number" binding:"required,numeric"`

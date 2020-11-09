@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"time"
 
+	"fabu.dev/api/controller/response"
+
 	"fabu.dev/api/pkg/api/global"
 
 	"github.com/sirupsen/logrus"
@@ -30,6 +32,23 @@ type App struct {
 
 func NewApp() *App {
 	return &App{}
+}
+
+// 获取会员的团队列表
+func (s *App) GetListByTeamId(params *request.TeamIndexParams) (*response.AppList, *api.Error) {
+	// 先获取会员所有的团队
+	objTeamMember := model.NewApp()
+	appSlice, err := objTeamMember.GetAppListByTeamId(params.TeamId)
+	if err != nil {
+		return nil, err
+	}
+
+	result := &response.AppList{
+		Count: 0,
+		App:   appSlice,
+	}
+
+	return result, err
 }
 
 // 将文件保存到channel中

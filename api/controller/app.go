@@ -3,6 +3,8 @@ package controller
 import (
 	"net/http"
 
+	"fabu.dev/api/pkg/api/code"
+
 	"fabu.dev/api/filter"
 	"fabu.dev/api/pkg/api"
 	"github.com/gin-gonic/gin"
@@ -24,7 +26,13 @@ func NewApp() *App {
 // @Success 200 {string} string    "ok"
 // @Router /v1/app/ [GET]
 func (ctl *App) GetList(c *gin.Context) {
-	api.SetResponse(c, http.StatusOK, 1, "")
+	result, err := ctl.paramFilter.GetList(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, code.ErrorRequest, err.Message)
+		return
+	}
+
+	api.SetResponse(c, http.StatusOK, 1, result)
 }
 
 // @Tags APP管理

@@ -1,4 +1,4 @@
-import { upload, getBase, save } from '@/api/app'
+import { upload, getBase, save, getList } from '@/api/app'
 
 const apps = {
   actions: {
@@ -24,6 +24,15 @@ const apps = {
       console.log('apps get base params', params)
       return new Promise((resolve, reject) => {
         getBase(params).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    GetList ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        getList(params).then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

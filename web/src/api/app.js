@@ -4,7 +4,7 @@ const appApi = {
   Upload: '/app/upload',
   Save: '/app/create',
   GetBase: '/app/base',
-  Index: ''
+  Index: '/app/'
 }
 
 // 上传APP
@@ -37,5 +37,16 @@ export function getBase (parameter) {
     method: 'POST',
     timeout: 0,
     data: parameter
+  })
+}
+
+// 保存APP信息 // 这里用params而不是 data
+export function getList (parameter) {
+  console.log('params getList', parameter)
+  return request({
+    url: appApi.Index,
+    method: 'Get',
+    timeout: 0,
+    params: parameter
   })
 }
