@@ -40,7 +40,7 @@ CREATE TABLE `app`  (
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `created_by` varchar(50) NOT NULL DEFAULT '' COMMENT '添加人',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uq_bundle_id` (`bundle_id`)
+  UNIQUE KEY `uq_bundle_id_platform` (`bundle_id`,`platform`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = 'app主表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------

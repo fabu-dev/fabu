@@ -80,6 +80,7 @@ func (s *App) GetAppInfo(params *request.AppInfoParams, operator *model.Operator
 }
 
 // 保存上传信息
+// TODO 判断版本号，用最大的版本号作为最新版本号
 func (s *App) Save(params *request.SaveParams, operator *model.Operator) (*global.AppInfo, *api.Error) {
 	apk, err := s.GetAppInfoByIdentifier(params.Identifier)
 	if err != nil {

@@ -63,7 +63,7 @@ func (f *App) GetAppInfo(c *gin.Context) (*global.AppInfo, *api.Error) {
 	return appInfo, err
 }
 
-// 上传文件
+// 保存上传文件信息
 func (f *App) Save(c *gin.Context) (*global.AppInfo, *api.Error) {
 	params := &request.SaveParams{}
 	if err := c.ShouldBindJSON(params); err != nil {
