@@ -5,7 +5,8 @@ type AppInfo struct {
 	BundleId   string `json:"bundle_id"`
 	Version    string `json:"version"`
 	Build      string `json:"build"`
+	Platform   uint8  `json:"platform"`
 	Icon       string `json:"icon"`
-	Size       int64  `json:"size"`
+	Size       uint64 `json:"size"`
 	Identifier string `json:"identifier"`
 }

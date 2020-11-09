@@ -73,6 +73,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'Step2',
   props: ['sendData'], // 用来接收父组件传给子组件的数据
@@ -89,18 +91,24 @@ export default {
     console.log('team id', this.sendData)
   },
   methods: {
+    ...mapActions(['SaveApp']),
     nextStep () {
       const that = this
-      const { form: { validateFields } } = this
+      const { form: { validateFields }, SaveApp } = this
       that.loading = true
       validateFields((err, values) => {
         if (!err) {
           console.log('表单 values', values)
-
-          that.timer = setTimeout(function () {
-            that.loading = false
-            that.$emit('nextStep')
-          }, 1500)
+          values.team_id = Number(values.team_id)
+          SaveApp(values).then((res) => {
+              console.log('save res:', res)
+              that.timer = setTimeout(function () {
+                that.loading = false
+                that.$emit('nextStep')
+              }, 1500)
+          }).catch(err => {
+            console.log('save err:', err)
+          })
         } else {
           that.loading = false
         }

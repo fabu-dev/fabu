@@ -43,7 +43,8 @@ func CreateApiRouter() {
 	v1App := Router.Group("/v1/app").Use(middleware.VerifyToken())
 	{
 		v1App.GET("/", controller.NewApp().GetList)         // APP 列表
-		v1App.POST("/upload", controller.NewApp().Upload)   // APP 上传
+		v1App.POST("/upload", controller.NewApp().Upload)   // APP 上传文件
+		v1App.POST("/create", controller.NewApp().Save)     // APP 保存上传信息
 		v1App.GET("/info/:id", controller.NewApp().View)    // APP 详情
 		v1App.PUT("/edit", controller.NewApp().Edit)        // APP 编辑
 		v1App.DELETE("/delete", controller.NewApp().Delete) // APP 删除

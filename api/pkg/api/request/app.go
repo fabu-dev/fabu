@@ -19,3 +19,9 @@ type AppInfoParams struct {
 	Filename   string `json:"filename" binding:"required"`
 	ChunkTotal uint32 `json:"chunk_total" binding:"required,numeric"`
 }
+
+type SaveParams struct {
+	Identifier  string `json:"identifier" binding:"required"`
+	Description string `json:"description" binding:"required"`
+	TeamId      uint64 `json:"team_id" binding:"required,numeric"`
+}

@@ -169,6 +169,7 @@ func (t *CombineApp) CombineFinished(filename, identifier string) error {
 		Icon:       iconName,
 		Size:       apk.Size,
 		Identifier: identifier,
+		Platform:   apk.Platform,
 	}
 	data, err := json.Marshal(appInfo)
 	if err != nil {

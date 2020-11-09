@@ -48,3 +48,17 @@ func (f *App) GetAppInfo(c *gin.Context) (*global.AppInfo, *api.Error) {
 
 	return appInfo, err
 }
+
+// 上传文件
+func (f *App) Save(c *gin.Context) (*global.AppInfo, *api.Error) {
+	params := &request.SaveParams{}
+	if err := c.ShouldBindJSON(params); err != nil {
+		return nil, api.NewError(code.ErrorRequest, err.Error())
+	}
+
+	operator := f.GetOperator(c)
+
+	appInfo, err := f.service.Save(params, operator)
+
+	return appInfo, err
+}

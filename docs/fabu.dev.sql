@@ -33,15 +33,14 @@ CREATE TABLE `app`  (
   `short_url` varchar(15) NOT NULL DEFAULT '' COMMENT '短连接',
   `bundle_id` varchar(100) NOT NULL DEFAULT '' COMMENT '包名',
   `current_version` varchar(10) NOT NULL DEFAULT '' COMMENT '当前版本',
-  `key` varchar(30) NOT NULL DEFAULT '' COMMENT 'APP KEY',
-  `browse_count` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '浏览次数',
-  `download_count` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '下载次数',
-  `status` tinyint(3) UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态（1：删除，2有效）',
+  `identifier` varchar(30) NOT NULL DEFAULT '' COMMENT 'APP KEY',
+  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 2 COMMENT '状态（1：删除，2有效）',
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   `updated_by` varchar(50) NOT NULL DEFAULT '' COMMENT '修改人',
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `created_by` varchar(50) NOT NULL DEFAULT '' COMMENT '添加人',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uq_bundle_id` (`bundle_id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = 'app主表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -60,6 +59,19 @@ CREATE TABLE `app_download_log`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for app_statistics
+-- ----------------------------
+DROP TABLE IF EXISTS `app_statistics`;
+CREATE TABLE `app_statistics` (
+  `app_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'appID',
+  `browse_count` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '浏览次数',
+  `download_count` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '下载次数',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`app_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='app统计表';
+
+-- ----------------------------
 -- Table structure for version
 -- ----------------------------
 DROP TABLE IF EXISTS `app_version`;
@@ -73,12 +85,13 @@ CREATE TABLE `app_version`  (
   `hash` varchar(80) NOT NULL DEFAULT '' COMMENT 'hash',
   `path` varchar(200) NOT NULL DEFAULT '' COMMENT '文件存放路径（如果上传到云平台这里是url）',
   `is_publish` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否发布（0：未发布，1：发布）',
-  `status` tinyint(1) UNSIGNED DEFAULT 1 COMMENT '状态（1：删除，2有效）',
+  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 2 COMMENT '状态（1：删除，2有效）',
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   `updated_by` varchar(50) NOT NULL DEFAULT '' COMMENT '修改人',
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `created_by` varchar(50) NOT NULL DEFAULT '' COMMENT '添加人',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `uk_app_id_code` (`app_id`,`code`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = 'app版本表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -94,7 +107,7 @@ CREATE TABLE `member`  (
   `avatar` varchar(255) NOT NULL DEFAULT '' COMMENT '头像',
   `email` varchar(80) NOT NULL DEFAULT '' COMMENT '邮箱',
   `token` varchar(80) NOT NULL DEFAULT '' COMMENT 'API Token',
-  `status` tinyint(1) NOT NULL COMMENT '状态（1：删除，2有效）',
+  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT 2 COMMENT '状态（1：删除，2有效）',
   `updated_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   `updated_by` varchar(50) NOT NULL DEFAULT '' COMMENT '修改人',
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',

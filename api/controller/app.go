@@ -43,6 +43,21 @@ func (ctl *App) Upload(c *gin.Context) {
 }
 
 // @Tags APP管理
+// @Summary App上传 API
+// @Description App上传
+// @Success 200 {string} string    "ok"
+// @Router /v1/app/upload [POST]
+func (ctl *App) Save(c *gin.Context) {
+	appInfo, err := ctl.paramFilter.Save(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
+		return
+	}
+
+	api.SetResponse(c, http.StatusOK, 1, appInfo)
+}
+
+// @Tags APP管理
 // @Summary App详情 API
 // @Description App详情
 // @Success 200 {string} string    "ok"
