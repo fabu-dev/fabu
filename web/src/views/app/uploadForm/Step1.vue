@@ -26,7 +26,10 @@
         </a-upload-dragger>
       </a-form-item>
       <a-form-item>
-        <a-input type="hidden" v-decorator="['team_id', { initialValue: this.$route.params.teamId, rules: [{required: true, message: ''}] }]"/>
+        <a-input type="hidden" v-decorator="['team_id', { initialValue: this.$route.query.teamId, rules: [{required: true, message: '参数错误'}] }]"/>
+      </a-form-item>
+      <a-form-item>
+        <a-input type="hidden" v-decorator="['team_name', { initialValue: this.$route.query.teamName, rules: [{required: true, message: '参数错误'}] }]"/>
       </a-form-item>
       <a-form-item :wrapperCol="{span: 19, offset: 5}">
         <a-button type="primary" @click="nextStep">下一步</a-button>
@@ -61,7 +64,7 @@ export default {
     }
   },
   created () {
-    console.log('team id', this.$route.params.teamId)
+    console.log('router', this.$route)
   },
   methods: {
     ...mapActions(['UploadApp', 'getBase']),

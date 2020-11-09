@@ -68,6 +68,21 @@ func (ctl *Team) Edit(c *gin.Context) {
 }
 
 // @Tags 团队管理
+// @Summary 获取团队信息 API
+// @Description 获取团队信息
+// @Success 200 {string} string    "ok"
+// @Router /v1/team/info/1 [GET]
+func (ctl *Team) View(c *gin.Context) {
+	teamInfo, err := ctl.paramFilter.Edit(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
+		return
+	}
+
+	api.SetResponse(c, http.StatusOK, code.Success, teamInfo)
+}
+
+// @Tags 团队管理
 // @Summary 添加团队成员 API
 // @Description 添加团队成员
 // @Success 200 {string} string    "ok"

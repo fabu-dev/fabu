@@ -20,7 +20,7 @@
         :wrapperCol="wrapperCol"
         class="stepFormText"
       >
-        {{ sendData.team_id }}
+        {{ sendData.team_name + ' ( ' + sendData.team_id + ' ) ' }}
       </a-form-item>
       <a-form-item
         label="BundleID"
@@ -53,6 +53,16 @@
         class="stepFormText"
       >
         {{ (sendData.size/1024/1024).toFixed(2) }} m
+        <a-input type="hidden" v-decorator="['team_id', { initialValue: sendData.team_id, rules: [{required: true, message: '参数错误'}] }]"/>
+        <a-input type="hidden" v-decorator="['identifier', { initialValue: sendData.identifier, rules: [{required: true, message: '参数错误'}] }]"/>
+      </a-form-item>
+      <a-form-item
+        label="更新说明"
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+        class="stepFormText"
+      >
+        <a-textarea placeholder="请填写更新说明" allow-clear :rows="4" v-decorator="['description', { initialValue: '', rules: [{required: true, message: '请填写更新说明'}] }]"/>
       </a-form-item>
       <a-form-item :wrapperCol="{span: 19, offset: 5}">
         <a-button :loading="loading" type="primary" @click="nextStep">提交</a-button>
@@ -86,6 +96,7 @@ export default {
       validateFields((err, values) => {
         if (!err) {
           console.log('表单 values', values)
+
           that.timer = setTimeout(function () {
             that.loading = false
             that.$emit('nextStep')

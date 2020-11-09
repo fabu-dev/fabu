@@ -49,7 +49,8 @@ export default {
         console.log('target:', data.file.file.response.result)
         const result = data.file.file.response.result
         const stepOneData = {
-          team_id: result.team_id,
+          team_id: data.team_id,
+          team_name: data.team_name,
           build: result.build,
           bundle_id: result.bundle_id,
           icon: result.icon,

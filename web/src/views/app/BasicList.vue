@@ -34,7 +34,7 @@
 
       <div class="operate">
         <a-button type="dashed" style="width: 100%" icon="plus">
-          <router-link :to="{ name: 'AppUpload', params:{ teamId: selectTeam } }"> <a>上传APP</a> </router-link>
+          <router-link :to="{ name: 'AppUpload', query:{ teamId: selectTeam, teamName: selectTeamName } }"> <a>上传APP</a> </router-link>
         </a-button>
       </div>
 
@@ -95,6 +95,7 @@ export default {
       data: [],
       teamData: [],
       selectTeam: '', // 靠，这里不能给0
+      selectTeamName: '',
       CountTeam: '',
       CountApp: '',
       CountAppDownload: ''
@@ -165,6 +166,12 @@ export default {
           this.CountApp = res.result['count_app'] + '个'
           this.CountTeam = res.result['count_team'] + '个'
           this.CountAppDownload = res.result['count_app_download'] + '次'
+
+          for (const key in this.teamData) {
+            if (this.teamData[key].id === this.selectTeam) {
+              this.selectTeamName = this.teamData[key].name
+            }
+          }
 
           this.getTeamApp(this.selectTeam)
         }

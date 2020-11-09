@@ -21,6 +21,7 @@ func CreateApiRouter() {
 		v1Team.GET("/", controller.NewTeam().GetList)                   // 会员团队列表
 		v1Team.POST("/create", controller.NewTeam().Create)             // 创建团队
 		v1Team.PUT("/edit", controller.NewTeam().Edit)                  // 编辑团队
+		v1Team.GET("/info:id", controller.NewTeam().View)               // 编辑团队
 		v1Team.POST("/member/add", controller.NewTeam().AddMember)      // 邀请成员
 		v1Team.DELETE("/member/del", controller.NewTeam().DeleteMember) // 移除成员
 		v1Team.DELETE("/del", controller.NewTeam().Delete)              // 解散团队
