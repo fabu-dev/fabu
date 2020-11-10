@@ -30,12 +30,6 @@ export const asyncRouterMap = [
             component: () => import('@/views/dashboard/Analysis'),
             meta: { title: 'menu.dashboard.analysis', keepAlive: false, permission: [ 'dashboard' ] }
           },
-          // 外部链接
-          // {
-          //   path: 'https://www.baidu.com/',
-          //   name: 'Monitor',
-          //   meta: { title: 'menu.dashboard.monitor', target: '_blank' }
-          // },
           {
             path: '/dashboard/workplace',
             name: 'Workplace',
@@ -49,8 +43,8 @@ export const asyncRouterMap = [
         path: '/app',
         name: 'app',
         component: () => import('@/views/app/BasicList'),
-        // hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-        meta: { title: '应用列表', icon: 'table', permission: [ 'table' ] }
+        hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+        meta: { title: '应用列表', icon: 'table', keepAlive: true, permission: [ 'table' ] }
       },
       {
         path: '/app/upload',
@@ -58,6 +52,35 @@ export const asyncRouterMap = [
         hidden: true,
         component: () => import('@/views/app/uploadForm/StepForm'),
         meta: { title: '上传APP', keepAlive: true, hidden: true, permission: [ 'table' ] }
+      },
+      {
+        path: '/app/info',
+        name: 'AppInfo',
+        hidden: true,
+        component: () => import('@/views/app/search/SearchLayout'),
+        redirect: '/app/search/article',
+        meta: { title: '应用详情', keepAlive: true, hidden: true, permission: [ 'table' ] },
+        hideChildrenInMenu: true,
+        children: [
+          {
+            path: '/app/search/article',
+            name: 'SearchArticles',
+            component: () => import('../views/app/search/Article'),
+            meta: { title: '搜索列表（文章）', permission: [ 'table' ] }
+          },
+          {
+            path: '/app/search/project',
+            name: 'SearchProjects',
+            component: () => import('../views/app/search/Projects'),
+            meta: { title: '搜索列表（项目）', permission: [ 'table' ] }
+          },
+          {
+            path: '/app/search/application',
+            name: 'SearchApplications',
+            component: () => import('../views/app/search/Applications'),
+            meta: { title: '搜索列表（应用）', permission: [ 'table' ] }
+          }
+        ]
       },
       // profile
       {

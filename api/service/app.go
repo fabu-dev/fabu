@@ -105,7 +105,7 @@ func (s *App) Save(params *request.SaveParams, operator *model.Operator) (*globa
 func (s *App) SaveApp(apk *global.AppInfo, params *request.SaveParams, operator *model.Operator) (*model.AppInfo, *api.Error) {
 	// 判断app是否是第一次上传
 	ObjApp := model.NewApp()
-	appInfo, err := ObjApp.GetInfoByBundleId(apk.BundleId)
+	appInfo, err := ObjApp.GetInfoByBundleId(apk.BundleId, apk.Platform)
 	if err != nil {
 		return nil, err
 	}

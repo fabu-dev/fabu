@@ -20,14 +20,14 @@
 <script>
 const getActiveKey = (path) => {
   switch (path) {
-    case '/list/search/article':
-      return '1'
-    case '/list/search/project':
-      return '2'
-    case '/list/search/application':
-      return '3'
+    case '/app/search/article':
+      return 'detail'
+    case '/app/search/project':
+      return 'version'
+    case '/app/search/application':
+      return 'team'
     default:
-      return '1'
+      return 'detail'
   }
 }
 export default {
@@ -35,11 +35,11 @@ export default {
   data () {
     return {
       tabList: [
-        { key: '1', tab: '文章' },
-        { key: '2', tab: '项目' },
-        { key: '3', tab: '应用' }
+        { key: 'detail', tab: '详细信息' },
+        { key: 'version', tab: '版本列表' },
+        { key: 'team', tab: '团队' }
       ],
-      tabActiveKey: '1',
+      tabActiveKey: 'detail',
       search: true
     }
   },
@@ -54,14 +54,14 @@ export default {
     handleTabChange (key) {
       this.tabActiveKey = key
       switch (key) {
-        case '1':
-          this.$router.push('/list/search/article')
+        case 'detail':
+          this.$router.push('/app/search/article')
           break
-        case '2':
-          this.$router.push('/list/search/project')
+        case 'version':
+          this.$router.push('/app/search/project')
           break
-        case '3':
-          this.$router.push('/list/search/application')
+        case 'team':
+          this.$router.push('/app/search/application')
           break
         default:
           this.$router.push('/workplace')
