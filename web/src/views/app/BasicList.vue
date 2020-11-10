@@ -42,7 +42,7 @@
         <a-list-item :key="index" v-for="(item, index) in data">
           <a-list-item-meta :description="item.name" style="flex: 0.25">
             <a-avatar slot="avatar" size="large" shape="square" :src="item.icon"/>
-            <a slot="title"><router-link :to="{ name: 'AppInfo', query:{ teamId: selectTeam, teamName: selectTeamName } }"> {{ item.name }} </router-link></a>
+            <a slot="title"><router-link :to="{ name: 'AppInfo', query:{ id: item.id } }"> {{ item.name }} </router-link></a>
           </a-list-item-meta>
           <div slot="actions">
             <a @click="edit(item)">编辑</a>

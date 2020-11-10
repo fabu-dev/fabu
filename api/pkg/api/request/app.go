@@ -29,3 +29,7 @@ type SaveParams struct {
 	Description string `json:"description" binding:"required"`
 	TeamId      uint64 `json:"team_id" binding:"required,numeric"`
 }
+
+type AppViewParams struct {
+	Id uint64 `uri:"id" binding:"required,numeric"`
+}

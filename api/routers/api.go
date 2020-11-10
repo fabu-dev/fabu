@@ -42,16 +42,16 @@ func CreateApiRouter() {
 	// APP管理
 	v1App := Router.Group("/v1/app").Use(middleware.VerifyToken())
 	{
-		v1App.GET("/", controller.NewApp().GetList)         // APP 列表
-		v1App.POST("/upload", controller.NewApp().Upload)   // APP 上传文件
-		v1App.POST("/create", controller.NewApp().Save)     // APP 保存上传信息
-		v1App.GET("/info/:id", controller.NewApp().View)    // APP 详情
-		v1App.PUT("/edit", controller.NewApp().Edit)        // APP 编辑
-		v1App.DELETE("/delete", controller.NewApp().Delete) // APP 删除
-		v1App.POST("/combine", controller.NewApp().Combine) // APP 合并
-		v1App.GET("/stat", controller.NewApp().GetStat)     // APP 统计
-		v1App.GET("/log", controller.NewApp().GetLog)       // APP 统计
-		v1App.POST("/base", controller.NewApp().GetAppInfo) // APP 统计
+		v1App.GET("/", controller.NewApp().GetList)                     // APP 列表
+		v1App.POST("/upload", controller.NewApp().Upload)               // APP 上传文件
+		v1App.POST("/create", controller.NewApp().Save)                 // APP 保存上传信息
+		v1App.GET("/info/:id", controller.NewApp().View)                // APP 详情
+		v1App.PUT("/edit", controller.NewApp().Edit)                    // APP 编辑
+		v1App.DELETE("/delete", controller.NewApp().Delete)             // APP 删除
+		v1App.POST("/combine", controller.NewApp().Combine)             // APP 合并
+		v1App.GET("/stat", controller.NewApp().GetStat)                 // APP 统计
+		v1App.GET("/log", controller.NewApp().GetLog)                   // APP 统计
+		v1App.POST("/base", controller.NewApp().GetAppInfoByIdentifier) // APP 统计
 
 	}
 

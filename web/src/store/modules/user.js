@@ -62,7 +62,7 @@ const user = {
     // 获取用户信息
     GetInfo ({ commit }) {
       return new Promise((resolve, reject) => {
-        getInfo(1).then(response => {
+        getInfo(1).then(response => { // TODO 这里要改下，不能写死
           const result = response.result
           console.log(result)
           // if (result.role && result.role.permissions.length > 0) {

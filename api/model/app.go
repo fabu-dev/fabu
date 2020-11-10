@@ -19,6 +19,7 @@ type AppInfo struct {
 	Name           string         `json:"name"`
 	TeamId         uint64         `json:"team_id"`
 	Platform       uint8          `json:"platform"`
+	PlatformName   string         `json:"platform_name" gorm:"-"`
 	Icon           string         `json:"icon"`
 	ShortUrl       string         `json:"short_url"`
 	BundleId       string         `json:"bundle_id"`
@@ -74,9 +75,21 @@ func (m *App) Edit(app *AppInfo) *api.Error {
 	return m.ProcessError(err)
 }
 
+// 根据包名和平台获取app详细信息
 func (m *App) GetInfoByBundleId(bundleId string, platform uint8) (*AppInfo, *api.Error) {
 	appInfo := &AppInfo{}
 	err := m.Db().Select(m.DetailColumns).Where("bundle_id = ? and platform = ?", bundleId, platform).First(appInfo).Error
+	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+
+	return appInfo, m.ProcessError(err)
+}
+
+// 根据id获取app详细信息
+func (m *App) GetInfoById(id uint64) (*AppInfo, *api.Error) {
+	appInfo := &AppInfo{}
+	err := m.Db().Select(m.DetailColumns).Where("id = ?", id).First(appInfo).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
 	}

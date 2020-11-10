@@ -3,6 +3,8 @@ package controller
 import (
 	"net/http"
 
+	"github.com/davecgh/go-spew/spew"
+
 	"fabu.dev/api/pkg/api/code"
 
 	"fabu.dev/api/filter"
@@ -70,8 +72,8 @@ func (ctl *App) Save(c *gin.Context) {
 // @Description App详情
 // @Success 200 {string} string    "ok"
 // @Router /v1/app/info [GET]
-func (ctl *App) GetAppInfo(c *gin.Context) {
-	appInfo, err := ctl.paramFilter.GetAppInfo(c)
+func (ctl *App) GetAppInfoByIdentifier(c *gin.Context) {
+	appInfo, err := ctl.paramFilter.GetAppInfoByIdentifier(c)
 	if err != nil {
 		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
 		return
@@ -86,7 +88,15 @@ func (ctl *App) GetAppInfo(c *gin.Context) {
 // @Success 200 {string} string    "ok"
 // @Router /v1/app/info/1 [GET]
 func (ctl *App) View(c *gin.Context) {
-	api.SetResponse(c, http.StatusOK, 1, "")
+	teamInfo, err := ctl.paramFilter.View(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
+		return
+	}
+
+	spew.Dump(teamInfo)
+
+	api.SetResponse(c, http.StatusOK, code.Success, teamInfo)
 }
 
 // @Tags APP管理

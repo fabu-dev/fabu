@@ -6,11 +6,6 @@
   >
     <template v-slot:content>
       <div class="ant-pro-page-header-search">
-        <a-input-search size="large" style="width: 80%; max-width: 522px;">
-          <template v-slot:enterButton>
-            搜索
-          </template>
-        </a-input-search>
       </div>
     </template>
     <router-view />
@@ -20,11 +15,11 @@
 <script>
 const getActiveKey = (path) => {
   switch (path) {
-    case '/app/search/article':
+    case '/app/search/detail':
       return 'detail'
-    case '/app/search/project':
+    case '/app/search/version':
       return 'version'
-    case '/app/search/application':
+    case '/app/search/team':
       return 'team'
     default:
       return 'detail'
@@ -35,7 +30,7 @@ export default {
   data () {
     return {
       tabList: [
-        { key: 'detail', tab: '详细信息' },
+        { key: 'detail', tab: '应用概述' },
         { key: 'version', tab: '版本列表' },
         { key: 'team', tab: '团队' }
       ],
@@ -43,7 +38,7 @@ export default {
       search: true
     }
   },
-  created () {
+  mounted () {
     this.tabActiveKey = getActiveKey(this.$route.path)
 
     this.$watch('$route', (val) => {
@@ -55,16 +50,16 @@ export default {
       this.tabActiveKey = key
       switch (key) {
         case 'detail':
-          this.$router.push('/app/search/article')
+          this.$router.push({ path: '/app/search/detail', query: { id: this.$route.query.id } })
           break
         case 'version':
-          this.$router.push('/app/search/project')
+          this.$router.push({ path: '/app/search/version', query: { id: this.$route.query.id } })
           break
         case 'team':
-          this.$router.push('/app/search/application')
+          this.$router.push({ path: '/app/search/team', query: { id: this.$route.query.id } })
           break
         default:
-          this.$router.push('/workplace')
+          this.$router.push({ path: '/app/search/detail', query: { id: this.$route.query.id } })
       }
     }
   }

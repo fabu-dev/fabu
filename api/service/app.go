@@ -72,13 +72,6 @@ func (s *App) Upload(params *request.UploadParams, operator *model.Operator) *ap
 	return nil
 }
 
-// 获取APP信息
-func (s *App) GetAppInfo(params *request.AppInfoParams, operator *model.Operator) (*global.AppInfo, *api.Error) {
-	apk, err := s.GetAppInfoByIdentifier(params.Identifier)
-
-	return apk, err
-}
-
 // 保存上传信息
 // TODO 判断版本号，用最大的版本号作为最新版本号
 func (s *App) Save(params *request.SaveParams, operator *model.Operator) (*global.AppInfo, *api.Error) {
@@ -194,4 +187,20 @@ func (s App) GetAppInfoByIdentifier(identifier string) (*global.AppInfo, *api.Er
 	}
 
 	return apk, nil
+}
+
+// 获取会员详细信息
+func (s *App) GetInfoById(appId uint64) (*model.AppInfo, *api.Error) {
+	objApp := model.NewApp()
+
+	appInfo, err := objApp.GetInfoById(appId)
+
+	s.ApplyPlatformName(appInfo)
+
+	return appInfo, err
+}
+
+// 平台名
+func (s *App) ApplyPlatformName(appInfo *model.AppInfo) {
+	appInfo.PlatformName = constant.PlatformMap[appInfo.Platform]
 }

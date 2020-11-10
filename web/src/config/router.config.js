@@ -42,43 +42,53 @@ export const asyncRouterMap = [
       {
         path: '/app',
         name: 'app',
-        component: () => import('@/views/app/BasicList'),
+        component: RouteView,
+        meta: { title: '应用列表', icon: 'table', keepAlive: true, permission: [ 'table' ] },
+        redirect: '/app/index',
         hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-        meta: { title: '应用列表', icon: 'table', keepAlive: true, permission: [ 'table' ] }
-      },
-      {
-        path: '/app/upload',
-        name: 'AppUpload',
-        hidden: true,
-        component: () => import('@/views/app/uploadForm/StepForm'),
-        meta: { title: '上传APP', keepAlive: true, hidden: true, permission: [ 'table' ] }
-      },
-      {
-        path: '/app/info',
-        name: 'AppInfo',
-        hidden: true,
-        component: () => import('@/views/app/search/SearchLayout'),
-        redirect: '/app/search/article',
-        meta: { title: '应用详情', keepAlive: true, hidden: true, permission: [ 'table' ] },
-        hideChildrenInMenu: true,
         children: [
           {
-            path: '/app/search/article',
-            name: 'SearchArticles',
-            component: () => import('../views/app/search/Article'),
-            meta: { title: '搜索列表（文章）', permission: [ 'table' ] }
+            path: '/app/index',
+            name: 'AppIndex',
+            hidden: true,
+            component: () => import('@/views/app/BasicList'),
+            meta: { title: '上传APP', keepAlive: true, hidden: true, permission: [ 'table' ] }
           },
           {
-            path: '/app/search/project',
-            name: 'SearchProjects',
-            component: () => import('../views/app/search/Projects'),
-            meta: { title: '搜索列表（项目）', permission: [ 'table' ] }
+            path: '/app/upload',
+            name: 'AppUpload',
+            hidden: true,
+            component: () => import('@/views/app/uploadForm/StepForm'),
+            meta: { title: '上传APP', keepAlive: true, hidden: true, permission: [ 'table' ] }
           },
           {
-            path: '/app/search/application',
-            name: 'SearchApplications',
-            component: () => import('../views/app/search/Applications'),
-            meta: { title: '搜索列表（应用）', permission: [ 'table' ] }
+            path: '/app/info',
+            name: 'AppInfo',
+            hidden: true,
+            component: () => import('@/views/app/search/SearchLayout'),
+            redirect: '/app/search/detail',
+            meta: { title: '应用详情', keepAlive: true, hidden: true, permission: [ 'table' ] },
+            hideChildrenInMenu: true,
+            children: [
+              {
+                path: '/app/search/detail',
+                name: 'AppDetail',
+                component: () => import('../views/app/search/Detail'),
+                meta: { title: '应用概述', permission: [ 'table' ] }
+              },
+              {
+                path: '/app/search/version',
+                name: 'AppVersion',
+                component: () => import('../views/app/search/Version'),
+                meta: { title: '版本列表', permission: [ 'table' ] }
+              },
+              {
+                path: '/app/search/team',
+                name: 'AppTeam',
+                component: () => import('../views/app/search/Team'),
+                meta: { title: '团队', permission: [ 'table' ] }
+              }
+            ]
           }
         ]
       },

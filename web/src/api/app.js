@@ -4,7 +4,8 @@ const appApi = {
   Upload: '/app/upload',
   Save: '/app/create',
   GetBase: '/app/base',
-  Index: '/app/'
+  Index: '/app/',
+  Info: '/app/info/'
 }
 
 // 上传APP
@@ -40,7 +41,7 @@ export function getBase (parameter) {
   })
 }
 
-// 保存APP信息 // 这里用params而不是 data
+// 获取app列表 // 这里用params而不是 data
 export function getList (parameter) {
   console.log('params getList', parameter)
   return request({
@@ -48,5 +49,15 @@ export function getList (parameter) {
     method: 'Get',
     timeout: 0,
     params: parameter
+  })
+}
+
+// 获取一个应用的详细信息
+export function getInfo (id) {
+  console.log('params getInfo', id)
+  return request({
+    url: appApi.Info + id,
+    method: 'Get',
+    timeout: 0
   })
 }
