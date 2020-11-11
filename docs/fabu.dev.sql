@@ -40,7 +40,8 @@ CREATE TABLE `app`  (
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `created_by` varchar(50) NOT NULL DEFAULT '' COMMENT '添加人',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uq_bundle_id_platform` (`bundle_id`,`platform`) USING BTREE
+  UNIQUE KEY `uq_bundle_id_platform` (`bundle_id`,`platform`) USING BTREE,
+  KEY `idx_team_id` (`team_id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = 'app主表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -162,8 +163,7 @@ CREATE TABLE `team_member`  (
   `created_by` varchar(50) NOT NULL DEFAULT '' COMMENT '添加人',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `uk_team_member_id` (`team_id`,`member_id`) USING BTREE,
-  INDEX `idx_member_id`(`member_id`) USING BTREE,
-  INDEX `idx_team_id`(`team_id`) USING BTREE
+  INDEX `idx_member_id`(`member_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = '团队成员表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------

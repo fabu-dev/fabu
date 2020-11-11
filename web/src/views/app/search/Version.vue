@@ -3,21 +3,13 @@
     <a-table :columns="columns" :data-source="data" rowKey="id" bordered>
       <a slot="name" slot-scope="text">{{ text }}</a>
       <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-      <span slot="tags" slot-scope="tags">
-        <a-tag
-          v-for="tag in tags"
-          :key="tag"
-          :color="tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'"
-        >
-          {{ tag.toUpperCase() }}
-        </a-tag>
+      <span slot="size" slot-scope="size">
+        {{ (size/1024/1024).toFixed(2) }}
       </span>
-      <span slot="action" slot-scope="text, record">
-        <a>Invite 一 {{ record.name }}</a>
+      <span slot="action">
+        <a>下载</a>
         <a-divider type="vertical" />
-        <a>Delete</a>
-        <a-divider type="vertical" />
-        <a class="ant-dropdown-link"> More actions <a-icon type="down" /> </a>
+        <a>删除</a>
       </span>
     </a-table>
   </div>
@@ -48,7 +40,8 @@ const columns = [
   {
     title: '大小M',
     dataIndex: 'size',
-    key: 'size'
+    key: 'size',
+    scopedSlots: { customRender: 'size' }
   },
   {
     title: 'hash',
@@ -57,16 +50,16 @@ const columns = [
     scopedSlots: { customRender: 'hash' }
   },
   {
-    title: '上传时间',
-    key: 'created_at',
-    dataIndex: 'created_at',
-    scopedSlots: { customRender: 'created_at' }
-  },
-  {
     title: '上传人',
     key: 'created_by',
     dataIndex: 'created_by',
     scopedSlots: { customRender: 'created_by' }
+  },
+  {
+    title: '上传时间',
+    key: 'created_at',
+    dataIndex: 'created_at',
+    scopedSlots: { customRender: 'created_at' }
   },
   {
     title: '操作',
