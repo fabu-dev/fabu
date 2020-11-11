@@ -20,7 +20,7 @@
         :wrapperCol="wrapperCol"
         class="stepFormText"
       >
-        {{ sendData.team_name + ' ( ' + sendData.team_id + ' ) ' }}
+        {{ teamData.name + ' ( ' + sendData.team_id + ' ) ' }}
       </a-form-item>
       <a-form-item
         label="BundleID"
@@ -80,6 +80,7 @@ export default {
   props: ['sendData'], // 用来接收父组件传给子组件的数据
   data () {
     return {
+      teamData: {},
       labelCol: { lg: { span: 5 }, sm: { span: 5 } },
       wrapperCol: { lg: { span: 19 }, sm: { span: 19 } },
       form: this.$form.createForm(this),
@@ -87,11 +88,12 @@ export default {
       timer: 0
     }
   },
-  created () {
+  mounted () {
     console.log('team id', this.sendData)
+    this.getTeamInfo(this.sendData.team_id)
   },
   methods: {
-    ...mapActions(['SaveApp']),
+    ...mapActions(['SaveApp', 'TeamInfo']),
     nextStep () {
       const that = this
       const { form: { validateFields }, SaveApp } = this
@@ -113,6 +115,16 @@ export default {
           that.loading = false
         }
       })
+    },
+    getTeamInfo (id) {
+      if (id) {
+        const { TeamInfo } = this
+        TeamInfo(id).then(res => {
+          this.teamData = res.result
+        }).catch((err) => {
+          console.log('team list', err)
+        })
+      }
     },
     prevStep () {
       this.$emit('prevStep')
