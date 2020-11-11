@@ -43,6 +43,10 @@ func (s *App) GetListByTeamId(params *request.AppIndexParams) (*response.AppList
 		return nil, err
 	}
 
+	for _, app := range appSlice {
+		s.ApplyPlatformName(app)
+	}
+
 	result := &response.AppList{
 		Count: 0,
 		App:   appSlice,

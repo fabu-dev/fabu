@@ -18,24 +18,18 @@
       style="margin-top: 24px"
       :bordered="false"
       title="应用列表">
-
       <div slot="extra">
         团队：
-        <a-select v-model="selectTeam" style="width: 120px" @change="getTeamApp" v-decorator="[ 'team', {rules: []}]">
+        <a-select v-model="selectTeam" style="width: 120px;margin-right: 16px;" @change="getTeamApp" v-decorator="[ 'team', {rules: []}]">
           <a-select-option v-for="item in teamData" :key="item.id" >
             {{ item.name }}
           </a-select-option>
         </a-select>
 
-        <a-button type="primary" style="margin: 0 5px 0 5px" v-if="role == 3" @click="dissolve()">
-          上传
-        </a-button>
+        <a-button type="primary" ><router-link :to="{ name: 'AppUpload', query:{ teamId: this.selectTeam} }">上传APP</router-link></a-button>
       </div>
 
       <div class="operate">
-        <a-button type="dashed" style="width: 100%" icon="plus">
-          <router-link :to="{ name: 'AppUpload', query:{ teamId: selectTeam } }"> <a>上传APP</a> </router-link>
-        </a-button>
       </div>
 
       <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
@@ -63,7 +57,7 @@
             </div>
             <div class="list-content-item">
               <span>平台</span>
-              <p>{{ item.platform }}</p>
+              <p>{{ item.platform_name }}</p>
             </div>
             <div class="list-content-item">
               <span>下载次数</span>

@@ -43,7 +43,7 @@ export const asyncRouterMap = [
         path: '/app',
         name: 'app',
         component: RouteView,
-        meta: { title: '应用列表', icon: 'table', keepAlive: true, permission: [ 'table' ] },
+        meta: { title: '应用管理', icon: 'table', keepAlive: true, permission: [ 'table' ] },
         redirect: '/app/index',
         hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
         children: [
@@ -52,7 +52,7 @@ export const asyncRouterMap = [
             name: 'AppIndex',
             hidden: true,
             component: () => import('@/views/app/BasicList'),
-            meta: { title: '上传APP', keepAlive: true, hidden: true, permission: [ 'table' ] }
+            meta: { title: '应用列表', keepAlive: true, hidden: true, permission: [ 'table' ] }
           },
           {
             path: '/app/upload',
