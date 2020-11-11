@@ -64,3 +64,11 @@ func (m *AppVersion) GetInfoByCode(AppId uint64, code string) (*AppVersionInfo, 
 
 	return appInfo, m.ProcessError(err)
 }
+
+// 获取一个app的版本列表
+func (m *AppVersion) GetListByAppId(AppId uint64) ([]*AppVersionInfo, *api.Error) {
+	appSlice := make([]*AppVersionInfo, 0, 32)
+	err := m.Db().Select(m.DetailColumns).Where("app_id = ?", AppId).Find(&appSlice).Order("code desc").Error
+
+	return appSlice, m.ProcessError(err)
+}

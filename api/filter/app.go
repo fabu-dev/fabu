@@ -24,9 +24,9 @@ func NewApp() *App {
 	}
 }
 
-// 获取一个用户的团队列表
+// 获取一个团队的APP列表
 func (f *App) GetList(c *gin.Context) (*response.AppList, *api.Error) {
-	params := &request.TeamIndexParams{}
+	params := &request.AppIndexParams{}
 	if err := c.ShouldBind(params); err != nil {
 		return nil, api.NewError(code.ErrorRequest, err.Error())
 	}

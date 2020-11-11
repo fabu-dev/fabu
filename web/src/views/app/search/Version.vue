@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-table :columns="columns" :data-source="data">
+    <a-table :columns="columns" :data-source="data" rowKey="id" bordered>
       <a slot="name" slot-scope="text">{{ text }}</a>
       <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
       <span slot="tags" slot-scope="tags">
@@ -29,6 +29,12 @@ import { mapActions } from 'vuex'
 
 const columns = [
   {
+    title: 'ID',
+    dataIndex: 'id',
+    key: 'id',
+    slots: { title: 'customTitle' }
+  },
+  {
     title: '版本号',
     dataIndex: 'code',
     key: 'code',
@@ -40,7 +46,7 @@ const columns = [
     key: 'description'
   },
   {
-    title: '大小',
+    title: '大小M',
     dataIndex: 'size',
     key: 'size'
   },
@@ -51,8 +57,21 @@ const columns = [
     scopedSlots: { customRender: 'hash' }
   },
   {
+    title: '上传时间',
+    key: 'created_at',
+    dataIndex: 'created_at',
+    scopedSlots: { customRender: 'created_at' }
+  },
+  {
+    title: '上传人',
+    key: 'created_by',
+    dataIndex: 'created_by',
+    scopedSlots: { customRender: 'created_by' }
+  },
+  {
     title: '操作',
     key: 'action',
+    dataIndex: 'action',
     scopedSlots: { customRender: 'action' }
   }
 ]
@@ -85,7 +104,7 @@ export default {
         'app_id': this.$route.query.id
       }
       GetVersionList(params).then(res => {
-        this.data = res.result
+        this.data = res.result.app_version
         console.log('data', this.data)
       }).catch((err) => {
         console.log('team list', err)

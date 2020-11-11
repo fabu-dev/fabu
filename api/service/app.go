@@ -35,7 +35,7 @@ func NewApp() *App {
 }
 
 // 获取会员的团队列表
-func (s *App) GetListByTeamId(params *request.TeamIndexParams) (*response.AppList, *api.Error) {
+func (s *App) GetListByTeamId(params *request.AppIndexParams) (*response.AppList, *api.Error) {
 	// 先获取会员所有的团队
 	objTeamMember := model.NewApp()
 	appSlice, err := objTeamMember.GetAppListByTeamId(params.TeamId)

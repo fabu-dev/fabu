@@ -2,7 +2,7 @@ package request
 
 import "mime/multipart"
 
-type TeamIndexParams struct {
+type AppIndexParams struct {
 	TeamId uint64 `form:"team_id" binding:"required,numeric"`
 }
 

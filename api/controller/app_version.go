@@ -1,19 +1,21 @@
 package controller
 
 import (
+	"net/http"
+
 	"fabu.dev/api/filter"
+	"fabu.dev/api/pkg/api"
+	"fabu.dev/api/pkg/api/code"
 	"github.com/gin-gonic/gin"
 )
 
 type AppVersion struct {
 	paramFilter *filter.AppVersion
-
 }
 
 func NewAppVersion() *AppVersion {
 	return &AppVersion{
 		paramFilter: filter.NewAppVersion(),
-
 	}
 }
 
@@ -23,7 +25,13 @@ func NewAppVersion() *AppVersion {
 // @Success 200 {string} string    "ok"
 // @Router /v1/app/version/ [GET]
 func (ctl *AppVersion) GetList(c *gin.Context) {
+	result, err := ctl.paramFilter.GetList(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, code.ErrorRequest, err.Message)
+		return
+	}
 
+	api.SetResponse(c, http.StatusOK, 1, result)
 }
 
 // @Tags APP版本管理
