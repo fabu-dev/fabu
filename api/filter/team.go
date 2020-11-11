@@ -119,3 +119,17 @@ func (f *Team) Edit(c *gin.Context) (*model.TeamInfo, *api.Error) {
 
 	return teamInfo, err
 }
+
+// 验证获取团队详情
+func (f *Team) View(c *gin.Context) (*model.TeamInfo, *api.Error) {
+	params := &request.TeamViewParams{}
+
+	if err := c.ShouldBindUri(params); err != nil {
+		return nil, api.NewError(code.ErrorRequest, err.Error())
+	}
+
+	// 调用service对应的方法
+	app, err := f.service.GetInfoById(params.Id)
+
+	return app, err
+}

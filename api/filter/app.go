@@ -8,7 +8,6 @@ import (
 	"fabu.dev/api/pkg/api/global"
 	"fabu.dev/api/pkg/api/request"
 	"fabu.dev/api/service"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
@@ -88,6 +87,6 @@ func (f *App) View(c *gin.Context) (*model.AppInfo, *api.Error) {
 
 	// 调用service对应的方法
 	app, err := f.service.GetInfoById(params.Id)
-	spew.Dump(app)
+
 	return app, err
 }

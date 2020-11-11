@@ -50,16 +50,16 @@ export default {
       this.tabActiveKey = key
       switch (key) {
         case 'detail':
-          this.$router.push({ path: '/app/search/detail', query: { id: this.$route.query.id } })
+          this.$router.push({ path: '/app/search/detail', query: { id: this.$route.query.id, team_id: this.$route.query.team_id } })
           break
         case 'version':
-          this.$router.push({ path: '/app/search/version', query: { id: this.$route.query.id } })
+          this.$router.push({ path: '/app/search/version', query: { id: this.$route.query.id, team_id: this.$route.query.team_id } })
           break
         case 'team':
-          this.$router.push({ path: '/app/search/team', query: { id: this.$route.query.id } })
+          this.$router.push({ path: '/app/search/team', query: { id: this.$route.query.id, team_id: this.$route.query.team_id } })
           break
         default:
-          this.$router.push({ path: '/app/search/detail', query: { id: this.$route.query.id } })
+          this.$router.push({ path: '/app/search/detail', query: { id: this.$route.query.id, team_id: this.$route.query.team_id } })
       }
     }
   }

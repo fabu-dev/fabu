@@ -1,9 +1,12 @@
 package model
 
 import (
+	"errors"
+
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/constant"
 	"fabu.dev/api/pkg/utils"
+	"github.com/jinzhu/gorm"
 )
 
 type Team struct {
@@ -62,4 +65,15 @@ func (m *Team) Edit(team *TeamInfo) *api.Error {
 	err := m.Db().Where("id = ?", team.Id).Updates(team).Error
 
 	return m.ProcessError(err)
+}
+
+// 根据id获取app详细信息
+func (m *Team) GetInfoById(id uint64) (*TeamInfo, *api.Error) {
+	appInfo := &TeamInfo{}
+	err := m.Db().Select(m.DetailColumns).Where("id = ?", id).First(appInfo).Error
+	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+
+	return appInfo, m.ProcessError(err)
 }

@@ -1,14 +1,17 @@
 <template>
   <div>
     <a-card style="margin-top: 24px" :bordered="false" :title="data.name">
-      <a-descriptions title="基本信息">
+      <a-descriptions title="基本信息" :column="4">
         <a-descriptions-item label="Bundle Id">{{ data.bundle_id }}</a-descriptions-item>
         <a-descriptions-item label="最新版本">{{ data.current_version }}</a-descriptions-item>
         <a-descriptions-item label="平台">{{ data.platform_name }}</a-descriptions-item>
         <a-descriptions-item label="App Key">{{ data.identifier }}</a-descriptions-item>
         <a-descriptions-item label="下载地址">{{ data.short_url }}</a-descriptions-item>
       </a-descriptions>
-      <a-descriptions title="操作信息">
+    </a-card>
+
+    <a-card style="margin-top: 24px" :bordered="false" title="操作信息">
+      <a-descriptions :column="4">
         <a-descriptions-item label="创建人">{{ data.created_by }}</a-descriptions-item>
         <a-descriptions-item label="创建时间">{{ data.created_at }}</a-descriptions-item>
         <a-descriptions-item label="最后操作人">{{ data.updated_by }}</a-descriptions-item>
@@ -16,7 +19,6 @@
         <a-descriptions-item ></a-descriptions-item>
         <a-descriptions-item ></a-descriptions-item>
       </a-descriptions>
-
     </a-card>
   </div>
 </template>

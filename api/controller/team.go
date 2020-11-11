@@ -73,7 +73,7 @@ func (ctl *Team) Edit(c *gin.Context) {
 // @Success 200 {string} string    "ok"
 // @Router /v1/team/info/1 [GET]
 func (ctl *Team) View(c *gin.Context) {
-	teamInfo, err := ctl.paramFilter.Edit(c)
+	teamInfo, err := ctl.paramFilter.View(c)
 	if err != nil {
 		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
 		return

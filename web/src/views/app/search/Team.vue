@@ -1,122 +1,76 @@
 <template>
   <div>
-    <a-card :bordered="false" class="ant-pro-components-tag-select">
-      <a-form :form="form" layout="inline">
-        <standard-form-row title="所属类目" block style="padding-bottom: 11px;">
-          <a-form-item>
-            <tag-select>
-              <tag-select-option value="Category1">类目一</tag-select-option>
-              <tag-select-option value="Category2">类目二</tag-select-option>
-              <tag-select-option value="Category3">类目三</tag-select-option>
-              <tag-select-option value="Category4">类目四</tag-select-option>
-              <tag-select-option value="Category5">类目五</tag-select-option>
-              <tag-select-option value="Category6">类目六</tag-select-option>
-              <tag-select-option value="Category7">类目七</tag-select-option>
-              <tag-select-option value="Category8">类目八</tag-select-option>
-              <tag-select-option value="Category9">类目九</tag-select-option>
-              <tag-select-option value="Category10">类目十</tag-select-option>
-            </tag-select>
-          </a-form-item>
-        </standard-form-row>
-
-        <standard-form-row title="其它选项" grid last>
-          <a-row>
-            <a-col :lg="8" :md="10" :sm="10" :xs="24">
-              <a-form-item :wrapper-col="{ sm: { span: 16 }, xs: { span: 24 } }" label="作者">
-                <a-select
-                  style="max-width: 200px; width: 100%;"
-                  mode="multiple"
-                  placeholder="不限"
-                  v-decorator="['author']"
-                  @change="handleChange"
-                >
-                  <a-select-option value="lisa">王昭君</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col :lg="8" :md="10" :sm="10" :xs="24">
-              <a-form-item :wrapper-col="{ sm: { span: 16 }, xs: { span: 24 } }" label="好评度">
-                <a-select
-                  style="max-width: 200px; width: 100%;"
-                  placeholder="不限"
-                  v-decorator="['rate']"
-                >
-                  <a-select-option value="good">优秀</a-select-option>
-                  <a-select-option value="normal">普通</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-          </a-row>
-        </standard-form-row>
-      </a-form>
+    <a-card :bordered="false" title="团队信息">
+      <a-descriptions :column="4">
+        <a-descriptions-item label="ID">{{ data.id }}</a-descriptions-item>
+        <a-descriptions-item label="团队名称">{{ data.name }}</a-descriptions-item>
+        <a-descriptions-item label="创建人">{{ data.created_by }}</a-descriptions-item>
+        <a-descriptions-item label="创建时间">{{ data.created_at }}</a-descriptions-item>
+      </a-descriptions>
     </a-card>
 
-    <div class="ant-pro-pages-list-applications-filterCardList">
-      <a-list :loading="loading" :data-source="data" :grid="{ gutter: 24, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }" style="margin-top: 24px;">
-        <a-list-item slot="renderItem" slot-scope="item">
-          <a-card :body-style="{ paddingBottom: 20 }" hoverable>
-            <a-card-meta :title="item.title">
-              <template slot="avatar">
-                <a-avatar size="small" :src="item.avatar"/>
-              </template>
-            </a-card-meta>
-            <template slot="actions">
-              <a-tooltip title="下载">
-                <a-icon type="download" />
-              </a-tooltip>
-              <a-tooltip title="编辑">
-                <a-icon type="edit" />
-              </a-tooltip>
-              <a-tooltip title="分享">
-                <a-icon type="share-alt" />
-              </a-tooltip>
-              <a-dropdown>
-                <a class="ant-dropdown-link">
-                  <a-icon type="ellipsis" />
-                </a>
-                <a-menu slot="overlay">
-                  <a-menu-item>
-                    <a href="javascript:;">1st menu item</a>
-                  </a-menu-item>
-                  <a-menu-item>
-                    <a href="javascript:;">2nd menu item</a>
-                  </a-menu-item>
-                  <a-menu-item>
-                    <a href="javascript:;">3rd menu item</a>
-                  </a-menu-item>
-                </a-menu>
-              </a-dropdown>
-            </template>
-            <div class="">
-              <card-info active-user="100" new-user="999"></card-info>
-            </div>
-          </a-card>
-        </a-list-item>
-      </a-list>
-    </div>
+    <a-card style="margin-top: 24px" :bordered="false" title="团队成员">
+      <a-table
+        style="margin-bottom: 24px"
+        row-key="id"
+        :columns="columns"
+        :data-source="memberData"
+        bordered
+      >
+      </a-table>
+    </a-card>
   </div>
 </template>
 
 <script>
 import moment from 'moment'
-import { TagSelect, StandardFormRow, Ellipsis, AvatarList } from '@/components'
-import CardInfo from './components/CardInfo'
-const TagSelectOption = TagSelect.Option
-const AvatarListItem = AvatarList.AvatarItem
+import { mapActions } from 'vuex'
+
+const colorList = ['#90D9FF', '#f56a00', '#7265e6', '#ffbf00', '#00a2ae']
+
+const columns = [
+  {
+    title: 'ID',
+    dataIndex: 'member_id',
+    key: 'member_id'
+  },
+  {
+    title: '姓名',
+    dataIndex: 'member_name',
+    key: 'member_name'
+  },
+  {
+    title: '账户',
+    dataIndex: 'member_account',
+    key: 'member_account',
+    scopedSlots: { customRender: 'member_account' }
+  },
+  {
+    title: '邮箱',
+    dataIndex: 'member_email',
+    key: 'member_email'
+  },
+  {
+    title: '角色',
+    dataIndex: 'role_name',
+    key: 'role_name'
+  },
+  {
+    title: '加入时间',
+    dataIndex: 'created_at',
+    key: 'created_at'
+  }
+]
 
 export default {
   components: {
-    AvatarList,
-    AvatarListItem,
-    Ellipsis,
-    TagSelect,
-    TagSelectOption,
-    StandardFormRow,
-    CardInfo
   },
   data () {
     return {
-      data: [],
+      columns,
+      color: colorList[0],
+      data: {},
+      memberData: [],
       form: this.$form.createForm(this),
       loading: true
     }
@@ -127,18 +81,33 @@ export default {
     }
   },
   mounted () {
-    this.getList()
+    this.getInfo(this.$route.query.team_id)
+    this.getTeamMember(this.$route.query.team_id)
   },
   methods: {
+    ...mapActions(['TeamInfo', 'TeamMember']),
     handleChange (value) {
       console.log(`selected ${value}`)
     },
-    getList () {
-      this.$http.get('/list/article', { params: { count: 8 } }).then(res => {
-        console.log('res', res)
-        this.data = res.result
-        this.loading = false
-      })
+    getInfo (id) {
+      if (id) {
+        const { TeamInfo } = this
+        TeamInfo(id).then(res => {
+          this.data = res.result
+        }).catch((err) => {
+          console.log('team list', err)
+        })
+      }
+    },
+    getTeamMember (id) {
+      if (id) {
+        const { TeamMember } = this
+        TeamMember(id).then(res => {
+          this.memberData = res.result.member_list
+        }).catch((err) => {
+          console.log('team list', err)
+        })
+      }
     }
   }
 }

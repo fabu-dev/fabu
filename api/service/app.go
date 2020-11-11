@@ -172,7 +172,7 @@ func (s *App) SaveAppVersion(apk *global.AppInfo, params *request.SaveParams, op
 	return appVersionInfo, err
 }
 
-// 从redis里面获取缓存的文件信息
+// 从Redis里面获取缓存的文件信息
 func (s App) GetAppInfoByIdentifier(identifier string) (*global.AppInfo, *api.Error) {
 	apkString, err := db.Redis.HGet(constant.AppFileInfo, identifier).Bytes()
 	if err != nil {
@@ -189,7 +189,7 @@ func (s App) GetAppInfoByIdentifier(identifier string) (*global.AppInfo, *api.Er
 	return apk, nil
 }
 
-// 获取会员详细信息
+// 获取App详细信息
 func (s *App) GetInfoById(appId uint64) (*model.AppInfo, *api.Error) {
 	objApp := model.NewApp()
 

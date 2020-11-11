@@ -196,3 +196,14 @@ func (s *Team) AddMember(teamMemberInfo *model.TeamMemberInfo) *api.Error {
 
 	return objTeamMember.Add(teamMemberInfo)
 }
+
+// 获取团队详细信息
+func (s *Team) GetInfoById(teamId uint64) (*model.TeamInfo, *api.Error) {
+	objTeam := model.NewTeam()
+
+	teamInfo, err := objTeam.GetInfoById(teamId)
+
+	//s.ApplyPlatformName(appInfo)
+
+	return teamInfo, err
+}
