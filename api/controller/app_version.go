@@ -40,7 +40,13 @@ func (ctl *AppVersion) GetList(c *gin.Context) {
 // @Success 200 {string} string    "ok"
 // @Router /v1/app/version/delete [GET]
 func (ctl *AppVersion) Delete(c *gin.Context) {
+	err := ctl.paramFilter.Delete(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
+		return
+	}
 
+	api.SetResponse(c, http.StatusOK, 1, "")
 }
 
 // @Tags APP版本管理

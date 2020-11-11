@@ -6,10 +6,10 @@
       <span slot="size" slot-scope="size">
         {{ (size/1024/1024).toFixed(2) }}
       </span>
-      <span slot="action">
+      <span slot="action" slot-scope="text, record">
         <a>下载</a>
         <a-divider type="vertical" />
-        <a>删除</a>
+        <a @click="del(record.id)">删除</a>
       </span>
     </a-table>
   </div>
@@ -24,7 +24,7 @@ const columns = [
     title: 'ID',
     dataIndex: 'id',
     key: 'id',
-    slots: { title: 'customTitle' }
+    slots: { title: 'id' }
   },
   {
     title: '版本号',
@@ -86,7 +86,7 @@ export default {
     this.getList()
   },
   methods: {
-    ...mapActions(['GetVersionList']),
+    ...mapActions(['GetVersionList', 'DeleteVersion']),
     handleChange (value) {
       console.log(`selected ${value}`)
     },
@@ -101,6 +101,26 @@ export default {
         console.log('data', this.data)
       }).catch((err) => {
         console.log('team list', err)
+      })
+    },
+    del (id) {
+      const { DeleteVersion } = this
+      const params = {
+        'id': id
+      }
+      this.$confirm({
+        title: '确定要删除该版本么?',
+        content: '',
+        onOk () {
+          return DeleteVersion(params).then(res => {
+            if (res.result.length > 0) {
+              this.getList()
+            }
+          }).catch((err) => {
+            console.log('team list', err)
+          })
+        },
+        onCancel () {}
       })
     }
   }

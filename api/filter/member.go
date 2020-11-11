@@ -12,6 +12,7 @@ import (
 type Filter func(c *gin.Context)
 
 type Member struct {
+	BaseFilter
 	service *service.Member
 }
 

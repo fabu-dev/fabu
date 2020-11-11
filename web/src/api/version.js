@@ -1,7 +1,8 @@
 import request from '@/utils/request'
 
 const appVersionApi = {
-  Index: 'app/version/'
+  Index: 'app/version/',
+  Delete: 'app/version/delete'
 }
 
 // 获取一个app的版本列表
@@ -12,5 +13,16 @@ export function getList (parameter) {
     method: 'Get',
     timeout: 0,
     params: parameter
+  })
+}
+
+// 删除一个app的版本
+export function deleteVersion (parameter) {
+  console.log('params getList', parameter)
+  return request({
+    url: appVersionApi.Delete,
+    method: 'Delete',
+    timeout: 0,
+    data: parameter
   })
 }

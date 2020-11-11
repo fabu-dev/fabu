@@ -11,6 +11,7 @@ import (
 )
 
 type Auth struct {
+	BaseFilter
 	service *service.Auth
 }
 
