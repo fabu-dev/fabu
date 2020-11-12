@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"container/list"
 	"crypto/md5"
 	"encoding/hex"
 	"math/rand"
@@ -59,4 +60,23 @@ func FirstLitterToUpper(str string) string {
 	}
 
 	return string(list)
+}
+
+func NumToString(num int64) string {
+	var base int64 = 16
+	baseHex := "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz"
+
+	outputList := list.New()
+	for num/base != 0 {
+		outputList.PushFront(num % base)
+		num = num / base
+	}
+	outputList.PushFront(num % base)
+
+	str := ""
+	for iter := outputList.Front(); iter != nil; iter = iter.Next() {
+		str = str + string(baseHex[int(iter.Value.(int64))])
+	}
+
+	return str
 }
