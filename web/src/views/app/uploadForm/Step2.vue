@@ -47,6 +47,14 @@
         {{ sendData.icon }}
       </a-form-item>
       <a-form-item
+          label="短链接"
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+          class="stepFormText"
+      >
+        {{ sendData.shortKey }}
+      </a-form-item>
+      <a-form-item
         label="大小"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"

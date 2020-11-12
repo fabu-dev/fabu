@@ -6,6 +6,8 @@ import (
 	"io"
 	"os"
 
+	"fabu.dev/api/pkg/short"
+
 	"fabu.dev/api/pkg/api/global"
 	"fabu.dev/api/pkg/parser"
 
@@ -161,6 +163,10 @@ func (t *CombineApp) CombineFinished(filename, identifier string) error {
 		return err
 	}
 
+	shortKey, err := short.NewPool().GetShortKey()
+	if err != nil {
+
+	}
 	appInfo := &global.AppInfo{
 		Name:       apk.Name,
 		BundleId:   apk.BundleId,
@@ -170,6 +176,7 @@ func (t *CombineApp) CombineFinished(filename, identifier string) error {
 		Size:       apk.Size,
 		Identifier: identifier,
 		Platform:   apk.Platform,
+		ShortKey:   shortKey,
 	}
 	data, err := json.Marshal(appInfo)
 	if err != nil {

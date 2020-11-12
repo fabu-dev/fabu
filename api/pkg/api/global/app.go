@@ -9,4 +9,5 @@ type AppInfo struct {
 	Icon       string `json:"icon"`
 	Size       uint64 `json:"size"`
 	Identifier string `json:"identifier"`
+	ShortKey   string `json:"short_key"`
 }

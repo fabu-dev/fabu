@@ -16,4 +16,5 @@ type Task interface {
 // 此处添加要执行的job
 func init() {
 	TaskList = append(TaskList, task.NewCombineApp())
+	TaskList = append(TaskList, task.NewShortPool())
 }

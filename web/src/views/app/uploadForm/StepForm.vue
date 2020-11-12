@@ -57,7 +57,8 @@ export default {
           identifier: result.identifier,
           name: result.name,
           size: result.size,
-          version: result.version
+          version: result.version,
+          shortKey: process.env.VUE_APP_API_BASE_URL + '' + result.short_key
         }
         this.stepOne = stepOneData
         console.log('step one:', stepOneData)

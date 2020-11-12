@@ -123,7 +123,7 @@ func (s *App) SaveApp(apk *global.AppInfo, params *request.SaveParams, operator 
 		TeamId:         params.TeamId,
 		Platform:       apk.Platform,
 		Icon:           apk.Icon,
-		ShortUrl:       "",
+		ShortUrl:       apk.ShortKey,
 		BundleId:       apk.BundleId,
 		CurrentVersion: apk.Version,
 		Identifier:     "",
