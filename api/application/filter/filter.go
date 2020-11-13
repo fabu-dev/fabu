@@ -1,7 +1,7 @@
 package filter
 
 import (
-	"fabu.dev/api/model"
+	"fabu.dev/api/application/model"
 	"github.com/gin-gonic/gin"
 )
 

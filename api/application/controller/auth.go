@@ -3,7 +3,7 @@ package controller
 import (
 	"net/http"
 
-	"fabu.dev/api/filter"
+	"fabu.dev/api/application/filter"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
 	"github.com/gin-gonic/gin"

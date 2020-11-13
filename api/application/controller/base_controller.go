@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"fabu.dev/api/filter"
+	"fabu.dev/api/application/filter"
 	"github.com/gin-gonic/gin"
 )
 

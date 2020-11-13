@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"fabu.dev/api/controller/response"
+	"fabu.dev/api/application/controller/response"
 
 	"fabu.dev/api/pkg/api/global"
 
@@ -15,7 +15,7 @@ import (
 
 	"fabu.dev/api/pkg/api/code"
 
-	"fabu.dev/api/model"
+	"fabu.dev/api/application/model"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/request"
 )

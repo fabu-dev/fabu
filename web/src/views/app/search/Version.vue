@@ -1,17 +1,19 @@
 <template>
   <div>
-    <a-table :columns="columns" :data-source="data" rowKey="id" bordered>
-      <a slot="name" slot-scope="text">{{ text }}</a>
-      <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-      <span slot="size" slot-scope="size">
-        {{ (size/1024/1024).toFixed(2) }}
-      </span>
-      <span slot="action" slot-scope="text, record">
-        <a>下载</a>
-        <a-divider type="vertical" />
-        <a @click="del(record.id)">删除</a>
-      </span>
-    </a-table>
+    <a-card style="margin-top: 24px" :bordered="false" title="应用版本列表">
+      <a-table :columns="columns" :data-source="data" rowKey="id" bordered>
+        <a slot="name" slot-scope="text">{{ text }}</a>
+        <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
+        <span slot="size" slot-scope="size">
+          {{ (size/1024/1024).toFixed(2) }}
+        </span>
+        <span slot="action" slot-scope="text, record">
+          <a>下载</a>
+          <a-divider type="vertical" />
+          <a @click="del(record.id)">删除</a>
+        </span>
+      </a-table>
+    </a-card>
   </div>
 </template>
 

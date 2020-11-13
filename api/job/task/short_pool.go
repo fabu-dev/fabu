@@ -7,7 +7,7 @@ import (
 	"fabu.dev/api/pkg/config"
 	"fabu.dev/api/pkg/short"
 
-	"fabu.dev/api/service"
+	"fabu.dev/api/application/service"
 )
 
 // 组合分片上传的文件数据

@@ -20,11 +20,11 @@
     </template>
     <template v-slot:extra>
       <a-button-group style="margin-right: 4px;">
-        <a-button>操作</a-button>
-        <a-button>操作</a-button>
+        <a-button>删除</a-button>
+        <a-button>预览</a-button>
         <a-button><a-icon type="ellipsis"/></a-button>
       </a-button-group>
-      <a-button type="primary" ><router-link :to="{ name: 'AppUpload', query:{ teamId: $route.query.team_id } }">上传APP</router-link></a-button>
+      <a-button type="primary" ><router-link target="_blank" :to="{ name: 'AppUpload', query:{ teamId: $route.query.team_id } }">上传APP</router-link></a-button>
     </template>
     <router-view />
   </page-header-wrapper>

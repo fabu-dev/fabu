@@ -7,7 +7,7 @@ import (
 
 	"fabu.dev/api/pkg/api/code"
 
-	"fabu.dev/api/filter"
+	"fabu.dev/api/application/filter"
 	"fabu.dev/api/pkg/api"
 	"github.com/gin-gonic/gin"
 )

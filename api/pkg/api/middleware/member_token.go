@@ -9,7 +9,7 @@ import (
 
 	"fabu.dev/api/pkg/db"
 
-	"fabu.dev/api/model"
+	"fabu.dev/api/application/model"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
 	"github.com/gin-gonic/gin"

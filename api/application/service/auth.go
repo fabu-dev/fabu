@@ -1,7 +1,7 @@
 package service
 
 import (
-	"fabu.dev/api/model"
+	"fabu.dev/api/application/model"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/request"
 	"fabu.dev/api/pkg/constant"

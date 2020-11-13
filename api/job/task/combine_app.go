@@ -17,7 +17,7 @@ import (
 
 	"fabu.dev/api/pkg/db"
 
-	"fabu.dev/api/service"
+	"fabu.dev/api/application/service"
 	"github.com/sirupsen/logrus"
 )
 

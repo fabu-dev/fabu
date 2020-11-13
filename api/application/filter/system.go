@@ -1,6 +1,6 @@
 package filter
 
-import "fabu.dev/api/service"
+import "fabu.dev/api/application/service"
 
 type System struct {
 	BaseFilter

@@ -1,6 +1,6 @@
 package response
 
-import "fabu.dev/api/model"
+import "fabu.dev/api/application/model"
 
 type TeamList struct {
 	CountTeam        int               `json:"count_team"`

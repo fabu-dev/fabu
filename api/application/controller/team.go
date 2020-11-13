@@ -3,9 +3,9 @@ package controller
 import (
 	"net/http"
 
-	"fabu.dev/api/controller/response"
+	"fabu.dev/api/application/controller/response"
 
-	"fabu.dev/api/filter"
+	"fabu.dev/api/application/filter"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
 

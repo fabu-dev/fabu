@@ -35,17 +35,17 @@
       <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
         <a-list-item :key="index" v-for="(item, index) in data">
           <a-list-item-meta :description="item.name" style="flex: 0.25">
-            <a-avatar slot="avatar" size="large" shape="square" :src="item.icon"/>
+            <a-avatar slot="avatar" size="large" shape="square" :src="item.icon"/>{{ item.icon }}
             <a slot="title"><router-link :to="{ name: 'AppInfo', query:{ id: item.id, team_id: item.team_id } }"> {{ item.name }} </router-link></a>
           </a-list-item-meta>
           <div slot="actions">
-            <a @click="edit(item)">编辑</a>
+            <a @click="edit(item)">预览</a>
           </div>
           <div slot="actions">
             <a-dropdown>
               <a-menu slot="overlay">
-                <a-menu-item><a>编辑</a></a-menu-item>
-                <a-menu-item><a>删除</a></a-menu-item>
+                <a-menu-item><a @click="edit(item)">编辑</a></a-menu-item>
+                <a-menu-item><a @click="edit(item)">删除</a></a-menu-item>
               </a-menu>
               <a>更多<a-icon type="down"/></a>
             </a-dropdown>
@@ -192,7 +192,11 @@ export default {
         }
         GetList(params).then(res => {
           this.data = res.result.app
-          console.log('data', this.data)
+          for (const key in this.data) {
+            this.data[key].icon = process.env.VUE_APP_API_BASE_URL + '/' + this.data[key].icon
+          }
+
+          console.log('list data', this.data)
         }).catch((err) => {
           console.log('team list', err)
         })
