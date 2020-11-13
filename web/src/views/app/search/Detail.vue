@@ -58,7 +58,7 @@ export default {
       GetAppInfo(this.id).then(res => {
         this.data = res.result
         this.data.shortUrl = process.env.VUE_APP_API_BASE_URL + '' + this.data.short_url
-          console.log('data', this.data)
+        console.log('data', this.data)
       }).catch((err) => {
         console.log('team list', err)
       })

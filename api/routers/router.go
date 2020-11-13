@@ -2,7 +2,6 @@ package routers
 
 import (
 	"io"
-	"net/http"
 	"os"
 
 	"fabu.dev/api/pkg/api/middleware"
@@ -53,6 +52,4 @@ func InitRouter() {
 	Router.Use(middleware.Consuming())
 
 	Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
-	Router.StaticFS("/file/app", http.Dir("./static/app"))
 }
