@@ -2,10 +2,14 @@ package task
 
 import (
 	"encoding/json"
+	"fmt"
 	"image/png"
 	"io"
 	"os"
 
+	"github.com/boombuler/barcode/qr"
+
+	"fabu.dev/api/pkg/qrcode"
 	"fabu.dev/api/pkg/short"
 
 	"fabu.dev/api/pkg/api/global"
@@ -167,6 +171,12 @@ func (t *CombineApp) CombineFinished(filename, identifier string) error {
 	if err != nil {
 
 	}
+
+	qrCode, err := generateQrCode(shortKey)
+	if err != nil {
+
+	}
+
 	appInfo := &global.AppInfo{
 		Name:       apk.Name,
 		BundleId:   apk.BundleId,
@@ -177,6 +187,8 @@ func (t *CombineApp) CombineFinished(filename, identifier string) error {
 		Identifier: identifier,
 		Platform:   apk.Platform,
 		ShortKey:   shortKey,
+		Path:       filename,
+		QrCode:     qrCode,
 	}
 	data, err := json.Marshal(appInfo)
 	if err != nil {
@@ -193,4 +205,13 @@ func (t *CombineApp) CombineFinished(filename, identifier string) error {
 	db.Redis.HDel(constant.AppUploadProgress, identifier)
 
 	return nil
+}
+
+func generateQrCode(shortKey string) (string, error) {
+	url := fmt.Sprintf("%s:%d/%s", config.Conf.Server.BaseUrl, config.Conf.Server.HttpPort, shortKey)
+	qrc := qrcode.NewQrCode(url, 300, 300, qr.M, qr.Auto)
+
+	name, path, errQrCode := qrc.Encode(config.Conf.System.QrCodePath)
+
+	return fmt.Sprintf("%s/%s", path, name), errQrCode
 }

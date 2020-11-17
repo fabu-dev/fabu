@@ -83,6 +83,8 @@ CREATE TABLE `app_version`  (
   `code` varchar(10) NOT NULL DEFAULT '' COMMENT '版本号',
   `description` varchar(300) NOT NULL DEFAULT '' COMMENT '更新说明',
   `size` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '包大小',
+  `short_url` varchar(15) NOT NULL DEFAULT '' COMMENT '短链接',
+  `qr_code` varchar(200) NOT NULL DEFAULT '' COMMENT '二维码地址',
   `hash` varchar(80) NOT NULL DEFAULT '' COMMENT 'hash',
   `path` varchar(200) NOT NULL DEFAULT '' COMMENT '文件存放路径（如果上传到云平台这里是url）',
   `is_publish` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否发布（0：未发布，1：发布）',

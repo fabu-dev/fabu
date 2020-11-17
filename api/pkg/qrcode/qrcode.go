@@ -3,6 +3,8 @@ package qrcode
 import (
 	"image/jpeg"
 
+	"fabu.dev/api/pkg/config"
+
 	"github.com/boombuler/barcode"
 	"github.com/boombuler/barcode/qr"
 
@@ -36,11 +38,11 @@ func NewQrCode(url string, width, height int, level qr.ErrorCorrectionLevel, mod
 }
 
 func GetQrCodePath() string {
-	return setting.AppSetting.QrCodeSavePath
+	return config.Conf.System.QrCodePath
 }
 
 func GetQrCodeFullPath() string {
-	return setting.AppSetting.RuntimeRootPath + setting.AppSetting.QrCodeSavePath
+	return config.Conf.System.QrCodePath
 }
 
 func GetQrCodeFullUrl(name string) string {

@@ -25,6 +25,8 @@ type AppVersionInfo struct {
 	Hash        string         `json:"hash"`
 	Path        string         `json:"path"`
 	IsPublish   uint64         `json:"is_publish"`
+	ShortUrl    string         `json:"short_url"`
+	QrCode      string         `json:"qr_code"`
 	Status      uint8          `json:"status"`
 	CreatedBy   string         `json:"created_by"`
 	CreatedAt   utils.JSONTime `json:"created_at" gorm:"-"` // 插入时忽略该字段
