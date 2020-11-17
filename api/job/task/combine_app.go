@@ -141,6 +141,7 @@ func (t *CombineApp) Save(data *service.UploadInfo) error {
 	// 如果最后一个分片合并完成，那么解析这个文件将数据保存到redis，删除FileBuffer内的数据
 	if data.Params.ChunkNumber == data.Params.ChunkTotal {
 		if err := t.CombineFinished(filename, data.Params.Identifier); err != nil {
+			logrus.Error("finished err:", err)
 			return nil
 		}
 	}
@@ -169,12 +170,12 @@ func (t *CombineApp) CombineFinished(filename, identifier string) error {
 
 	shortKey, err := short.NewPool().GetShortKey()
 	if err != nil {
-
+		logrus.Error("shortKey err：", err)
 	}
 
 	qrCode, err := generateQrCode(shortKey)
 	if err != nil {
-
+		logrus.Error("qrcode err：", err)
 	}
 
 	appInfo := &global.AppInfo{

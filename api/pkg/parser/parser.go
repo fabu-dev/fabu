@@ -13,6 +13,8 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/sirupsen/logrus"
+
 	"github.com/andrianbdn/iospng"
 	"github.com/shogo82148/androidbinary"
 	"github.com/shogo82148/androidbinary/apk"
@@ -89,6 +91,7 @@ func NewAppParser(name string) (*AppInfo, error) {
 	if ext == androidExt {
 		info, err := parseApkFile(xmlFile)
 		icon, label, err := parseApkIconAndLabel(name)
+		logrus.Error("parseApkIconAndLabel err:", err)
 		info.Name = label
 		info.Icon = icon
 		info.Size = uint64(stat.Size())

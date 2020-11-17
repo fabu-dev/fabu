@@ -46,6 +46,16 @@
             </div>
           </div>
         </div>
+        <a-card style="margin-top: 24px" :bordered="false" title="应用版本列表">
+          <a-table :columns="columns" :data-source="version" rowKey="id" :pagination="false" bordered>
+            <span slot="size" slot-scope="size">
+              {{ (size/1024/1024).toFixed(2) }}
+            </span>
+            <span slot="action" slot-scope="text, record">
+              <a @click="changeVersion(record)">下载</a>
+            </span>
+          </a-table>
+        </a-card>
       </header>
       <div v-if="tipShow" class="we-chat-tip">
         <div class="we-chat-tip-arrow"/>
@@ -62,107 +72,143 @@ import QrCode from '@chenfengyuan/vue-qrcode'
 import { mapActions } from 'vuex'
 const ua = navigator.userAgent.toLowerCase()
 
-  export default {
-    name: 'Preview',
-    components: { QrCode },
-    data () {
-      return {
-        contentLoading: true,
-        appInfo: {},
-        version: [],
-        current: {},
-        qrCodeOptions: {
-          width: 100,
-          margin: 0,
-          color: {
-            dark: '#404242',
-            light: '#0000'
-          }
-        },
-        platform: null,
-        isWeChat: null,
-        isQQ: null,
-        tipShow: false,
-        installText: '下载安装'
-      }
-    },
-    computed: {
-      url () {
-        return (process.env.VUE_APP_API_BASE_URL + '/app/version/download/' + this.current.short_url)
-      }
-    },
-    mounted () {
-      this.getInfo(this.$route.query.id)
-      this.getVersionList()
-      if (/(iphone|ipad|ipod|ios)/i.test(ua)) {
-        this.platform = 'ios'
-      } else if (/(android)/i.test(ua)) {
-        this.platform = 'android'
-      } else {
-        this.platform = 'pc'
-      }
-      if (ua.indexOf('micromessenger') !== -1) {
-        this.isWeChat = true
-      } else if (ua.match(/qq\/[0-9]/i)) {
-        this.isQQ = true
-      }
-    },
-    methods: {
-      ...mapActions(['GetAppInfo', 'GetVersionList']),
-      getInfo (id) {
-        const { GetAppInfo } = this
-
-        GetAppInfo(id).then(res => {
-          this.appInfo = res.result
-          this.appInfo.icon = process.env.VUE_APP_API_BASE_URL + '/' + this.appInfo.icon
-          console.log('this.appInfo', this.appInfo)
-        }).catch((err) => {
-          console.log('team list', err)
-        })
-      },
-      getVersionList () {
-        console.log()
-        const { GetVersionList } = this
-        const params = {
-          'app_id': this.$route.query.id
+const columns = [
+  {
+    title: '版本号',
+    dataIndex: 'code',
+    key: 'code',
+    slots: { title: 'customTitle' }
+  },
+  {
+    title: '大小MB',
+    dataIndex: 'size',
+    key: 'size',
+    scopedSlots: { customRender: 'size' }
+  },
+  {
+    title: '上传人',
+    key: 'created_by',
+    dataIndex: 'created_by',
+    scopedSlots: { customRender: 'created_by' }
+  },
+  {
+    title: '上传时间',
+    key: 'created_at',
+    dataIndex: 'created_at',
+    scopedSlots: { customRender: 'created_at' }
+  },
+  {
+    title: '操作',
+    key: 'action',
+    dataIndex: 'action',
+    scopedSlots: { customRender: 'action' }
+  }
+]
+export default {
+  name: 'Preview',
+  components: { QrCode },
+  data () {
+    return {
+      contentLoading: true,
+      appInfo: {},
+      version: [],
+      current: {},
+      columns,
+      qrCodeOptions: {
+        width: 100,
+        margin: 0,
+        color: {
+          dark: '#404242',
+          light: '#0000'
         }
-        GetVersionList(params).then(res => {
-          this.version = res.result.app_version
-          this.current = this.version[0]
-          console.log('this.current', this.current)
-        }).catch((err) => {
-          console.log('team list', err)
-        })
       },
-      install () {
-        if (this.platform === 'ios') {
-          const iosUrl = this.appInfo.iosUrl
-          if (iosUrl) {
-            window.location.href = iosUrl
-          } else {
-            this.installText = '该app不支持ios'
-          }
-        } else if (this.platform === 'android') {
-          if (this.isWeChat || this.isQQ) {
-            this.installText = (this.isWeChat ? '微信' : 'QQ') + '中无法下载，请点击右上角选择在浏览器打开'
-            this.tipShow = true
-          } else {
-            this.download()
-          }
+      platform: null,
+      isWeChat: null,
+      isQQ: null,
+      tipShow: false,
+      installText: '下载安装'
+    }
+  },
+  computed: {
+    url () {
+      return (process.env.VUE_APP_API_BASE_URL + '/app/version/download/' + this.current.short_url)
+    }
+  },
+  mounted () {
+    this.getInfo(this.$route.query.id)
+    this.getVersionList()
+    if (/(iphone|ipad|ipod|ios)/i.test(ua)) {
+      this.platform = 'ios'
+    } else if (/(android)/i.test(ua)) {
+      this.platform = 'android'
+    } else {
+      this.platform = 'pc'
+    }
+    if (ua.indexOf('micromessenger') !== -1) {
+      this.isWeChat = true
+    } else if (ua.match(/qq\/[0-9]/i)) {
+      this.isQQ = true
+    }
+  },
+  methods: {
+    ...mapActions(['GetAppInfo', 'GetVersionList']),
+    getInfo (id) {
+      const { GetAppInfo } = this
+
+      GetAppInfo(id).then(res => {
+        this.appInfo = res.result
+        this.appInfo.icon = process.env.VUE_APP_API_BASE_URL + '/' + this.appInfo.icon
+        console.log('this.appInfo', this.appInfo)
+      }).catch((err) => {
+        console.log('team list', err)
+      })
+    },
+    getVersionList () {
+      console.log()
+      const { GetVersionList } = this
+      const params = {
+        'app_id': this.$route.query.id
+      }
+      GetVersionList(params).then(res => {
+        this.version = res.result.app_version
+        this.current = this.version[0]
+        console.log('this.current', this.current)
+      }).catch((err) => {
+        console.log('team list', err)
+      })
+    },
+    changeVersion (record) {
+      this.current = record
+    },
+    install () {
+      if (this.platform === 'ios') {
+        const iosUrl = this.appInfo.iosUrl
+        if (iosUrl) {
+          window.location.href = iosUrl
+        } else {
+          this.installText = '该app不支持ios'
+        }
+      } else if (this.platform === 'android') {
+        if (this.isWeChat || this.isQQ) {
+          this.installText = (this.isWeChat ? '微信' : 'QQ') + '中无法下载，请点击右上角选择在浏览器打开'
+          this.tipShow = true
         } else {
           this.download()
         }
-      },
-      download () {
-        const url = process.env.VUE_APP_API_BASE_URL + '/' + this.current.path
-        const a = document.createElement('a')
-        a.setAttribute('href', url)
-        document.body.appendChild(a)
-        a.click()
-        document.body.removeChild(a)
+      } else {
+        this.download()
       }
+    },
+    download () {
+      const url = process.env.VUE_APP_API_BASE_URL + '/' + this.current.path
+      const a = document.createElement('a')
+      a.setAttribute('href', url)
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
     }
   }
+}
 </script>
 <style scoped>
   .we-chat-tip {
