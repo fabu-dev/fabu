@@ -62,6 +62,13 @@ export const asyncRouterMap = [
             meta: { title: '上传APP', keepAlive: true, hidden: true, permission: [ 'table' ] }
           },
           {
+            path: '/app/preview',
+            name: 'Preview',
+            hidden: true,
+            component: () => import('@/views/app/Preview'),
+            meta: { title: '安装APP', keepAlive: true, hidden: true, permission: [ 'table' ] }
+          },
+          {
             path: '/app/info',
             name: 'AppInfo',
             hidden: true,

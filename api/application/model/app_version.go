@@ -36,7 +36,7 @@ type AppVersionInfo struct {
 
 func NewAppVersion() *AppVersion {
 	AppVersion := &AppVersion{
-		DetailColumns: []string{"id", "app_id", "tag", "code", "description", "size", "hash", "path", "is_publish", "status", "updated_at", "updated_by", "created_at", "created_by"},
+		DetailColumns: []string{"id", "app_id", "tag", "code", "description", "size", "hash", "path", "is_publish", "short_url", "qr_code", "status", "updated_at", "updated_by", "created_at", "created_by"},
 	}
 
 	AppVersion.SetTableName("app_version")

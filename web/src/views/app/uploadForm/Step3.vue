@@ -21,7 +21,7 @@
           </a-row>
           <a-row>
             <a-col :sm="8" :xs="24">大小：</a-col>
-            <a-col :sm="16" :xs="24">{{ (sendData.size/1024/1024).toFixed(2) }} M</a-col>
+            <a-col :sm="16" :xs="24">{{ (sendData.size/1024/1024).toFixed(2) }} MB</a-col>
           </a-row>
         </div>
         <template #extra>

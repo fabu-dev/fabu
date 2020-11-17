@@ -61,14 +61,14 @@ func CreateApiRouter() {
 	// APP版本管理
 	v1AppVersion := Router.Group("/v1/app/version").Use(middleware.VerifyToken())
 	{
-		v1AppVersion.GET("/", controller2.NewAppVersion().GetList)                    // APP 版本列表
-		v1AppVersion.DELETE("/delete", controller2.NewAppVersion().Delete)            // APP 版本删除
-		v1AppVersion.GET("/download", controller2.NewAppVersion().Download)           // APP 版本下载
-		v1AppVersion.GET("/info/:id", controller2.NewAppVersion().View)               // APP 版本详情
-		v1AppVersion.POST("/publish", controller2.NewAppVersion().Publish)            // APP 版本发布
-		v1AppVersion.POST("/cancel", controller2.NewAppVersion().Cancel)              // APP 版本取消发布
-		v1AppVersion.POST("/edit", controller2.NewAppVersion().Edit)                  // APP 版本编辑
-		v1AppVersion.GET("/download/log", controller2.NewAppVersion().GetDownloadLog) // APP 版本下载记录
+		v1AppVersion.GET("/", controller2.NewAppVersion().GetList)                // APP 版本列表
+		v1AppVersion.DELETE("/delete", controller2.NewAppVersion().Delete)        // APP 版本删除
+		v1AppVersion.GET("/download/:code", controller2.NewAppVersion().Download) // APP 版本下载
+		v1AppVersion.GET("/info/:id", controller2.NewAppVersion().View)           // APP 版本详情
+		v1AppVersion.POST("/publish", controller2.NewAppVersion().Publish)        // APP 版本发布
+		v1AppVersion.POST("/cancel", controller2.NewAppVersion().Cancel)          // APP 版本取消发布
+		v1AppVersion.POST("/edit", controller2.NewAppVersion().Edit)              // APP 版本编辑
+		v1AppVersion.GET("/log", controller2.NewAppVersion().GetDownloadLog)      // APP 版本下载记录
 	}
 
 	// 系统API路由配置

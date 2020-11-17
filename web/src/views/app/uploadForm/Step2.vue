@@ -68,7 +68,7 @@
         :wrapperCol="wrapperCol"
         class="stepFormText"
       >
-        {{ (sendData.size/1024/1024).toFixed(2) }} M
+        {{ (sendData.size/1024/1024).toFixed(2) }} MB
         <a-input type="hidden" v-decorator="['team_id', { initialValue: sendData.team_id, rules: [{required: true, message: '参数错误'}] }]"/>
         <a-input type="hidden" v-decorator="['identifier', { initialValue: sendData.identifier, rules: [{required: true, message: '参数错误'}] }]"/>
       </a-form-item>
