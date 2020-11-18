@@ -11,7 +11,7 @@ import (
 func CreateApiRouter() {
 
 	// 会员API路由配置
-	v1Member := Router.Group("/v1/user").Use(middleware.VerifyToken())
+	v1Member := Router.Group("/v1/user").Use(middleware.VerifyAuth())
 	{
 		v1Member.GET("/info/:id", controller2.NewMember().Info)           // 会员详情
 		v1Member.PUT("/password", controller2.NewMember().UpdatePassword) // 修改密码
@@ -19,7 +19,7 @@ func CreateApiRouter() {
 	}
 
 	// 团队API路由配置
-	v1Team := Router.Group("/v1/team").Use(middleware.VerifyToken())
+	v1Team := Router.Group("/v1/team").Use(middleware.VerifyAuth())
 	{
 		v1Team.GET("/", controller2.NewTeam().GetList)                   // 会员团队列表
 		v1Team.POST("/create", controller2.NewTeam().Create)             // 创建团队
@@ -43,7 +43,7 @@ func CreateApiRouter() {
 	}
 
 	// APP管理
-	v1App := Router.Group("/v1/app").Use(middleware.VerifyToken())
+	v1App := Router.Group("/v1/app").Use(middleware.VerifyAuth())
 	{
 		v1App.GET("/", controller2.NewApp().GetList)                     // APP 列表
 		v1App.POST("/upload", controller2.NewApp().Upload)               // APP 上传文件
@@ -59,7 +59,7 @@ func CreateApiRouter() {
 	}
 
 	// APP版本管理
-	v1AppVersion := Router.Group("/v1/app/version").Use(middleware.VerifyToken())
+	v1AppVersion := Router.Group("/v1/app/version").Use(middleware.VerifyAuth())
 	{
 		v1AppVersion.GET("/", controller2.NewAppVersion().GetList)           // APP 版本列表
 		v1AppVersion.DELETE("/delete", controller2.NewAppVersion().Delete)   // APP 版本删除
@@ -71,7 +71,7 @@ func CreateApiRouter() {
 	}
 
 	// 系统API路由配置
-	system := Router.Group("/system").Use(middleware.VerifyToken())
+	system := Router.Group("/system").Use(middleware.VerifyAuth())
 	{
 		system.GET("/health", controller2.NewSystem().Health)    // 监控检查
 		system.POST("/setting", controller2.NewSystem().Setting) // 监控检查

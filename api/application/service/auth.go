@@ -32,13 +32,14 @@ func (s *Auth) Login(params *request.LoginParams) (*model.MemberInfo, *api.Error
 
 	ojbJwt := utils.NewJWT()
 	claims := utils.CustomClaims{
-		ID:     member.Id,
-		Name:   member.Name,
-		Mobile: member.Mobile,
+		ID:      member.Id,
+		Name:    member.Name,
+		Mobile:  member.Mobile,
+		Account: member.Account,
 		StandardClaims: jwt.StandardClaims{
-			NotBefore: int64(time.Now().Unix() - 1000), // 签名生效时间
-			ExpiresAt: int64(time.Now().Unix() + 3600), // 过期时间 一小时
-			Issuer:    "gelu",                          //签名的发行者
+			NotBefore: int64(time.Now().Unix() - 1000),    // 签名生效时间
+			ExpiresAt: int64(time.Now().Unix() + 3600*24), // 过期时间 一小时
+			Issuer:    "gelu",                             //签名的发行者
 		},
 	}
 
