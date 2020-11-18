@@ -15,6 +15,7 @@
         row-key="id"
         :columns="columns"
         :data-source="memberData"
+        :pagination="false"
         bordered
       >
       </a-table>

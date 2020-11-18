@@ -45,7 +45,7 @@
             <a-dropdown>
               <a-menu slot="overlay">
                 <a-menu-item><a @click="edit(item)">编辑</a></a-menu-item>
-                <a-menu-item><a @click="edit(item)">删除</a></a-menu-item>
+                <a-menu-item><a @click="del(item.id)">删除</a></a-menu-item>
               </a-menu>
               <a>更多<a-icon type="down"/></a>
             </a-dropdown>
@@ -116,31 +116,7 @@ export default {
     this.getTeamData()
   },
   methods: {
-    ...mapActions(['TeamIndex', 'GetList']),
-    add () {
-      this.$dialog(TaskForm,
-        {
-          record: {},
-          on: {
-            ok () {
-              console.log('ok 回调')
-            },
-            cancel () {
-              console.log('cancel 回调')
-            },
-            close () {
-              console.log('modal close 回调')
-            }
-          }
-        },
-        // modal props
-        {
-          title: '新增',
-          width: 700,
-          centered: true,
-          maskClosable: false
-        })
-    },
+    ...mapActions(['TeamIndex', 'GetList', 'DeleteApp']),
     edit (record) {
       console.log('record', record)
       this.$dialog(TaskForm,
@@ -201,6 +177,26 @@ export default {
           console.log('team list', err)
         })
       }
+    },
+    del (id) {
+      const { DeleteApp } = this
+      const params = {
+        'id': id
+      }
+      this.$confirm({
+        title: '确定要删除该应用么?',
+        content: '',
+        onOk () {
+          return DeleteApp(params).then(res => {
+            if (res.result.length > 0) {
+              this.getTeamApp(this.selectTeam)
+            }
+          }).catch((err) => {
+            console.log('delete app err:', err)
+          })
+        },
+        onCancel () {}
+      })
     }
   }
 }

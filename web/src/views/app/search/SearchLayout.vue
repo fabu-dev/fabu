@@ -20,7 +20,7 @@
     </template>
     <template v-slot:extra>
       <a-button-group style="margin-right: 4px;">
-        <a-button>删除</a-button>
+        <a-button @click="del($route.query.id)">删除</a-button>
         <a-button><router-link target="_blank" :to="{ name: 'Preview', query:{ id: $route.query.id } }">预览</router-link></a-button>
         <a-button><a-icon type="ellipsis"/></a-button>
       </a-button-group>
@@ -68,7 +68,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['GetAppInfo']),
+    ...mapActions(['GetAppInfo', 'DeleteApp']),
     handleTabChange (key) {
       this.tabActiveKey = key
       switch (key) {
@@ -95,6 +95,24 @@ export default {
         console.log('search index data', this.data)
       }).catch((err) => {
         console.log('team list', err)
+      })
+    },
+    del (id) {
+      const { DeleteApp } = this
+      const params = {
+        'id': id
+      }
+      this.$confirm({
+        title: '确定要删除该应用么?',
+        content: '',
+        onOk () {
+          return DeleteApp(params).then(res => {
+            this.$router.push('/app/index')
+          }).catch((err) => {
+            console.log('delete app err:', err)
+          })
+        },
+        onCancel () {}
       })
     }
   }

@@ -18,8 +18,8 @@ func NewAppVersion() *AppVersion {
 // 获取会员的团队列表
 func (s *AppVersion) GetListByAppId(params *request.AppVersionIndexParams) (*response.AppVersionList, *api.Error) {
 	// 先获取会员所有的团队
-	objTeamMember := model.NewAppVersion()
-	appSlice, err := objTeamMember.GetListByAppId(params.AppId)
+	objAppVersion := model.NewAppVersion()
+	appSlice, err := objAppVersion.GetListByAppId(params.AppId)
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +34,7 @@ func (s *AppVersion) GetListByAppId(params *request.AppVersionIndexParams) (*res
 
 // 删除App版本
 func (s *AppVersion) Delete(params *request.AppVersionDeleteParams, operator *model.Operator) *api.Error {
-	teamInfo := &model.AppVersionInfo{
+	appVersionInfo := &model.AppVersionInfo{
 		Id:        params.Id,
 		Status:    constant.StatusDisable,
 		UpdatedBy: operator.Account,
@@ -42,14 +42,14 @@ func (s *AppVersion) Delete(params *request.AppVersionDeleteParams, operator *mo
 
 	// todo 更新app的一些统计信息，版本信息
 
-	return s.DeleteAppVersion(teamInfo)
+	return s.DeleteAppVersion(appVersionInfo)
 }
 
-// 逻辑删除team表的记录
+// 逻辑删除App版本的记录
 func (s *AppVersion) DeleteAppVersion(appVersionInfo *model.AppVersionInfo) *api.Error {
 	objAppVersion := model.NewAppVersion()
 
-	if err := objAppVersion.Edit(appVersionInfo); err != nil {
+	if err := objAppVersion.Delete(appVersionInfo); err != nil {
 		return err
 	}
 
@@ -57,8 +57,8 @@ func (s *AppVersion) DeleteAppVersion(appVersionInfo *model.AppVersionInfo) *api
 }
 
 func (s *AppVersion) GetInfoByShortKey(key string) (*model.AppVersionInfo, *api.Error) {
-	objTeamMember := model.NewAppVersion()
-	appVersion, err := objTeamMember.GetInfoByShortKey(key)
+	objAppVersion := model.NewAppVersion()
+	appVersion, err := objAppVersion.GetInfoByShortKey(key)
 
 	return appVersion, err
 }

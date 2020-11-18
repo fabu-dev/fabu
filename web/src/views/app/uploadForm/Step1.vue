@@ -53,7 +53,7 @@ export default {
   data () {
     return {
       fileList: [],
-      uploadUrl: process.env.VUE_APP_API_BASE_URL + '/app/upload',
+      uploadUrl: process.env.VUE_APP_API_BASE_URL + '/v1/app/upload',
       labelCol: { lg: { span: 5 }, sm: { span: 5 } },
       wrapperCol: { lg: { span: 19 }, sm: { span: 19 } },
       chunkUpload: chunkUpload, // 分片上传自定义方法，在头部引入了

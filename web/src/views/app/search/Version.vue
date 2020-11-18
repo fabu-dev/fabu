@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-card style="margin-top: 24px" :bordered="false" title="应用版本列表">
-      <a-table :columns="columns" :data-source="data" rowKey="id" bordered>
+      <a-table :columns="columns" :data-source="data" rowKey="id" :pagination="false" bordered>
         <a slot="name" slot-scope="text">{{ text }}</a>
         <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
         <span slot="size" slot-scope="size">

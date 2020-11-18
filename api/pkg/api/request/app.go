@@ -33,3 +33,7 @@ type SaveParams struct {
 type AppViewParams struct {
 	Id uint64 `uri:"id" binding:"required,numeric"`
 }
+
+type AppDeleteParams struct {
+	Id uint64 `uri:"id" binding:"required,numeric"`
+}

@@ -58,6 +58,13 @@ func (m *AppVersion) Edit(appVersion *AppVersionInfo) *api.Error {
 	return m.ProcessError(err)
 }
 
+// 编辑app信息
+func (m *AppVersion) Delete(appVersion *AppVersionInfo) *api.Error {
+	err := m.Db().Where("id = ?", appVersion.Id).Delete(appVersion).Error
+
+	return m.ProcessError(err)
+}
+
 // 通过版本号获取版本信息
 func (m *AppVersion) GetInfoByCode(AppId uint64, code string) (*AppVersionInfo, *api.Error) {
 	appInfo := &AppVersionInfo{}

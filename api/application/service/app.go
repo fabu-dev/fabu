@@ -37,8 +37,8 @@ func NewApp() *App {
 // 获取会员的团队列表
 func (s *App) GetListByTeamId(params *request.AppIndexParams) (*response.AppList, *api.Error) {
 	// 先获取会员所有的团队
-	objTeamMember := model.NewApp()
-	appSlice, err := objTeamMember.GetAppListByTeamId(params.TeamId)
+	ObjApp := model.NewApp()
+	appSlice, err := ObjApp.GetAppListByTeamId(params.TeamId)
 	if err != nil {
 		return nil, err
 	}
@@ -112,6 +112,7 @@ func (s *App) SaveApp(apk *global.AppInfo, params *request.SaveParams, operator 
 		appInfo.CurrentVersion = apk.Version
 		appInfo.Icon = apk.Icon
 		appInfo.CreatedBy = operator.Account
+		appInfo.Status = constant.StatusEnable
 
 		err = ObjApp.Edit(appInfo)
 		return appInfo, err
@@ -206,6 +207,30 @@ func (s *App) GetInfoById(appId uint64) (*model.AppInfo, *api.Error) {
 	s.ApplyPlatformName(appInfo)
 
 	return appInfo, err
+}
+
+// 删除App
+func (s *App) Delete(params *request.AppDeleteParams, operator *model.Operator) *api.Error {
+	appInfo := &model.AppInfo{
+		Id:        params.Id,
+		Status:    constant.StatusDisable,
+		UpdatedBy: operator.Account,
+	}
+
+	// todo 更新app的一些统计信息，版本信息
+
+	return s.DeleteApp(appInfo)
+}
+
+// 逻辑删除App表的记录
+func (s *App) DeleteApp(appInfo *model.AppInfo) *api.Error {
+	objApp := model.NewApp()
+
+	if err := objApp.Delete(appInfo); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // 平台名

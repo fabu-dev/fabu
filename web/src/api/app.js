@@ -5,7 +5,8 @@ const appApi = {
   Save: '/v1/app/create',
   GetBase: '/v1/app/base',
   Index: '/v1/app/',
-  Info: '/v1/app/info/'
+  Info: '/v1/app/info/',
+  Delete: '/v1/app/delete'
 }
 
 // 上传APP
@@ -59,5 +60,15 @@ export function getInfo (id) {
     url: appApi.Info + id,
     method: 'Get',
     timeout: 0
+  })
+}
+
+// 删除一个app的版本
+export function deleteApp (parameter) {
+  return request({
+    url: appApi.Delete,
+    method: 'Delete',
+    timeout: 0,
+    data: parameter
   })
 }

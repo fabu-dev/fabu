@@ -90,3 +90,18 @@ func (f *App) View(c *gin.Context) (*model.AppInfo, *api.Error) {
 
 	return app, err
 }
+
+func (f *App) Delete(c *gin.Context) *api.Error {
+	params := &request.AppDeleteParams{}
+
+	if err := c.ShouldBindJSON(params); err != nil {
+		return api.NewError(code.ErrorRequest, err.Error())
+	}
+
+	operator := f.GetOperator(c)
+
+	// 调用service对应的方法
+	err := f.service.Delete(params, operator)
+
+	return err
+}

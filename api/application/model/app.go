@@ -3,6 +3,8 @@ package model
 import (
 	"errors"
 
+	"fabu.dev/api/pkg/constant"
+
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/utils"
 
@@ -45,7 +47,7 @@ func NewApp() *App {
 // 判断团队是否有APP
 func (m *App) HasByTeamId(teamId uint64) (bool, *api.Error) {
 	appInfo := &AppInfo{}
-	err := m.Db().Select(m.DetailColumns).Where("team_id = ?", teamId).First(appInfo).Error
+	err := m.Db().Select(m.DetailColumns).Where("team_id = ? and status = ?", teamId, constant.StatusEnable).First(appInfo).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		return false, nil
 	}
@@ -56,7 +58,7 @@ func (m *App) HasByTeamId(teamId uint64) (bool, *api.Error) {
 // 查询团队的app列表
 func (m *App) GetAppListByTeamId(teamId uint64) ([]*AppInfo, *api.Error) {
 	appList := make([]*AppInfo, 0, 8)
-	err := m.Db().Select(m.DetailColumns).Where("team_id = ?", teamId).Find(&appList).Error
+	err := m.Db().Select(m.DetailColumns).Where("team_id = ? and status = ?", teamId, constant.StatusEnable).Find(&appList).Error
 
 	return appList, m.ProcessError(err)
 }
@@ -78,7 +80,7 @@ func (m *App) Edit(app *AppInfo) *api.Error {
 // 根据包名和平台获取app详细信息
 func (m *App) GetInfoByBundleId(bundleId string, platform uint8) (*AppInfo, *api.Error) {
 	appInfo := &AppInfo{}
-	err := m.Db().Select(m.DetailColumns).Where("bundle_id = ? and platform = ?", bundleId, platform).First(appInfo).Error
+	err := m.Db().Select(m.DetailColumns).Where("bundle_id = ? and platform = ? and status = ?", bundleId, platform, constant.StatusEnable).First(appInfo).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
 	}
@@ -89,10 +91,17 @@ func (m *App) GetInfoByBundleId(bundleId string, platform uint8) (*AppInfo, *api
 // 根据id获取app详细信息
 func (m *App) GetInfoById(id uint64) (*AppInfo, *api.Error) {
 	appInfo := &AppInfo{}
-	err := m.Db().Select(m.DetailColumns).Where("id = ?", id).First(appInfo).Error
+	err := m.Db().Select(m.DetailColumns).Where("id = ? and status = ?", id, constant.StatusEnable).First(appInfo).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
 	}
 
 	return appInfo, m.ProcessError(err)
+}
+
+// 编辑app信息
+func (m *App) Delete(app *AppInfo) *api.Error {
+	err := m.Db().Where("id = ?", app.Id).Delete(app).Error
+
+	return m.ProcessError(err)
 }
