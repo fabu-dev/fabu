@@ -7,6 +7,8 @@ const RouteView = {
   render: (h) => h('router-view')
 }
 
+const url = process.env.VUE_APP_API_BASE_URL + '/' + 'swagger/index.html'
+
 export const asyncRouterMap = [
 
   {
@@ -148,7 +150,12 @@ export const asyncRouterMap = [
           }
         ]
       },
-
+      // 外部链接
+      {
+        path: url,
+        name: 'API',
+        meta: { title: 'API', target: '_blank' }
+      },
       // other
       {
         path: '/other',
@@ -156,6 +163,7 @@ export const asyncRouterMap = [
         component: RouteView,
         meta: { title: '其他组件', icon: 'slack', permission: [ 'dashboard' ] },
         redirect: '/other/icon-selector',
+        hidden: true,
         children: [
           {
             path: '/other/icon-selector',
