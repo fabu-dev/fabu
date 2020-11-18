@@ -1,11 +1,6 @@
 <template>
   <div>
     <a-form :form="form" style="max-width: 500px; margin: 40px auto 0;">
-      <a-alert
-        :closable="true"
-        message=""
-        style="margin-bottom: 24px;"
-      />
       <a-form-item
         label="应用名称"
         :labelCol="labelCol"

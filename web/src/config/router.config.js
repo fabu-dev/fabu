@@ -25,6 +25,7 @@ export const asyncRouterMap = [
         redirect: '/dashboard/workplace',
         component: RouteView,
         meta: { title: '工作台', keepAlive: true, icon: bxAnaalyse, permission: [ 'dashboard' ] },
+        hidden: true,
         children: [
           {
             path: '/dashboard/analysis/:pageNo([1-9]\\d*)?',
@@ -117,6 +118,7 @@ export const asyncRouterMap = [
         name: 'account',
         meta: { title: '个人设置', icon: 'user', keepAlive: true, permission: [ 'user' ] },
         hideChildrenInMenu: true,
+        hidden: true,
         children: [
           {
             path: '/account/settings/base',
