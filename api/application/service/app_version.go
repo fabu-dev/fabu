@@ -55,3 +55,10 @@ func (s *AppVersion) DeleteAppVersion(appVersionInfo *model.AppVersionInfo) *api
 
 	return nil
 }
+
+func (s *AppVersion) GetInfoByShortKey(key string) (*model.AppVersionInfo, *api.Error) {
+	objTeamMember := model.NewAppVersion()
+	appVersion, err := objTeamMember.GetInfoByShortKey(key)
+
+	return appVersion, err
+}

@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
 const appVersionApi = {
-  Index: 'app/version/',
-  Delete: 'app/version/delete'
+  Index: '/v1/app/version/',
+  Delete: '/v1/app/version/delete'
 }
 
 // 获取一个app的版本列表

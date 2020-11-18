@@ -1,12 +1,12 @@
 import request from '@/utils/request'
 
 const api = {
-  user: '/user',
-  role: '/role',
-  service: '/service',
-  permission: '/permission',
-  permissionNoPager: '/permission/no-pager',
-  orgTree: '/org/tree'
+  user: '/v1/user',
+  role: '/v1/role',
+  service: '/v1/service',
+  permission: '/v1/permission',
+  permissionNoPager: '/v1/permission/no-pager',
+  orgTree: '/v1/org/tree'
 }
 
 export default api

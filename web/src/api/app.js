@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 const appApi = {
-  Upload: '/app/upload',
-  Save: '/app/create',
-  GetBase: '/app/base',
-  Index: '/app/',
-  Info: '/app/info/'
+  Upload: '/v1/app/upload',
+  Save: '/v1/app/create',
+  GetBase: '/v1/app/base',
+  Index: '/v1/app/',
+  Info: '/v1/app/info/'
 }
 
 // 上传APP

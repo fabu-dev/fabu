@@ -2,10 +2,15 @@ package controller
 
 import (
 	"net/http"
+	"os"
+	"path"
+
+	"github.com/sirupsen/logrus"
 
 	"fabu.dev/api/application/filter"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
+	"github.com/astaxie/beego/logs"
 	"github.com/gin-gonic/gin"
 )
 
@@ -55,7 +60,34 @@ func (ctl *AppVersion) Delete(c *gin.Context) {
 // @Success 200 {string} string    "ok"
 // @Router /v1/app/version/download/:id [GET]
 func (ctl *AppVersion) Download(c *gin.Context) {
+	filePath, err := ctl.paramFilter.Download(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
+		return
+	}
 
+	logrus.Info("file path :", filePath)
+	//打开文件
+	fileTmp, errByOpenFile := os.Open(filePath)
+	defer fileTmp.Close()
+
+	//获取文件的名称
+	fileName := path.Base(filePath)
+	c.Header("Content-Type", "application/octet-stream")
+	c.Header("Content-Disposition", "attachment; filename="+fileName)
+	c.Header("Content-Transfer-Encoding", "binary")
+	c.Header("Cache-Control", "no-cache")
+	if errByOpenFile != nil {
+		logs.Error("获取文件失败")
+		c.Redirect(http.StatusFound, "/404")
+		return
+	}
+	c.Header("Content-Type", "application/octet-stream")
+	c.Header("Content-Disposition", "attachment; filename="+fileName)
+	c.Header("Content-Transfer-Encoding", "binary")
+
+	c.File(filePath)
+	return
 }
 
 // @Tags APP版本管理

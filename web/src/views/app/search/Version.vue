@@ -8,7 +8,7 @@
           {{ (size/1024/1024).toFixed(2) }}
         </span>
         <span slot="action" slot-scope="text, record">
-          <a>下载</a>
+          <a :href="record.shortUrl">下载</a>
           <a-divider type="vertical" />
           <a @click="del(record.id)">删除</a>
         </span>
@@ -100,7 +100,9 @@ export default {
       }
       GetVersionList(params).then(res => {
         this.data = res.result.app_version
-        console.log('data', this.data)
+        for (const key in this.data) {
+          this.data[key].shortUrl = process.env.VUE_APP_API_BASE_URL + '/download/' + this.data[key].short_url
+        }
       }).catch((err) => {
         console.log('team list', err)
       })

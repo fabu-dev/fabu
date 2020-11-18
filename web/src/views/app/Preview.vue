@@ -131,7 +131,7 @@ export default {
   },
   computed: {
     url () {
-      return (process.env.VUE_APP_API_BASE_URL + '/app/version/download/' + this.current.short_url)
+      return (process.env.VUE_APP_API_BASE_URL + '/download/' + this.current.short_url)
     }
   },
   mounted () {

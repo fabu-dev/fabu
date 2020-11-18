@@ -76,3 +76,14 @@ func (m *AppVersion) GetListByAppId(AppId uint64) ([]*AppVersionInfo, *api.Error
 
 	return appSlice, m.ProcessError(err)
 }
+
+// 通过版本号获取版本信息
+func (m *AppVersion) GetInfoByShortKey(key string) (*AppVersionInfo, *api.Error) {
+	appInfo := &AppVersionInfo{}
+	err := m.Db().Select(m.DetailColumns).Where("short_url = ?", key).First(appInfo).Error
+	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil
+	}
+
+	return appInfo, m.ProcessError(err)
+}

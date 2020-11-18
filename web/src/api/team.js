@@ -1,14 +1,14 @@
 import request from '@/utils/request'
 
 const teamApi = {
-  Create: '/team/create',
-  Edit: '/team/edit',
-  Index: '/team/',
-  Info: 'team/info/',
-  Del: '/team/del',
-  Member: '/team/member/',
-  MemberDel: '/team/member/del',
-  MemberAdd: '/team/member/add'
+  Create: '/v1/team/create',
+  Edit: '/v1/team/edit',
+  Index: '/v1/team/',
+  Info: '/v1/team/info/',
+  Del: '/v1/team/del',
+  Member: '/v1/team/member/',
+  MemberDel: '/v1/team/member/del',
+  MemberAdd: '/v1/team/member/add'
 
 }
 

@@ -7,3 +7,7 @@ type AppVersionIndexParams struct {
 type AppVersionDeleteParams struct {
 	Id uint64 `uri:"id" binding:"required,numeric"`
 }
+
+type DownloadParams struct {
+	Code string `uri:"code" binding:"required"`
+}

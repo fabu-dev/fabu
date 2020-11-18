@@ -47,3 +47,18 @@ func (f *AppVersion) Delete(c *gin.Context) *api.Error {
 
 	return err
 }
+
+func (f *AppVersion) Download(c *gin.Context) (string, *api.Error) {
+	params := &request.DownloadParams{}
+
+	if err := c.ShouldBindUri(params); err != nil {
+		return "", api.NewError(code.ErrorRequest, err.Error())
+	}
+
+	// 调用service对应的方法
+	appVersion, err := f.service.GetInfoByShortKey(params.Code)
+	if err != nil {
+		return "", err
+	}
+	return appVersion.Path, nil
+}

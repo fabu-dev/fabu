@@ -39,7 +39,7 @@
             <a slot="title"><router-link :to="{ name: 'AppInfo', query:{ id: item.id, team_id: item.team_id } }"> {{ item.name }} </router-link></a>
           </a-list-item-meta>
           <div slot="actions">
-            <a @click="edit(item)">预览</a>
+            <router-link target="_blank" :to="{ name: 'Preview', query:{ id: item.id } }"><a @click="edit(item)">预览</a></router-link>
           </div>
           <div slot="actions">
             <a-dropdown>
