@@ -2,10 +2,12 @@ package middleware
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
 	"fabu.dev/api/pkg/constant"
+	"fabu.dev/api/pkg/utils"
 
 	"fabu.dev/api/pkg/db"
 
@@ -25,10 +27,30 @@ func VerifyToken() gin.HandlerFunc {
 			return
 		}
 
-		// 先从redis内读取缓存
-		memberInfo, err := GetMemberInfo(token)
+		j := utils.NewJWT()
+		// parseToken 解析token包含的信息
+		claims, err := j.ParseToken(token)
 		if err != nil {
-			api.SetResponse(c, http.StatusForbidden, code.ErrorSign, err.Message)
+			if err == utils.TokenExpired {
+				c.JSON(http.StatusOK, gin.H{
+					"status": -1,
+					"msg":    "授权已过期",
+				})
+				c.Abort()
+				return
+			}
+			c.JSON(http.StatusOK, gin.H{
+				"status": -1,
+				"msg":    err.Error(),
+			})
+			c.Abort()
+			return
+		}
+
+		// 先从redis内读取缓存
+		memberInfo, errDb := GetMemberInfo(claims.ID)
+		if errDb != nil {
+			api.SetResponse(c, http.StatusForbidden, code.ErrorSign, errDb.Message)
 			return
 		}
 
@@ -41,21 +63,21 @@ func VerifyToken() gin.HandlerFunc {
 }
 
 // 根据token获取member信息
-func GetMemberInfo(token string) (*model.MemberInfo, *api.Error) {
+func GetMemberInfo(id uint64) (*model.MemberInfo, *api.Error) {
 	// 先从redis内读取缓存
-	memberInfo, _ := GetMemberInfoFromRedis(token)
+	memberInfo, _ := GetMemberInfoFromRedis(id)
 	if memberInfo != nil {
 		return memberInfo, nil
 	}
 
-	memberInfo, err := model.NewMember().GetDetailByToken(token)
+	memberInfo, err := model.NewMember().GetDetailByID(id)
 
 	memberData, errJson := json.Marshal(memberInfo)
 	if errJson != nil {
 		logrus.Error(err)
 	}
 
-	errJson = db.Redis.Set(constant.MemberCacheKey+token, memberData, time.Minute*60).Err()
+	errJson = db.Redis.Set(fmt.Sprintf("%s%d", constant.MemberCacheKey, id), memberData, time.Minute*60).Err()
 	if errJson != nil {
 		logrus.Error(err)
 	}
@@ -64,8 +86,8 @@ func GetMemberInfo(token string) (*model.MemberInfo, *api.Error) {
 }
 
 // 从缓存中获取会员信息
-func GetMemberInfoFromRedis(token string) (*model.MemberInfo, *api.Error) {
-	memberData, err := db.Redis.Get(constant.MemberCacheKey + token).Bytes()
+func GetMemberInfoFromRedis(id uint64) (*model.MemberInfo, *api.Error) {
+	memberData, err := db.Redis.Get(fmt.Sprintf("%s%d", constant.MemberCacheKey, id)).Bytes()
 	if err != nil {
 		return nil, api.NewError(code.ErrorSyntax, code.GetMessage(code.ErrorSyntax))
 	}

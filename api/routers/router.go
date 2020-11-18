@@ -4,7 +4,7 @@ import (
 	"io"
 	"os"
 
-	"fabu.dev/api/pkg/api/middleware"
+	"fabu.dev/api/application/middleware"
 	"fabu.dev/api/pkg/config"
 	"github.com/sirupsen/logrus"
 

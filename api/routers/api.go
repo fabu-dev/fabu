@@ -5,7 +5,7 @@ import (
 
 	controller2 "fabu.dev/api/application/controller"
 
-	"fabu.dev/api/pkg/api/middleware"
+	"fabu.dev/api/application/middleware"
 )
 
 func CreateApiRouter() {
