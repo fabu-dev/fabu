@@ -1,18 +1,18 @@
 <template>
   <page-header-wrapper>
-    <a-card :bordered="false">
-      <a-row>
-        <a-col :sm="8" :xs="24">
-          <info title="我的待办" value="8个任务" :bordered="true" />
-        </a-col>
-        <a-col :sm="8" :xs="24">
-          <info title="本周任务平均处理时间" value="32分钟" :bordered="true" />
-        </a-col>
-        <a-col :sm="8" :xs="24">
-          <info title="本周完成任务数" value="24个" />
-        </a-col>
-      </a-row>
-    </a-card>
+<!--    <a-card :bordered="false">-->
+<!--      <a-row>-->
+<!--        <a-col :sm="8" :xs="24">-->
+<!--          <info title="我的待办" value="8个任务" :bordered="true" />-->
+<!--        </a-col>-->
+<!--        <a-col :sm="8" :xs="24">-->
+<!--          <info title="本周任务平均处理时间" value="32分钟" :bordered="true" />-->
+<!--        </a-col>-->
+<!--        <a-col :sm="8" :xs="24">-->
+<!--          <info title="本周完成任务数" value="24个" />-->
+<!--        </a-col>-->
+<!--      </a-row>-->
+<!--    </a-card>-->
 
     <a-card
       style="margin-top: 24px"
