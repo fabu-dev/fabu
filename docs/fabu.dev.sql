@@ -124,7 +124,7 @@ CREATE TABLE `member`  (
 -- ----------------------------
 -- Records of member
 -- ----------------------------
-INSERT INTO `member` VALUES (1, '', 'admin', 'gelu', '78016ad70e83fa41795edb9f6309fdd7', '', '531432594@qq.com', 'jKbnyISriCP3h5dJ2kMc', 2, '2020-11-18 10:00:39', '', '2020-11-18 10:00:39', '');
+INSERT INTO `member` VALUES (1, '', 'admin', 'admin', '21232f297a57a5a743894a0e4a801fc3', '', 'business@shinmigo.com', 'jKbnyISriCP3h5dJ2kMc', 2, '2020-11-18 10:00:39', '', '2020-11-18 10:00:39', '');
 
 -- ----------------------------
 -- Table structure for member_statistics

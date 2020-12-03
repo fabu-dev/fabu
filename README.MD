@@ -13,6 +13,13 @@ cd ./api
 swag init -o ./docs/swagger
 
 ```
+
+# 后端项目启动
+```bash
+cd ./api
+
+go run main.go
+```
 访问：127.0.0.1:8803/swagger/index.html 查看(ip根据实际情况修改)
 
 # 前端项目启动
@@ -21,6 +28,7 @@ yarn install
 
 yarn run serve
 ```
+可以注册新账号使用，或用演示账号登录（账号和密码均为admin）
 
 # 通过docker部署
 ```bash
