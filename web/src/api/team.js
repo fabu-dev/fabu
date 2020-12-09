@@ -1,19 +1,19 @@
 import request from '@/utils/request'
 
 const teamApi = {
-  Create: '/team/create',
-  Edit: '/team/edit',
-  Index: '/team/',
-  Del: '/team/del',
-  Member: '/team/member/',
-  MemberDel: '/team/member/del',
-  MemberAdd: '/team/member/add'
+  Create: '/v1/team/create',
+  Edit: '/v1/team/edit',
+  Index: '/v1/team/',
+  Info: '/v1/team/info/',
+  Del: '/v1/team/del',
+  Member: '/v1/team/member/',
+  MemberDel: '/v1/team/member/del',
+  MemberAdd: '/v1/team/member/add'
 
 }
 
 // 创建团队
 export function create (parameter) {
-  console.log(process.env.VUE_APP_API_BASE_URL)
   return request({
     url: teamApi.Create,
     method: 'post',
@@ -59,7 +59,6 @@ export function exit (parameter) {
 
 // 解散团队
 export function del (parameter) {
-  console.log(process.env.VUE_APP_API_BASE_URL)
   return request({
     url: teamApi.Del,
     method: 'delete',
@@ -69,10 +68,18 @@ export function del (parameter) {
 
 // 邀请团队成员
 export function addMember (parameter) {
-  console.log(process.env.VUE_APP_API_BASE_URL)
   return request({
     url: teamApi.MemberAdd,
     method: 'post',
     data: parameter
+  })
+}
+
+// 获取一个应用的详细信息
+export function getTeamInfo (id) {
+  return request({
+    url: teamApi.Info + id,
+    method: 'Get',
+    timeout: 0
   })
 }

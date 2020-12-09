@@ -179,7 +179,7 @@ export default function upload (option) {
       // 给后端发送文件合并请求
       const fileInfo = await Axios({
         method: 'post',
-        url: process.env.VUE_APP_API_BASE_URL + '/app/base',
+        url: process.env.VUE_APP_API_BASE_URL + '/v1/app/base',
         data: data,
         headers: {
           'Content-Type': 'application/json',

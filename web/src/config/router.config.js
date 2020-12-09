@@ -7,6 +7,8 @@ const RouteView = {
   render: (h) => h('router-view')
 }
 
+const url = process.env.VUE_APP_API_BASE_URL + '/' + 'swagger/index.html'
+
 export const asyncRouterMap = [
 
   {
@@ -23,6 +25,7 @@ export const asyncRouterMap = [
         redirect: '/dashboard/workplace',
         component: RouteView,
         meta: { title: '工作台', keepAlive: true, icon: bxAnaalyse, permission: [ 'dashboard' ] },
+        hidden: true,
         children: [
           {
             path: '/dashboard/analysis/:pageNo([1-9]\\d*)?',
@@ -30,12 +33,6 @@ export const asyncRouterMap = [
             component: () => import('@/views/dashboard/Analysis'),
             meta: { title: 'menu.dashboard.analysis', keepAlive: false, permission: [ 'dashboard' ] }
           },
-          // 外部链接
-          // {
-          //   path: 'https://www.baidu.com/',
-          //   name: 'Monitor',
-          //   meta: { title: 'menu.dashboard.monitor', target: '_blank' }
-          // },
           {
             path: '/dashboard/workplace',
             name: 'Workplace',
@@ -48,16 +45,62 @@ export const asyncRouterMap = [
       {
         path: '/app',
         name: 'app',
-        component: () => import('@/views/app/BasicList'),
-        // hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-        meta: { title: '应用列表', icon: 'table', permission: [ 'table' ] }
-      },
-      {
-        path: '/app/upload',
-        name: 'AppUpload',
-        hidden: true,
-        component: () => import('@/views/app/uploadForm/StepForm'),
-        meta: { title: '上传APP', keepAlive: true, hidden: true, permission: [ 'table' ] }
+        component: RouteView,
+        meta: { title: '应用管理', icon: 'table', keepAlive: true, permission: [ 'table' ] },
+        redirect: '/app/index',
+        hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+        children: [
+          {
+            path: '/app/index',
+            name: 'AppIndex',
+            hidden: true,
+            component: () => import('@/views/app/BasicList'),
+            meta: { title: '应用列表', keepAlive: true, hidden: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/app/upload',
+            name: 'AppUpload',
+            hidden: true,
+            component: () => import('@/views/app/uploadForm/StepForm'),
+            meta: { title: '上传APP', keepAlive: true, hidden: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/app/preview',
+            name: 'Preview',
+            hidden: true,
+            component: () => import('@/views/app/Preview'),
+            meta: { title: '安装APP', keepAlive: true, hidden: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/app/info',
+            name: 'AppInfo',
+            hidden: true,
+            component: () => import('@/views/app/search/SearchLayout'),
+            redirect: '/app/search/detail',
+            meta: { title: '应用详情', keepAlive: true, hidden: true, permission: [ 'table' ] },
+            hideChildrenInMenu: true,
+            children: [
+              {
+                path: '/app/search/detail',
+                name: 'AppDetail',
+                component: () => import('../views/app/search/Detail'),
+                meta: { title: '应用概述', permission: [ 'table' ] }
+              },
+              {
+                path: '/app/search/version',
+                name: 'AppVersion',
+                component: () => import('../views/app/search/Version'),
+                meta: { title: '版本列表', permission: [ 'table' ] }
+              },
+              {
+                path: '/app/search/team',
+                name: 'AppTeam',
+                component: () => import('../views/app/search/Team'),
+                meta: { title: '团队', permission: [ 'table' ] }
+              }
+            ]
+          }
+        ]
       },
       // profile
       {
@@ -75,6 +118,7 @@ export const asyncRouterMap = [
         name: 'account',
         meta: { title: '个人设置', icon: 'user', keepAlive: true, permission: [ 'user' ] },
         hideChildrenInMenu: true,
+        hidden: true,
         children: [
           {
             path: '/account/settings/base',
@@ -108,7 +152,12 @@ export const asyncRouterMap = [
           }
         ]
       },
-
+      // 外部链接
+      {
+        path: url,
+        name: 'API',
+        meta: { title: 'API', target: '_blank' }
+      },
       // other
       {
         path: '/other',
@@ -116,6 +165,7 @@ export const asyncRouterMap = [
         component: RouteView,
         meta: { title: '其他组件', icon: 'slack', permission: [ 'dashboard' ] },
         redirect: '/other/icon-selector',
+        hidden: true,
         children: [
           {
             path: '/other/icon-selector',

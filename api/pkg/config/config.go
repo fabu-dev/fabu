@@ -38,6 +38,7 @@ type Mongo struct {
 
 type Server struct {
 	RunMode      string
+	BaseUrl      string
 	HttpPort     uint32
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
@@ -57,9 +58,9 @@ type System struct {
 	ImageMaxSize  uint32
 	ImageAllowExt []string
 
-	ExportSavePath string
-	QrCodeSavePath string
-	FontSavePath   string
+	ExportPath   string
+	QrCodePath   string
+	FontSavePath string
 
 	LogPath    string
 	LogName    string

@@ -1,57 +1,51 @@
 <template>
   <page-header-wrapper>
-    <a-card :bordered="false">
-      <a-row>
-        <a-col :sm="8" :xs="24">
-          <info title="我的待办" value="8个任务" :bordered="true" />
-        </a-col>
-        <a-col :sm="8" :xs="24">
-          <info title="本周任务平均处理时间" value="32分钟" :bordered="true" />
-        </a-col>
-        <a-col :sm="8" :xs="24">
-          <info title="本周完成任务数" value="24个" />
-        </a-col>
-      </a-row>
-    </a-card>
+<!--    <a-card :bordered="false">-->
+<!--      <a-row>-->
+<!--        <a-col :sm="8" :xs="24">-->
+<!--          <info title="我的待办" value="8个任务" :bordered="true" />-->
+<!--        </a-col>-->
+<!--        <a-col :sm="8" :xs="24">-->
+<!--          <info title="本周任务平均处理时间" value="32分钟" :bordered="true" />-->
+<!--        </a-col>-->
+<!--        <a-col :sm="8" :xs="24">-->
+<!--          <info title="本周完成任务数" value="24个" />-->
+<!--        </a-col>-->
+<!--      </a-row>-->
+<!--    </a-card>-->
 
     <a-card
       style="margin-top: 24px"
       :bordered="false"
       title="应用列表">
-
       <div slot="extra">
         团队：
-        <a-select v-model="selectTeam" style="width: 120px" @change="getTeamApp" v-decorator="[ 'team', {rules: []}]">
+        <a-select v-model="selectTeam" style="width: 120px;margin-right: 16px;" @change="getTeamApp" v-decorator="[ 'team', {rules: []}]">
           <a-select-option v-for="item in teamData" :key="item.id" >
             {{ item.name }}
           </a-select-option>
         </a-select>
 
-        <a-button type="primary" style="margin: 0 5px 0 5px" v-if="role == 3" @click="dissolve()">
-          上传
-        </a-button>
+        <a-button type="primary" ><router-link :to="{ name: 'AppUpload', query:{ teamId: this.selectTeam} }">上传APP</router-link></a-button>
       </div>
 
       <div class="operate">
-        <a-button type="dashed" style="width: 100%" icon="plus">
-          <router-link :to="{ name: 'AppUpload', query:{ teamId: selectTeam, teamName: selectTeamName } }"> <a>上传APP</a> </router-link>
-        </a-button>
       </div>
 
       <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
         <a-list-item :key="index" v-for="(item, index) in data">
           <a-list-item-meta :description="item.name" style="flex: 0.25">
-            <a-avatar slot="avatar" size="large" shape="square" :src="item.name"/>
-            <a slot="title">{{ item.name }}</a>
+            <a-avatar slot="avatar" size="large" shape="square" :src="item.icon"/>{{ item.icon }}
+            <a slot="title"><router-link :to="{ name: 'AppInfo', query:{ id: item.id, team_id: item.team_id } }"> {{ item.name }} </router-link></a>
           </a-list-item-meta>
           <div slot="actions">
-            <a @click="edit(item)">编辑</a>
+            <router-link target="_blank" :to="{ name: 'Preview', query:{ id: item.id } }"><a>预览</a></router-link>
           </div>
           <div slot="actions">
             <a-dropdown>
               <a-menu slot="overlay">
-                <a-menu-item><a>编辑</a></a-menu-item>
-                <a-menu-item><a>删除</a></a-menu-item>
+                <a-menu-item><a @click="edit(item)">编辑</a></a-menu-item>
+                <a-menu-item><a @click="del(item.id)">删除</a></a-menu-item>
               </a-menu>
               <a>更多<a-icon type="down"/></a>
             </a-dropdown>
@@ -63,7 +57,7 @@
             </div>
             <div class="list-content-item">
               <span>平台</span>
-              <p>{{ item.platform }}</p>
+              <p>{{ item.platform_name }}</p>
             </div>
             <div class="list-content-item">
               <span>下载次数</span>
@@ -122,31 +116,7 @@ export default {
     this.getTeamData()
   },
   methods: {
-    ...mapActions(['TeamIndex', 'GetList']),
-    add () {
-      this.$dialog(TaskForm,
-        {
-          record: {},
-          on: {
-            ok () {
-              console.log('ok 回调')
-            },
-            cancel () {
-              console.log('cancel 回调')
-            },
-            close () {
-              console.log('modal close 回调')
-            }
-          }
-        },
-        // modal props
-        {
-          title: '新增',
-          width: 700,
-          centered: true,
-          maskClosable: false
-        })
-    },
+    ...mapActions(['TeamIndex', 'GetList', 'DeleteApp']),
     edit (record) {
       console.log('record', record)
       this.$dialog(TaskForm,
@@ -184,12 +154,6 @@ export default {
           this.CountTeam = res.result['count_team'] + '个'
           this.CountAppDownload = res.result['count_app_download'] + '次'
 
-          for (const key in this.teamData) {
-            if (this.teamData[key].id === this.selectTeam) {
-              this.selectTeamName = this.teamData[key].name
-            }
-          }
-
           this.getTeamApp(this.selectTeam)
         }
       }).catch((err) => {
@@ -204,11 +168,35 @@ export default {
         }
         GetList(params).then(res => {
           this.data = res.result.app
-          console.log('data', this.data)
+          for (const key in this.data) {
+            this.data[key].icon = process.env.VUE_APP_API_BASE_URL + '/' + this.data[key].icon
+          }
+
+          console.log('list data', this.data)
         }).catch((err) => {
           console.log('team list', err)
         })
       }
+    },
+    del (id) {
+      const { DeleteApp } = this
+      const params = {
+        'id': id
+      }
+      this.$confirm({
+        title: '确定要删除该应用么?',
+        content: '',
+        onOk () {
+          return DeleteApp(params).then(res => {
+            if (res.result.length > 0) {
+              this.getTeamApp(this.selectTeam)
+            }
+          }).catch((err) => {
+            console.log('delete app err:', err)
+          })
+        },
+        onCancel () {}
+      })
     }
   }
 }

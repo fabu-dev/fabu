@@ -27,3 +27,7 @@ type TeamMemberAddParams struct {
 	Email string `json:"email" binding:"required,email"`
 	Role  uint8  `json:"role" binding:"required"`
 }
+
+type TeamViewParams struct {
+	Id uint64 `uri:"id" binding:"required,numeric"`
+}

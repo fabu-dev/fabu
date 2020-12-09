@@ -13,7 +13,7 @@
       <div class="content">
         <step1 v-if="currentTab === 0" @nextStep="nextStep"/>
         <step2 v-if="currentTab === 1" @nextStep="nextStep" @prevStep="prevStep" :sendData="stepOne"/>
-        <step3 v-if="currentTab === 2" @prevStep="prevStep" @finish="finish"/>
+        <step3 v-if="currentTab === 2" @prevStep="prevStep" @finish="finish" :sendData="stepOne"/>
       </div>
     </a-card>
   </page-header-wrapper>
@@ -53,17 +53,24 @@ export default {
           team_name: data.team_name,
           build: result.build,
           bundle_id: result.bundle_id,
-          icon: result.icon,
+          icon: process.env.VUE_APP_API_BASE_URL + '/' + result.icon,
           identifier: result.identifier,
           name: result.name,
           size: result.size,
-          version: result.version
+          version: result.version,
+          shortKey: process.env.VUE_APP_API_BASE_URL + '' + result.short_key,
+          qrCode: process.env.VUE_APP_API_BASE_URL + '/' + result.qr_code
         }
         this.stepOne = stepOneData
-        console.log('step one:', stepOneData)
       }
 
-      console.log('step 1 data:', data)
+      if (this.currentTab === 1) {
+        console.log('step2 data', data)
+        this.stepOne.teamName = data.teamName
+        this.stepOne.description = data.description
+      }
+
+      console.log('current tab:', this.currentTab)
       console.log('stepOne:', this.stepOne)
       if (this.currentTab < 2) {
         this.currentTab += 1

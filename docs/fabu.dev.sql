@@ -11,14 +11,14 @@
  Target Server Version : 50716
  File Encoding         : 65001
 
- Date: 14/10/2020 17:02:30
+ Date: 18/11/2020 18:01:51
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 CREATE DATABASE IF NOT EXISTS `fabu.dev`;
-USE `fabu.dev`
+USE `fabu.dev`;
 
 -- ----------------------------
 -- Table structure for app
@@ -40,11 +40,12 @@ CREATE TABLE `app`  (
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `created_by` varchar(50) NOT NULL DEFAULT '' COMMENT '添加人',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uq_bundle_id_platform` (`bundle_id`,`platform`) USING BTREE
+  UNIQUE KEY `uq_bundle_id_platform` (`bundle_id`,`platform`) USING BTREE,
+  KEY `idx_team_id` (`team_id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = 'app主表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for download_log
+-- Table structure for app_download_log
 -- ----------------------------
 DROP TABLE IF EXISTS `app_download_log`;
 CREATE TABLE `app_download_log`  (
@@ -56,7 +57,7 @@ CREATE TABLE `app_download_log`  (
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `created_by` varchar(50) NOT NULL DEFAULT '' COMMENT '添加人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1;
 
 -- ----------------------------
 -- Table structure for app_statistics
@@ -69,10 +70,10 @@ CREATE TABLE `app_statistics` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`app_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='app统计表';
+) ENGINE = InnoDB AUTO_INCREMENT = 1 COMMENT = 'app统计表';
 
 -- ----------------------------
--- Table structure for version
+-- Table structure for app_version
 -- ----------------------------
 DROP TABLE IF EXISTS `app_version`;
 CREATE TABLE `app_version`  (
@@ -82,6 +83,8 @@ CREATE TABLE `app_version`  (
   `code` varchar(10) NOT NULL DEFAULT '' COMMENT '版本号',
   `description` varchar(300) NOT NULL DEFAULT '' COMMENT '更新说明',
   `size` bigint(20) UNSIGNED NOT NULL DEFAULT 0 COMMENT '包大小',
+  `short_url` varchar(15) NOT NULL DEFAULT '' COMMENT '短链接',
+  `qr_code` varchar(200) NOT NULL DEFAULT '' COMMENT '二维码地址',
   `hash` varchar(80) NOT NULL DEFAULT '' COMMENT 'hash',
   `path` varchar(200) NOT NULL DEFAULT '' COMMENT '文件存放路径（如果上传到云平台这里是url）',
   `is_publish` tinyint(3) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否发布（0：未发布，1：发布）',
@@ -91,11 +94,11 @@ CREATE TABLE `app_version`  (
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `created_by` varchar(50) NOT NULL DEFAULT '' COMMENT '添加人',
   PRIMARY KEY (`id`) USING BTREE,
-  KEY `uk_app_id_code` (`app_id`,`code`)
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = 'app版本表' ROW_FORMAT = Dynamic;
+  INDEX `uk_app_id_code`(`app_id`, `code`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 COMMENT = 'app版本表';
 
 -- ----------------------------
--- Table structure for members
+-- Table structure for member
 -- ----------------------------
 DROP TABLE IF EXISTS `member`;
 CREATE TABLE `member`  (
@@ -113,10 +116,15 @@ CREATE TABLE `member`  (
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `created_by` varchar(50) NOT NULL DEFAULT '' COMMENT '添加人',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uk_token` (`token`) USING BTREE,
-  UNIQUE KEY `uk_email` (`email`) USING BTREE,
-  UNIQUE KEY `uk_account` (`account`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+  UNIQUE INDEX `uk_token`(`token`) USING BTREE,
+  UNIQUE INDEX `uk_email`(`email`) USING BTREE,
+  UNIQUE INDEX `uk_account`(`account`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2;
+
+-- ----------------------------
+-- Records of member
+-- ----------------------------
+INSERT INTO `member` VALUES (1, '', 'admin', 'admin', '21232f297a57a5a743894a0e4a801fc3', '', 'business@shinmigo.com', 'jKbnyISriCP3h5dJ2kMc', 2, '2020-11-18 10:00:39', '', '2020-11-18 10:00:39', '');
 
 -- ----------------------------
 -- Table structure for member_statistics
@@ -129,7 +137,7 @@ CREATE TABLE `member_statistics` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`member_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='用户的信息统计表';
+) ENGINE = InnoDB COMMENT = '用户的信息统计表';
 
 -- ----------------------------
 -- Table structure for team
@@ -145,7 +153,7 @@ CREATE TABLE `team`  (
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `created_by` varchar(50) NOT NULL DEFAULT '' COMMENT '添加人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = '团队表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 COMMENT = '团队表';
 
 -- ----------------------------
 -- Table structure for team_member
@@ -161,10 +169,9 @@ CREATE TABLE `team_member`  (
   `created_at` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `created_by` varchar(50) NOT NULL DEFAULT '' COMMENT '添加人',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uk_team_member_id` (`team_id`,`member_id`) USING BTREE,
-  INDEX `idx_member_id`(`member_id`) USING BTREE,
-  INDEX `idx_team_id`(`team_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COMMENT = '团队成员表' ROW_FORMAT = Dynamic;
+  UNIQUE INDEX `uk_team_member_id`(`team_id`, `member_id`) USING BTREE,
+  INDEX `idx_member_id`(`member_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 COMMENT = '团队成员表';
 
 -- ----------------------------
 -- Table structure for team_statistics
@@ -177,6 +184,6 @@ CREATE TABLE `team_statistics` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`team_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='团队的信息统计表';
+) ENGINE = InnoDB COMMENT = '团队的信息统计表';
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -28,9 +28,6 @@
       <a-form-item>
         <a-input type="hidden" v-decorator="['team_id', { initialValue: this.$route.query.teamId, rules: [{required: true, message: '参数错误'}] }]"/>
       </a-form-item>
-      <a-form-item>
-        <a-input type="hidden" v-decorator="['team_name', { initialValue: this.$route.query.teamName, rules: [{required: true, message: '参数错误'}] }]"/>
-      </a-form-item>
       <a-form-item :wrapperCol="{span: 19, offset: 5}">
         <a-button type="primary" @click="nextStep">下一步</a-button>
       </a-form-item>
@@ -38,10 +35,10 @@
     <a-divider />
     <div class="step-form-style-desc">
       <h3>说明</h3>
-      <h4>转账到支付宝账户</h4>
-      <p>如果需要，这里可以放一些关于产品的常见问题说明。如果需要，这里可以放一些关于产品的常见问题说明。如果需要，这里可以放一些关于产品的常见问题说明。</p>
-      <h4>转账到银行卡</h4>
-      <p>如果需要，这里可以放一些关于产品的常见问题说明。如果需要，这里可以放一些关于产品的常见问题说明。如果需要，这里可以放一些关于产品的常见问题说明。</p>
+      <h4>1.只可以上传apk和ipa的应用文件</h4>
+      <p>2.文件大小不超过2GB</p>
+      <h4>3.暂时不支持断点续传</h4>
+      <p>4.上传时，不要关闭页面，或者刷新页面</p>
     </div>
   </div>
 </template>
@@ -56,7 +53,7 @@ export default {
   data () {
     return {
       fileList: [],
-      uploadUrl: process.env.VUE_APP_API_BASE_URL + '/app/upload',
+      uploadUrl: process.env.VUE_APP_API_BASE_URL + '/v1/app/upload',
       labelCol: { lg: { span: 5 }, sm: { span: 5 } },
       wrapperCol: { lg: { span: 19 }, sm: { span: 19 } },
       chunkUpload: chunkUpload, // 分片上传自定义方法，在头部引入了

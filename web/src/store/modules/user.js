@@ -38,7 +38,7 @@ const user = {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
           const result = response.result
-          storage.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000)
+          storage.set(ACCESS_TOKEN, result.access_token, 7 * 24 * 60 * 60 * 1000)
           commit('SET_TOKEN', result.token)
           resolve()
         }).catch(error => {
@@ -62,7 +62,7 @@ const user = {
     // 获取用户信息
     GetInfo ({ commit }) {
       return new Promise((resolve, reject) => {
-        getInfo(1).then(response => {
+        getInfo(1).then(response => { // TODO 这里要改下，不能写死
           const result = response.result
           console.log(result)
           // if (result.role && result.role.permissions.length > 0) {

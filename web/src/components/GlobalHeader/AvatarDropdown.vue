@@ -1,18 +1,24 @@
 <template>
   <a-dropdown v-if="currentUser && currentUser.name" placement="bottomRight">
     <span class="ant-pro-account-avatar">
-      <a-avatar size="small" src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png" class="antd-pro-global-header-index-avatar" />
+      <a-avatar size="small" :src="currentUser.avatar" class="antd-pro-global-header-index-avatar" />
       <span>{{ currentUser.name }}</span>
     </span>
     <template v-slot:overlay>
       <a-menu class="ant-pro-drop-down menu" :selected-keys="[]">
+        <!--
         <a-menu-item v-if="menu" key="center" @click="handleToCenter">
-          <a-icon type="user" />
-          个人中心
+          <router-link target="_blank" :to="{ name: 'account' }">
+            <a-icon type="user" />
+            个人中心
+          </router-link>
         </a-menu-item>
+        -->
         <a-menu-item v-if="menu" key="settings" @click="handleToSettings">
-          <a-icon type="setting" />
-          个人设置
+          <router-link target="_blank" :to="{ name: 'account' }">
+            <a-icon type="setting" />
+            &nbsp;&nbsp;&nbsp;个人设置
+          </router-link>
         </a-menu-item>
         <a-menu-divider v-if="menu" />
         <a-menu-item key="logout" @click="handleLogout">
@@ -29,14 +35,23 @@
 
 <script>
 import { Modal } from 'ant-design-vue'
+import { mapState } from 'vuex'
 
 export default {
+  computed: {
+    ...mapState({
+      nickname: (state) => state.user.nickname,
+      welcome: (state) => state.user.welcome
+    }),
+    currentUser () {
+      return {
+        name: 'User',
+        avatar: require('../../assets/head.png')
+      }
+    }
+  },
   name: 'AvatarDropdown',
   props: {
-    currentUser: {
-      type: Object,
-      default: () => null
-    },
     menu: {
       type: Boolean,
       default: true

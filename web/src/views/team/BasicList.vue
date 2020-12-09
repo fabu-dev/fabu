@@ -1,18 +1,18 @@
 <template>
   <page-header-wrapper>
-    <a-card :bordered="false">
-      <a-row>
-        <a-col :sm="8" :xs="24">
-          <info title="我的团队" :value="this.CountTeam" :bordered="true" />
-        </a-col>
-        <a-col :sm="8" :xs="24">
-          <info title="我的APP" :value="this.CountApp" :bordered="true" />
-        </a-col>
-        <a-col :sm="8" :xs="24">
-          <info title="APP本周下载" :value="this.CountAppDownload" />
-        </a-col>
-      </a-row>
-    </a-card>
+<!--    <a-card :bordered="false">-->
+<!--      <a-row>-->
+<!--        <a-col :sm="8" :xs="24">-->
+<!--          <info title="我的团队" :value="this.CountTeam" :bordered="true" />-->
+<!--        </a-col>-->
+<!--        <a-col :sm="8" :xs="24">-->
+<!--          <info title="我的APP" :value="this.CountApp" :bordered="true" />-->
+<!--        </a-col>-->
+<!--        <a-col :sm="8" :xs="24">-->
+<!--          <info title="APP本周下载" :value="this.CountAppDownload" />-->
+<!--        </a-col>-->
+<!--      </a-row>-->
+<!--    </a-card>-->
 
     <a-card
       style="margin-top: 24px"

@@ -2,9 +2,15 @@ package task
 
 import (
 	"encoding/json"
+	"fmt"
 	"image/png"
 	"io"
 	"os"
+
+	"github.com/boombuler/barcode/qr"
+
+	"fabu.dev/api/pkg/qrcode"
+	"fabu.dev/api/pkg/short"
 
 	"fabu.dev/api/pkg/api/global"
 	"fabu.dev/api/pkg/parser"
@@ -15,7 +21,7 @@ import (
 
 	"fabu.dev/api/pkg/db"
 
-	"fabu.dev/api/service"
+	"fabu.dev/api/application/service"
 	"github.com/sirupsen/logrus"
 )
 
@@ -135,6 +141,7 @@ func (t *CombineApp) Save(data *service.UploadInfo) error {
 	// 如果最后一个分片合并完成，那么解析这个文件将数据保存到redis，删除FileBuffer内的数据
 	if data.Params.ChunkNumber == data.Params.ChunkTotal {
 		if err := t.CombineFinished(filename, data.Params.Identifier); err != nil {
+			logrus.Error("finished err:", err)
 			return nil
 		}
 	}
@@ -161,6 +168,16 @@ func (t *CombineApp) CombineFinished(filename, identifier string) error {
 		return err
 	}
 
+	shortKey, err := short.NewPool().GetShortKey()
+	if err != nil {
+		logrus.Error("shortKey err：", err)
+	}
+
+	qrCode, err := generateQrCode(shortKey)
+	if err != nil {
+		logrus.Error("qrcode err：", err)
+	}
+
 	appInfo := &global.AppInfo{
 		Name:       apk.Name,
 		BundleId:   apk.BundleId,
@@ -170,6 +187,9 @@ func (t *CombineApp) CombineFinished(filename, identifier string) error {
 		Size:       apk.Size,
 		Identifier: identifier,
 		Platform:   apk.Platform,
+		ShortKey:   shortKey,
+		Path:       filename,
+		QrCode:     qrCode,
 	}
 	data, err := json.Marshal(appInfo)
 	if err != nil {
@@ -186,4 +206,13 @@ func (t *CombineApp) CombineFinished(filename, identifier string) error {
 	db.Redis.HDel(constant.AppUploadProgress, identifier)
 
 	return nil
+}
+
+func generateQrCode(shortKey string) (string, error) {
+	url := fmt.Sprintf("%s:%d/%s", config.Conf.Server.BaseUrl, config.Conf.Server.HttpPort, shortKey)
+	qrc := qrcode.NewQrCode(url, 300, 300, qr.M, qr.Auto)
+
+	name, path, errQrCode := qrc.Encode(config.Conf.System.QrCodePath)
+
+	return fmt.Sprintf("%s/%s", path, name), errQrCode
 }

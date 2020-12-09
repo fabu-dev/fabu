@@ -5,6 +5,7 @@ import app from './modules/app'
 import user from './modules/user'
 import team from './modules/team'
 import apps from './modules/apps'
+import version from './modules/version'
 
 // default router permission control
 import permission from './modules/permission'
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     user,
     team,
     apps,
+    version,
     permission
   },
   state: {

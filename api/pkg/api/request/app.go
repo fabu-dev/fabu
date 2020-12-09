@@ -2,7 +2,7 @@ package request
 
 import "mime/multipart"
 
-type TeamIndexParams struct {
+type AppIndexParams struct {
 	TeamId uint64 `form:"team_id" binding:"required,numeric"`
 }
 
@@ -28,4 +28,12 @@ type SaveParams struct {
 	Identifier  string `json:"identifier" binding:"required"`
 	Description string `json:"description" binding:"required"`
 	TeamId      uint64 `json:"team_id" binding:"required,numeric"`
+}
+
+type AppViewParams struct {
+	Id uint64 `uri:"id" binding:"required,numeric"`
+}
+
+type AppDeleteParams struct {
+	Id uint64 `uri:"id" binding:"required,numeric"`
 }
