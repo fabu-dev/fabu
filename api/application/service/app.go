@@ -209,6 +209,19 @@ func (s *App) GetInfoById(appId uint64) (*model.AppInfo, *api.Error) {
 	return appInfo, err
 }
 
+// 获取App详细信息
+func (s *App) GetInfoByShortUrl(shortUrl string) (*model.AppInfo, *api.Error) {
+	objApp := model.NewApp()
+
+	appInfo, err := objApp.GetInfoByShortUrl(shortUrl)
+	if err != nil {
+		return appInfo, err
+	}
+
+	s.ApplyPlatformName(appInfo)
+	return appInfo, err
+}
+
 // 删除App
 func (s *App) Delete(params *request.AppDeleteParams, operator *model.Operator) *api.Error {
 	appInfo := &model.AppInfo{

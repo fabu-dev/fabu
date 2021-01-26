@@ -4,13 +4,12 @@ import (
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 	"github.com/sirupsen/logrus"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 var (
-	Mysql       *gorm.DB
-	Redis       *redis.Client
-	Mongo       *mongo.Client
+	Mysql *gorm.DB
+	Redis *redis.Client
+	//Mongo       *mongo.Client
 	dbConnector []Connector
 )
 
@@ -22,7 +21,7 @@ type Connector interface {
 func InitConnector() {
 	dbConnector = append(dbConnector, NewMysqlConnector())
 	dbConnector = append(dbConnector, NewRedisConnector())
-	dbConnector = append(dbConnector, NewMongoConnector())
+	//dbConnector = append(dbConnector, NewMongoConnector())
 }
 
 func init() {

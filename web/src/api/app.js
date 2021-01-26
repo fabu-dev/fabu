@@ -6,6 +6,7 @@ const appApi = {
   GetBase: '/v1/app/base',
   Index: '/v1/app/',
   Info: '/v1/app/info/',
+  InfoByShort: '/v1/app/info?short_url=',
   Delete: '/v1/app/delete'
 }
 
@@ -58,6 +59,16 @@ export function getInfo (id) {
   console.log('params getInfo', id)
   return request({
     url: appApi.Info + id,
+    method: 'Get',
+    timeout: 0
+  })
+}
+
+// 获取一个应用的详细信息
+export function getInfoByShort (shortUrl) {
+  console.log('params getInfoByShort', shortUrl)
+  return request({
+    url: appApi.InfoByShort + shortUrl,
     method: 'Get',
     timeout: 0
   })

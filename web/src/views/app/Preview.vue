@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="contentLoading" class="preview" element-loading-background="rgba(0, 0, 0, 0)">
+  <div class="preview">
     <span class="pattern left"><img src="../../../public/download_pattern_left.png"></span>
     <span class="pattern right"><img src="../../../public/download_pattern_right.png"></span>
     <div class="main">
@@ -62,7 +62,7 @@
         请点击右上角<br>选择"在浏览器打开"
       </div>
       <div class="footer">
-        <a href="http://www.beian.miit.gov.cn/" target="_blank" style="color: #A9B1B3">沪ICP备13031758号</a>
+
       </div>
     </div>
   </div>
@@ -131,12 +131,11 @@ export default {
   },
   computed: {
     url () {
-      return (process.env.VUE_APP_API_BASE_URL + '/download/' + this.current.short_url)
+      return (window.document.location.href)
     }
   },
   mounted () {
-    this.getInfo(this.$route.query.id)
-    this.getVersionList()
+    this.getInfo(this.$route.params.short_url)
     if (/(iphone|ipad|ipod|ios)/i.test(ua)) {
       this.platform = 'ios'
     } else if (/(android)/i.test(ua)) {
@@ -151,13 +150,20 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['GetAppInfo', 'GetVersionList']),
-    getInfo (id) {
-      const { GetAppInfo } = this
+    ...mapActions(['GetAppInfoByShort', 'GetVersionList']),
+    getInfo (shortUrl) {
+      const { GetAppInfoByShort } = this
 
-      GetAppInfo(id).then(res => {
+      GetAppInfoByShort(shortUrl).then(res => {
         this.appInfo = res.result
+
+        if (res.code !== 1) {
+          this.$router.push({ path: '/404' })
+          return
+        }
+
         this.appInfo.icon = process.env.VUE_APP_API_BASE_URL + '/' + this.appInfo.icon
+        this.getVersionList()
         console.log('this.appInfo', this.appInfo)
       }).catch((err) => {
         console.log('team list', err)
@@ -167,7 +173,7 @@ export default {
       console.log()
       const { GetVersionList } = this
       const params = {
-        'app_id': this.$route.query.id
+        'app_id': this.appInfo.id
       }
       GetVersionList(params).then(res => {
         this.version = res.result.app_version

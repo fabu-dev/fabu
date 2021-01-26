@@ -7,8 +7,6 @@ const RouteView = {
   render: (h) => h('router-view')
 }
 
-const url = process.env.VUE_APP_API_BASE_URL + '/' + 'swagger/index.html'
-
 export const asyncRouterMap = [
 
   {
@@ -16,7 +14,7 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: { title: 'menu.home' },
-    redirect: '/dashboard/workplace',
+    redirect: '/app',
     children: [
       // dashboard
       {
@@ -63,13 +61,6 @@ export const asyncRouterMap = [
             hidden: true,
             component: () => import('@/views/app/uploadForm/StepForm'),
             meta: { title: '上传APP', keepAlive: true, hidden: true, permission: [ 'table' ] }
-          },
-          {
-            path: '/app/preview',
-            name: 'Preview',
-            hidden: true,
-            component: () => import('@/views/app/Preview'),
-            meta: { title: '安装APP', keepAlive: true, hidden: true, permission: [ 'table' ] }
           },
           {
             path: '/app/info',
@@ -152,12 +143,7 @@ export const asyncRouterMap = [
           }
         ]
       },
-      // 外部链接
-      {
-        path: url,
-        name: 'API',
-        meta: { title: 'API', target: '_blank' }
-      },
+
       // other
       {
         path: '/other',
@@ -212,6 +198,13 @@ export const asyncRouterMap = [
         ]
       }
     ]
+  },
+  {
+    path: '/s/:short_url',
+    name: 'Preview',
+    hidden: true,
+    component: () => import('@/views/app/Preview'),
+    meta: { title: '安装APP', keepAlive: true, hidden: true }
   },
   {
     path: '*', redirect: '/404', hidden: true

@@ -25,6 +25,10 @@ const errorHandler = (error) => {
         message: 'Forbidden',
         description: data.message
       })
+      // 通知后跳转登录页
+      setTimeout(() => {
+        window.location.href = '/user/login'
+      }, 1500)
     }
     if (error.response.status === 401 && !(data.result && data.result.isLogin)) {
       notification.error({

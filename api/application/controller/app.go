@@ -100,6 +100,21 @@ func (ctl *App) View(c *gin.Context) {
 }
 
 // @Tags APP管理
+// @Summary App详情 API
+// @Description App详情
+// @Success 200 {string} string    "ok"
+// @Router /v1/app/info/1 [GET]
+func (ctl *App) ViewByShort(c *gin.Context) {
+	teamInfo, err := ctl.paramFilter.ViewByShort(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
+		return
+	}
+
+	api.SetResponse(c, http.StatusOK, code.Success, teamInfo)
+}
+
+// @Tags APP管理
 // @Summary App编辑 API
 // @Description App编辑
 // @Success 200 {string} string    "ok"

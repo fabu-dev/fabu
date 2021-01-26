@@ -77,6 +77,19 @@ func (f *App) Save(c *gin.Context) (*global.AppInfo, *api.Error) {
 	return appInfo, err
 }
 
+// 验证获取APP详情 根据short_url
+func (f *App) ViewByShort(c *gin.Context) (*model.AppInfo, *api.Error) {
+	params := &request.AppViewByShortParams{}
+
+	if err := c.ShouldBind(params); err != nil {
+		return nil, api.NewError(code.ErrorRequest, err.Error())
+	}
+
+	app, err := f.service.GetInfoByShortUrl(params.ShortUrl)
+
+	return app, err
+}
+
 // 验证获取APP详情
 func (f *App) View(c *gin.Context) (*model.AppInfo, *api.Error) {
 	params := &request.AppViewParams{}

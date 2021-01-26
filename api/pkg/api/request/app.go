@@ -34,6 +34,10 @@ type AppViewParams struct {
 	Id uint64 `uri:"id" binding:"required,numeric"`
 }
 
+type AppViewByShortParams struct {
+	ShortUrl string `form:"short_url" binding:"required,alpha"`
+}
+
 type AppDeleteParams struct {
 	Id uint64 `uri:"id" binding:"required,numeric"`
 }

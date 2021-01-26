@@ -2,7 +2,6 @@ package model
 
 import (
 	"errors"
-
 	"fabu.dev/api/pkg/constant"
 
 	"fabu.dev/api/pkg/api"
@@ -94,6 +93,17 @@ func (m *App) GetInfoById(id uint64) (*AppInfo, *api.Error) {
 	err := m.Db().Select(m.DetailColumns).Where("id = ? and status = ?", id, constant.StatusEnable).First(appInfo).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
+	}
+
+	return appInfo, m.ProcessError(err)
+}
+
+// 根据id获取app详细信息
+func (m *App) GetInfoByShortUrl(shortUrl string) (*AppInfo, *api.Error) {
+	appInfo := &AppInfo{}
+	err := m.Db().Select(m.DetailColumns).Where("short_url = ? and status = ?", shortUrl, constant.StatusEnable).First(appInfo).Error
+	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, api.NewError(404, "地址错误")
 	}
 
 	return appInfo, m.ProcessError(err)

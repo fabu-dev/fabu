@@ -1,26 +1,21 @@
 
 database:
   type: "mysql"
-  host: "192.168.3.132"
-  port: 8805
+  host: "127.0.0.1"
+  port: 3306
   user: "root"
-  password: "root"
+  password: "123456"
   name: "fabu.dev"
   tablePrefix: ""
 
 redis:
-  host: "192.168.3.132:8806"
+  host: "127.0.0.1:6379"
   db: 8
   password: ""
   maxIdle: 20
   maxActive: 10
   idleTimeout: 5000000000
   maxRetries: 3
-
-mongo:
-  host: 10.32.5.33:27018
-  database: app
-  idleTimeout: 1000000000
 
 server:
   runMode: "debug"

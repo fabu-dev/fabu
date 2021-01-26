@@ -57,11 +57,12 @@ func CreateApiRouter() {
 		v1App.POST("/base", controller2.NewApp().GetAppInfoByIdentifier) // APP 统计
 
 	}
+	Router.GET("/v1/app/info", controller2.NewApp().ViewByShort)
 
 	// APP版本管理
 	v1AppVersion := Router.Group("/v1/app/version").Use(middleware.VerifyAuth())
 	{
-		v1AppVersion.GET("/", controller2.NewAppVersion().GetList)           // APP 版本列表
+		//v1AppVersion.GET("/", controller2.NewAppVersion().GetList)           // APP 版本列表
 		v1AppVersion.DELETE("/delete", controller2.NewAppVersion().Delete)   // APP 版本删除
 		v1AppVersion.GET("/info/:id", controller2.NewAppVersion().View)      // APP 版本详情
 		v1AppVersion.POST("/publish", controller2.NewAppVersion().Publish)   // APP 版本发布
@@ -69,6 +70,7 @@ func CreateApiRouter() {
 		v1AppVersion.POST("/edit", controller2.NewAppVersion().Edit)         // APP 版本编辑
 		v1AppVersion.GET("/log", controller2.NewAppVersion().GetDownloadLog) // APP 版本下载记录
 	}
+	Router.GET("/v1/app/version/", controller2.NewAppVersion().GetList) // APP 版本列表
 
 	// 系统API路由配置
 	system := Router.Group("/system").Use(middleware.VerifyAuth())

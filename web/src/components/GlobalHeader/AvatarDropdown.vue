@@ -14,8 +14,8 @@
           </router-link>
         </a-menu-item>
         -->
-        <a-menu-item v-if="menu" key="settings" @click="handleToSettings">
-          <router-link target="_blank" :to="{ name: 'account' }">
+        <a-menu-item v-if="menu" key="settings">
+          <router-link :to="{ name: 'account' }">
             <a-icon type="setting" />
             &nbsp;&nbsp;&nbsp;个人设置
           </router-link>
