@@ -150,8 +150,6 @@ func (s *App) SaveAppVersion(apk *global.AppInfo, params *request.SaveParams, op
 		appVersionInfo.Description = params.Description
 		appVersionInfo.Size = apk.Size
 		appVersionInfo.Hash = apk.Identifier
-		appVersionInfo.ShortUrl = apk.ShortKey
-		appVersionInfo.QrCode = apk.QrCode
 		appVersionInfo.Path = apk.Path
 		appVersionInfo.IsPublish = constant.IsTrue
 		appVersionInfo.Status = constant.StatusEnable
@@ -169,8 +167,6 @@ func (s *App) SaveAppVersion(apk *global.AppInfo, params *request.SaveParams, op
 		Description: params.Description,
 		Size:        apk.Size,
 		Hash:        apk.Identifier,
-		ShortUrl:    apk.ShortKey,
-		QrCode:      apk.QrCode,
 		Path:        apk.Path,
 		IsPublish:   constant.IsTrue,
 		Status:      constant.StatusEnable,

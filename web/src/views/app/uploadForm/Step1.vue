@@ -1,11 +1,7 @@
 <template>
   <div>
     <a-form :form="form" style="max-width: 800px; margin: 40px auto 0;">
-      <a-form-item
-        label=""
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
-      >
+      <a-form-item>
         <a-upload-dragger
           name="file"
           :action="uploadUrl"
@@ -13,7 +9,8 @@
           :fileList="fileList"
           :customRequest="chunkUpload"
           @change="handleChange"
-          v-decorator="['file', { rules: [{required: true, message: '请上传文件'}] }]">
+          v-decorator="['file', { rules: [{required: true, message: '请上传文件'}] }]"
+        >
           <p class="ant-upload-drag-icon">
             <a-icon type="inbox" />
           </p>
@@ -21,24 +18,23 @@
             点击或者拖拽APP文件开始上传
           </p>
           <p class="ant-upload-hint">
-            一次仅支持上传一个文件，支持IPA、APK文件类型。
+            一次仅支持上传一个文件，支持 ipa, apk 文件类型。
           </p>
         </a-upload-dragger>
       </a-form-item>
       <a-form-item>
         <a-input type="hidden" v-decorator="['team_id', { initialValue: this.$route.query.teamId, rules: [{required: true, message: '参数错误'}] }]"/>
       </a-form-item>
-      <a-form-item :wrapperCol="{span: 19, offset: 5}">
-        <a-button type="primary" @click="nextStep">下一步</a-button>
+      <a-form-item style="text-align: center;">
+        <a-button ref="nextButton" type="primary" @click="nextStep">下一步</a-button>
       </a-form-item>
     </a-form>
     <a-divider />
     <div class="step-form-style-desc">
       <h3>说明</h3>
-      <h4>1.只可以上传apk和ipa的应用文件</h4>
-      <p>2.文件大小不超过2GB</p>
-      <h4>3.暂时不支持断点续传</h4>
-      <p>4.上传时，不要关闭页面，或者刷新页面</p>
+      <p>1.只可以上传 ipa 或 apk 格式的应用文件</p>
+      <p>2.文件大小不超过 1GB</p>
+      <p>3.上传过程中，不要关闭或刷新页面</p>
     </div>
   </div>
 </template>
@@ -76,9 +72,9 @@ export default {
       }
 
       if (status === 'done') {
-        this.$message.success(`${info.file.name} file uploaded successfully.`)
+        this.$message.success(`${info.file.name} 上传成功`)
       } else if (status === 'error') {
-        this.$message.error(`${info.file.name} file upload failed.`)
+        this.$message.error(`${info.file.name} 上传失败`)
       }
     },
     beforeUpload (file) {
@@ -99,14 +95,14 @@ export default {
     },
     nextStep () {
     const { form: { validateFields } } = this
-    // 先校验，通过表单校验后，才进入下一步
-    validateFields((err, values) => {
-      console.log('values', values)
-      if (!err) {
-        this.$emit('nextStep', values)
-      }
-    })
-  }
+      // 先校验，通过表单校验后，才进入下一步
+      validateFields((err, values) => {
+        console.log('values', values)
+        if (!err) {
+          this.$emit('nextStep', values)
+        }
+      })
+    }
   }
 }
 </script>

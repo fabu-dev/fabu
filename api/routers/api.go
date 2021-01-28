@@ -1,9 +1,8 @@
 package routers
 
 import (
-	"net/http"
-
 	controller2 "fabu.dev/api/application/controller"
+	"net/http"
 
 	"fabu.dev/api/application/middleware"
 )
@@ -79,7 +78,8 @@ func CreateApiRouter() {
 		system.POST("/setting", controller2.NewSystem().Setting) // 监控检查
 	}
 
-	Router.GET("/download/:code", controller2.NewAppVersion().Download) // APP 下载
-
+	// APP 下载
+	Router.GET("/download/:hash", controller2.NewAppVersion().Download)
+	// APP LOGO
 	Router.StaticFS("/static/app", http.Dir("./static/app"))
 }

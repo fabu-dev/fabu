@@ -9,5 +9,5 @@ type AppVersionDeleteParams struct {
 }
 
 type DownloadParams struct {
-	Code string `uri:"code" binding:"required"`
+	Hash string `uri:"hash" binding:"required"`
 }

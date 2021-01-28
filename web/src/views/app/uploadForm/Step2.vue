@@ -18,20 +18,12 @@
         <img class="icon" :src="sendData.icon" style="width: 150px;height: 150px">
       </a-form-item>
       <a-form-item
-        label="二维码"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
-        class="stepFormText"
-      >
-        <img class="icon" :src="sendData.qrCode" style="width: 150px;height: 150px">
-      </a-form-item>
-      <a-form-item
         label="团队"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         class="stepFormText"
       >
-        {{ teamData.name + ' ( ' + sendData.team_id + ' ) ' }}
+        {{ teamData.name }}
       </a-form-item>
       <a-form-item
         label="BundleID"
@@ -48,14 +40,6 @@
         class="stepFormText"
       >
         {{ sendData.version }}
-      </a-form-item>
-      <a-form-item
-        label="短链接"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
-        class="stepFormText"
-      >
-        {{ sendData.shortKey }}
       </a-form-item>
       <a-form-item
         label="大小"
@@ -116,12 +100,18 @@ export default {
           SaveApp(values).then((res) => {
             console.log('this.teamData.name', this.teamData.name)
             values.teamName = this.teamData.name
-            that.timer = setTimeout(function () {
+            if (res.code !== 1) {
               that.loading = false
-              that.$emit('nextStep', values)
-            }, 1500)
+              that.$message.error('提交失败：' + res.message)
+            } else {
+              that.timer = setTimeout(function () {
+                that.loading = false
+                that.$emit('nextStep', values)
+              }, 1500)
+            }
           }).catch(err => {
-            console.log('save err:', err)
+            that.loading = false
+            that.$message.error('请求失败：' + err)
           })
         } else {
           that.loading = false

@@ -2,7 +2,7 @@
   <page-header-wrapper>
     <!-- PageHeader 第二种使用方式 (v-slot) -->
     <template v-slot:content>
-      将一个冗长或用户不熟悉的表单任务分成多个步骤，指导用户完成。
+      相同 bundle_id 的文件视为同一应用
     </template>
     <a-card :bordered="false">
       <a-steps class="steps" :current="currentTab">
@@ -58,7 +58,7 @@ export default {
           name: result.name,
           size: result.size,
           version: result.version,
-          shortKey: process.env.VUE_APP_API_BASE_URL + '' + result.short_key,
+          shortKey: process.env.VUE_APP_BASE_URL + '/s/' + result.short_key,
           qrCode: process.env.VUE_APP_API_BASE_URL + '/' + result.qr_code
         }
         this.stepOne = stepOneData

@@ -192,7 +192,7 @@ export default {
         if (iosUrl) {
           window.location.href = iosUrl
         } else {
-          this.installText = '该app不支持ios'
+          this.installText = '该app不支持iOS'
         }
       } else if (this.platform === 'android') {
         if (this.isWeChat || this.isQQ) {
@@ -206,7 +206,7 @@ export default {
       }
     },
     download () {
-      const url = process.env.VUE_APP_API_BASE_URL + '/' + this.current.path
+      const url = process.env.VUE_APP_API_BASE_URL + '/download/' + this.current.hash
       const a = document.createElement('a')
       a.setAttribute('href', url)
       document.body.appendChild(a)

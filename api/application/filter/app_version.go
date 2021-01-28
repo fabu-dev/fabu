@@ -56,7 +56,7 @@ func (f *AppVersion) Download(c *gin.Context) (string, *api.Error) {
 	}
 
 	// 调用service对应的方法
-	appVersion, err := f.service.GetInfoByShortKey(params.Code)
+	appVersion, err := f.service.GetInfoByHash(params.Hash)
 	if err != nil {
 		return "", err
 	}

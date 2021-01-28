@@ -19,7 +19,7 @@ require (
 	github.com/onsi/ginkgo v1.14.1 // indirect
 	github.com/onsi/gomega v1.10.2 // indirect
 	github.com/pelletier/go-toml v1.4.0 // indirect
-	github.com/shogo82148/androidbinary v1.0.1
+	github.com/shogo82148/androidbinary v1.0.2
 	github.com/sirupsen/logrus v1.6.0
 	github.com/smartystreets/assertions v0.0.0-20190116191733-b6c0e53d7304 // indirect
 	github.com/spf13/viper v1.7.1

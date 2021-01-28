@@ -25,8 +25,6 @@ type AppVersionInfo struct {
 	Hash        string         `json:"hash"`
 	Path        string         `json:"path"`
 	IsPublish   uint64         `json:"is_publish"`
-	ShortUrl    string         `json:"short_url"`
-	QrCode      string         `json:"qr_code"`
 	Status      uint8          `json:"status"`
 	CreatedBy   string         `json:"created_by"`
 	CreatedAt   utils.JSONTime `json:"created_at" gorm:"-"` // 插入时忽略该字段
@@ -36,7 +34,7 @@ type AppVersionInfo struct {
 
 func NewAppVersion() *AppVersion {
 	AppVersion := &AppVersion{
-		DetailColumns: []string{"id", "app_id", "tag", "code", "description", "size", "hash", "path", "is_publish", "short_url", "qr_code", "status", "updated_at", "updated_by", "created_at", "created_by"},
+		DetailColumns: []string{"id", "app_id", "tag", "code", "description", "size", "hash", "path", "is_publish", "status", "updated_at", "updated_by", "created_at", "created_by"},
 	}
 
 	AppVersion.SetTableName("app_version")
@@ -85,9 +83,9 @@ func (m *AppVersion) GetListByAppId(AppId uint64) ([]*AppVersionInfo, *api.Error
 }
 
 // 通过版本号获取版本信息
-func (m *AppVersion) GetInfoByShortKey(key string) (*AppVersionInfo, *api.Error) {
+func (m *AppVersion) GetInfoByHash(key string) (*AppVersionInfo, *api.Error) {
 	appInfo := &AppVersionInfo{}
-	err := m.Db().Select(m.DetailColumns).Where("short_url = ?", key).First(appInfo).Error
+	err := m.Db().Select(m.DetailColumns).Where("hash = ?", key).First(appInfo).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
 	}
