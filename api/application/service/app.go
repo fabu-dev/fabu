@@ -110,6 +110,7 @@ func (s *App) SaveApp(apk *global.AppInfo, params *request.SaveParams, operator 
 	// 如果不是第一次上传，则修改版本号
 	if appInfo != nil {
 		appInfo.CurrentVersion = apk.Version
+		appInfo.CurrentBuild = apk.Build
 		appInfo.Icon = apk.Icon
 		appInfo.CreatedBy = operator.Account
 		appInfo.Status = constant.StatusEnable
@@ -127,6 +128,7 @@ func (s *App) SaveApp(apk *global.AppInfo, params *request.SaveParams, operator 
 		ShortUrl:       apk.ShortKey,
 		BundleId:       apk.BundleId,
 		CurrentVersion: apk.Version,
+		CurrentBuild:   apk.Build,
 		Identifier:     "",
 		Status:         constant.StatusEnable,
 		CreatedBy:      operator.Account,
@@ -140,7 +142,7 @@ func (s *App) SaveApp(apk *global.AppInfo, params *request.SaveParams, operator 
 func (s *App) SaveAppVersion(apk *global.AppInfo, params *request.SaveParams, operator *model.Operator, appId uint64) (*model.AppVersionInfo, *api.Error) {
 	// 判断app是否是第一次上传
 	ObjAppVersion := model.NewAppVersion()
-	appVersionInfo, err := ObjAppVersion.GetInfoByCode(appId, apk.Version)
+	appVersionInfo, err := ObjAppVersion.GetInfoByVersion(appId, apk.Version)
 	if err != nil {
 		return nil, err
 	}
@@ -162,8 +164,8 @@ func (s *App) SaveAppVersion(apk *global.AppInfo, params *request.SaveParams, op
 	// 如果是第一次上传，则直接添加
 	appVersionInfo = &model.AppVersionInfo{
 		AppId:       appId,
-		Tag:         "",
-		Code:        apk.Version,
+		Build:       apk.Build,
+		Version:     apk.Version,
 		Description: params.Description,
 		Size:        apk.Size,
 		Hash:        apk.Identifier,

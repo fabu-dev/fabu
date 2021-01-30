@@ -18,8 +18,8 @@ type AppVersion struct {
 type AppVersionInfo struct {
 	Id          uint64         `json:"id" gorm:"primary_key"`
 	AppId       uint64         `json:"app_id"`
-	Tag         string         `json:"tag"`
-	Code        string         `json:"code"`
+	Version     string         `json:"version"`
+	Build       string         `json:"build"`
 	Description string         `json:"description"`
 	Size        uint64         `json:"size"`
 	Hash        string         `json:"hash"`
@@ -34,7 +34,7 @@ type AppVersionInfo struct {
 
 func NewAppVersion() *AppVersion {
 	AppVersion := &AppVersion{
-		DetailColumns: []string{"id", "app_id", "tag", "code", "description", "size", "hash", "path", "is_publish", "status", "updated_at", "updated_by", "created_at", "created_by"},
+		DetailColumns: []string{"id", "app_id", "version", "build", "description", "size", "hash", "path", "is_publish", "status", "updated_at", "updated_by", "created_at", "created_by"},
 	}
 
 	AppVersion.SetTableName("app_version")
@@ -64,9 +64,9 @@ func (m *AppVersion) Delete(appVersion *AppVersionInfo) *api.Error {
 }
 
 // 通过版本号获取版本信息
-func (m *AppVersion) GetInfoByCode(AppId uint64, code string) (*AppVersionInfo, *api.Error) {
+func (m *AppVersion) GetInfoByVersion(AppId uint64, version string) (*AppVersionInfo, *api.Error) {
 	appInfo := &AppVersionInfo{}
-	err := m.Db().Select(m.DetailColumns).Where("app_id = ? and code = ?", AppId, code).First(appInfo).Error
+	err := m.Db().Select(m.DetailColumns).Where("app_id = ? and version = ?", AppId, version).First(appInfo).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
 	}

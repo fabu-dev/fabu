@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/sirupsen/logrus"
@@ -92,7 +93,7 @@ func NewAppParser(name string) (*AppInfo, error) {
 		info.Name = apkInfo.Label
 		info.BundleId = apkInfo.Package
 		info.Version = apkInfo.VersionName
-		info.Build = string(apkInfo.VersionCode)
+		info.Build = strconv.FormatInt(int64(apkInfo.VersionCode), 10)
 		info.Platform = PlatformAndroid
 		info.Icon = apkInfo.Icon
 		info.Size = uint64(stat.Size())

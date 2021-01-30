@@ -2,6 +2,7 @@ package routers
 
 import (
 	"io"
+	"net/http"
 	"os"
 
 	"fabu.dev/api/application/middleware"
@@ -40,6 +41,9 @@ func SetLogs() {
 
 func InitRouter() {
 	Router = gin.Default()
+
+	// APP LOGO
+	Router.StaticFS("/static/app", http.Dir("./static/app"))
 
 	if gin.Mode() != gin.ReleaseMode {
 		prefix := "/pprof"

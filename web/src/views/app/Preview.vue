@@ -206,7 +206,7 @@ export default {
       }
     },
     download () {
-      const url = process.env.VUE_APP_API_BASE_URL + '/download/' + this.current.hash
+      const url = process.env.VUE_APP_API_BASE_URL + '/' + this.current.path
       const a = document.createElement('a')
       a.setAttribute('href', url)
       document.body.appendChild(a)
