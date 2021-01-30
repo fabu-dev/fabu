@@ -5,6 +5,7 @@ go 1.15
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/andrianbdn/iospng v0.0.0-20180730113000-dccef1992541
+	github.com/appflight/apkparser v1.0.1
 	github.com/astaxie/beego v1.12.2
 	github.com/davecgh/go-spew v1.1.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
@@ -19,7 +20,6 @@ require (
 	github.com/onsi/ginkgo v1.14.1 // indirect
 	github.com/onsi/gomega v1.10.2 // indirect
 	github.com/pelletier/go-toml v1.4.0 // indirect
-	github.com/shogo82148/androidbinary v1.0.2
 	github.com/sirupsen/logrus v1.6.0
 	github.com/smartystreets/assertions v0.0.0-20190116191733-b6c0e53d7304 // indirect
 	github.com/spf13/viper v1.7.1
