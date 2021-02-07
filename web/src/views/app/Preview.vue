@@ -27,7 +27,7 @@
               <h1 class="name wrapper" style="margin-top: 60px">
                 <span class="icon-warp">
                   <i :class="appInfo.platform === 1 ? 'icon-ios' : 'icon-android'"/>
-                </span> {{ appInfo.name }}
+                </span> {{ appInfo.name }} <span class="release-type">（{{ appInfo.env | getEnvName }}）</span>
               </h1>
               <p class="scan-tips">
                 扫描二维码下载<br>或用手机浏览器输入这个网址：<span class="text-black">{{ url }}</span>
@@ -38,7 +38,7 @@
                   {{ (current.size/1024/1024).toFixed(2) }} MB）
                 </p>
                 <p>更新时间：<span itemprop="datePublished">{{ current.created_at }}</span></p>
-                <p>更新说明：<span itemprop="datePublished">{{ current.description }}</span></p>
+                <p v-if="current.description">更新说明：<span itemprop="datePublished">{{ current.description }}</span></p>
               </div>
               <div id="actions" class="actions type-android">
                 <button class="install-btn" @click="install(current)">{{ installText }}</button>
@@ -885,9 +885,8 @@ export default {
   }
 
   .main > header .release-type {
-    margin: 24px auto 0;
-    width: 290px;
-    text-align: left
+    color: #A9B1B3;
+    font-size: 14px;
   }
 
   .main > header .scan-tips {
@@ -1053,9 +1052,6 @@ export default {
   @media screen and (max-width: 768px) {
     .main > header {
       min-height: 400px
-    }
-    .main > header .release-type {
-      display: none
     }
     .main > header .release-info {
       display: block

@@ -21,6 +21,7 @@ type AppInfo struct {
 	TeamId         uint64         `json:"team_id"`
 	Platform       uint8          `json:"platform"`
 	PlatformName   string         `json:"platform_name" gorm:"-"`
+	Env            uint8          `json:"env"`
 	Icon           string         `json:"icon"`
 	ShortUrl       string         `json:"short_url"`
 	BundleId       string         `json:"bundle_id"`
@@ -36,7 +37,7 @@ type AppInfo struct {
 
 func NewApp() *App {
 	app := &App{
-		DetailColumns: []string{"id", "name", "team_id", "platform", "icon", "short_url", "bundle_id", "current_version", "current_build", "is_public", "status", "updated_at", "updated_by", "created_at", "created_by"},
+		DetailColumns: []string{"id", "name", "team_id", "platform", "env", "icon", "short_url", "bundle_id", "current_version", "current_build", "is_public", "status", "updated_at", "updated_by", "created_at", "created_by"},
 	}
 
 	app.SetTableName("app")
@@ -78,9 +79,9 @@ func (m *App) Edit(app *AppInfo) *api.Error {
 }
 
 // 根据包名和平台获取app详细信息
-func (m *App) GetInfoByBundleId(bundleId string, platform uint8) (*AppInfo, *api.Error) {
+func (m *App) GetInfoByBundleId(bundleId string, platform uint8, env uint8) (*AppInfo, *api.Error) {
 	appInfo := &AppInfo{}
-	err := m.Db().Select(m.DetailColumns).Where("bundle_id = ? and platform = ? and status = ?", bundleId, platform, constant.StatusEnable).First(appInfo).Error
+	err := m.Db().Select(m.DetailColumns).Where("bundle_id = ? and platform = ? and env = ? and status = ? ", bundleId, platform, env, constant.StatusEnable).First(appInfo).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
 	}

@@ -2,7 +2,6 @@ package model
 
 import (
 	"errors"
-
 	"fabu.dev/api/pkg/constant"
 
 	"fabu.dev/api/pkg/api"
@@ -51,7 +50,7 @@ func (m *AppVersion) Add(appVersion *AppVersionInfo) *api.Error {
 
 // 编辑app信息
 func (m *AppVersion) Edit(appVersion *AppVersionInfo) *api.Error {
-	err := m.Db().Where("id = ?", appVersion.Id).Updates(appVersion).Error
+	err := m.Db().Where("id = ?", appVersion.Id).Save(appVersion).Error
 
 	return m.ProcessError(err)
 }
@@ -64,9 +63,9 @@ func (m *AppVersion) Delete(appVersion *AppVersionInfo) *api.Error {
 }
 
 // 通过版本号获取版本信息
-func (m *AppVersion) GetInfoByVersion(AppId uint64, version string) (*AppVersionInfo, *api.Error) {
+func (m *AppVersion) GetInfoByVersion(AppId uint64, version string, build string) (*AppVersionInfo, *api.Error) {
 	appInfo := &AppVersionInfo{}
-	err := m.Db().Select(m.DetailColumns).Where("app_id = ? and version = ?", AppId, version).First(appInfo).Error
+	err := m.Db().Select(m.DetailColumns).Where("app_id = ? and version = ? and build = ?", AppId, version, build).First(appInfo).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, nil
 	}

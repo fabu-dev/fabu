@@ -51,6 +51,7 @@ export default {
         const stepOneData = {
           team_id: data.team_id,
           team_name: data.team_name,
+          env: data.env,
           build: result.build,
           bundle_id: result.bundle_id,
           icon: process.env.VUE_APP_API_BASE_URL + '/' + result.icon,
@@ -68,6 +69,7 @@ export default {
         console.log('step2 data', data)
         this.stepOne.teamName = data.teamName
         this.stepOne.description = data.description
+        this.stepOne.env = data.env
       }
 
       console.log('current tab:', this.currentTab)

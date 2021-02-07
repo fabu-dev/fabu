@@ -12,7 +12,7 @@
           <div class="appType-platform-wrapper">
             <div class="appType" v-show="2"></div>
             <div class="platform">
-              <i :class="data.platform === '1' ? 'icon-ic_ios':'icon-ic_andr'"></i><span>适用于{{ data.platform_name }}系统</span>
+              <i :class="data.platform === '1' ? 'icon-ic_ios':'icon-ic_andr'"></i><span>适用于{{ data.platform_name }}系统，{{ data.env | getEnvName }}</span>
             </div>
           </div>
         </div>

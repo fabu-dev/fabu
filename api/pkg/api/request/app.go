@@ -26,7 +26,8 @@ type AppInfoParams struct {
 
 type SaveParams struct {
 	Identifier  string `json:"identifier" binding:"required"`
-	Description string `json:"description" binding:"required"`
+	Env         uint8  `json:"env" binding:"required,numeric"`
+	Description string `json:"description"`
 	TeamId      uint64 `json:"team_id" binding:"required,numeric"`
 }
 

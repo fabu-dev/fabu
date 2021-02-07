@@ -9,7 +9,7 @@ import (
 // 获取当前的时间字符串
 func GetCurrentDateTime() string {
 	nowTime := time.Now()
-	localZone, _ := time.LoadLocation("Timezone")
+	localZone, _ := time.LoadLocation(Timezone)
 	nowTime = nowTime.In(localZone)
 	dateTime := nowTime.Format(TimeStdFormat)
 

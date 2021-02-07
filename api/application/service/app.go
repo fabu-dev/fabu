@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"fabu.dev/api/pkg/utils"
 	"time"
 
 	"fabu.dev/api/application/controller/response"
@@ -102,7 +103,7 @@ func (s *App) Save(params *request.SaveParams, operator *model.Operator) (*globa
 func (s *App) SaveApp(apk *global.AppInfo, params *request.SaveParams, operator *model.Operator) (*model.AppInfo, *api.Error) {
 	// 判断app是否是第一次上传
 	ObjApp := model.NewApp()
-	appInfo, err := ObjApp.GetInfoByBundleId(apk.BundleId, apk.Platform)
+	appInfo, err := ObjApp.GetInfoByBundleId(apk.BundleId, apk.Platform, params.Env)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +113,8 @@ func (s *App) SaveApp(apk *global.AppInfo, params *request.SaveParams, operator 
 		appInfo.CurrentVersion = apk.Version
 		appInfo.CurrentBuild = apk.Build
 		appInfo.Icon = apk.Icon
-		appInfo.CreatedBy = operator.Account
+		appInfo.UpdatedBy = operator.Account
+		appInfo.UpdatedAt = utils.GetCurrentDateTime()
 		appInfo.Status = constant.StatusEnable
 
 		err = ObjApp.Edit(appInfo)
@@ -124,6 +126,7 @@ func (s *App) SaveApp(apk *global.AppInfo, params *request.SaveParams, operator 
 		Name:           apk.Name,
 		TeamId:         params.TeamId,
 		Platform:       apk.Platform,
+		Env:            params.Env,
 		Icon:           apk.Icon,
 		ShortUrl:       apk.ShortKey,
 		BundleId:       apk.BundleId,
@@ -141,7 +144,7 @@ func (s *App) SaveApp(apk *global.AppInfo, params *request.SaveParams, operator 
 func (s *App) SaveAppVersion(apk *global.AppInfo, params *request.SaveParams, operator *model.Operator, appId uint64) (*model.AppVersionInfo, *api.Error) {
 	// 判断app是否是第一次上传
 	ObjAppVersion := model.NewAppVersion()
-	appVersionInfo, err := ObjAppVersion.GetInfoByVersion(appId, apk.Version)
+	appVersionInfo, err := ObjAppVersion.GetInfoByVersion(appId, apk.Version, apk.Build)
 	if err != nil {
 		return nil, err
 	}
@@ -154,6 +157,7 @@ func (s *App) SaveAppVersion(apk *global.AppInfo, params *request.SaveParams, op
 		appVersionInfo.Path = apk.Path
 		appVersionInfo.IsPublish = constant.IsTrue
 		appVersionInfo.Status = constant.StatusEnable
+		appVersionInfo.UpdatedAt = utils.GetCurrentDateTime()
 		appVersionInfo.UpdatedBy = operator.Account
 
 		err = ObjAppVersion.Edit(appVersionInfo)

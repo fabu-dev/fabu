@@ -25,6 +25,11 @@ import Moment from 'moment'
 Vue.filter('formatDate', function (value) {
   return Moment(value).format('YYYY-MM-DD HH:mm:ss')
 })
+Vue.filter('getEnvName', function (env) {
+  if (env === 1) return '生产环境'
+  if (env === 2) return '测试环境'
+  return '未知'
+})
 
 Vue.config.productionTip = false
 

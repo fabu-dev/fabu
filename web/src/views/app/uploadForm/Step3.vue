@@ -16,6 +16,10 @@
             <a-col :sm="16" :xs="24">{{ sendData.bundle_id }}</a-col>
           </a-row>
           <a-row>
+            <a-col :sm="8" :xs="24">环境：</a-col>
+            <a-col :sm="16" :xs="24">{{ sendData.env | getEnvName}}</a-col>
+          </a-row>
+          <a-row>
             <a-col :sm="8" :xs="24">版本：</a-col>
             <a-col :sm="16" :xs="24">{{ sendData.version }}</a-col>
           </a-row>

@@ -52,12 +52,26 @@
         <a-input type="hidden" v-decorator="['identifier', { initialValue: sendData.identifier, rules: [{required: true, message: '参数错误'}] }]"/>
       </a-form-item>
       <a-form-item
+        label="环境"
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+      >
+        <a-select style="width: 120px" v-decorator="['env', {initialValue: '--请选择--', rules:[{required: true, message: '请选择环境'}]}]">
+          <a-select-option :value="1">
+            生产环境
+          </a-select-option>
+          <a-select-option :value="2">
+            测试环境
+          </a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item
         label="更新说明"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         class="stepFormText"
       >
-        <a-textarea placeholder="请填写更新说明" allow-clear :rows="4" v-decorator="['description', { initialValue: '', rules: [{required: true, message: '请填写更新说明'}] }]"/>
+        <a-textarea placeholder="请填写更新说明" allow-clear :rows="4" v-decorator="['description', { initialValue: '', rules: [{required: false, message: '请填写更新说明'}] }]"/>
       </a-form-item>
       <a-form-item :wrapperCol="{span: 19, offset: 5}">
         <a-button :loading="loading" type="primary" @click="nextStep">提交</a-button>
@@ -97,6 +111,7 @@ export default {
         if (!err) {
           console.log('表单2 values', values)
           values.team_id = Number(values.team_id)
+          values.env = Number(values.env)
           SaveApp(values).then((res) => {
             console.log('this.teamData.name', this.teamData.name)
             values.teamName = this.teamData.name

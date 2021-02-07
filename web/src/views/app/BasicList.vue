@@ -34,7 +34,7 @@
 
       <a-list size="large">
         <a-list-item :key="index" v-for="(item, index) in data">
-          <a-list-item-meta :description="item.name" style="flex: 0.25">
+          <a-list-item-meta :description="item.env | getEnvName" style="flex: 0.25">
             <a-avatar slot="avatar" size="large" shape="square" :src="item.icon"/>{{ item.icon }}
             <a slot="title"><router-link :to="{ name: 'AppInfo', query:{ id: item.id, team_id: item.team_id } }"> {{ item.name }} </router-link></a>
           </a-list-item-meta>
