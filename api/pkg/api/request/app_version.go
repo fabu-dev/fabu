@@ -8,6 +8,6 @@ type AppVersionDeleteParams struct {
 	Id uint64 `uri:"id" binding:"required,numeric"`
 }
 
-type DownloadParams struct {
+type AppVersionByHashParams struct {
 	Hash string `uri:"hash" binding:"required"`
 }

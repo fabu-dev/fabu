@@ -2,10 +2,12 @@ package controller
 
 import (
 	"fabu.dev/api/application/filter"
+	"fabu.dev/api/application/service"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"text/template"
 )
 
 type AppVersion struct {
@@ -48,41 +50,51 @@ func (ctl *AppVersion) Delete(c *gin.Context) {
 	api.SetResponse(c, http.StatusOK, 1, "")
 }
 
-// @Tags APP版本管理
+// @Tags iOS plist
 // @Summary APP版本下载 API
-// @Description App版本下载
-// @Success 200 {string} string    "ok"
-// @Router /v1/app/version/download/:id [GET]
-//func (ctl *AppVersion) Download(c *gin.Context) {
-//	filePath, err := ctl.paramFilter.Download(c)
-//	if err != nil {
-//		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
-//		return
-//	}
-//
-//	logrus.Info("file path :", filePath)
-//	//打开文件
-//	fileTmp, errByOpenFile := os.Open(filePath)
-//	defer fileTmp.Close()
-//
-//	//获取文件的名称
-//	fileName := path.Base(filePath)
-//	c.Header("Content-Type", "application/octet-stream")
-//	c.Header("Content-Disposition", "attachment; filename="+fileName)
-//	c.Header("Content-Transfer-Encoding", "binary")
-//	c.Header("Cache-Control", "no-cache")
-//	if errByOpenFile != nil {
-//		logs.Error("获取文件失败")
-//		c.Redirect(http.StatusFound, "/404")
-//		return
-//	}
-//	c.Header("Content-Type", "application/octet-stream")
-//	c.Header("Content-Disposition", "attachment; filename="+fileName)
-//	c.Header("Content-Transfer-Encoding", "binary")
-//
-//	c.File(filePath)
-//	return
-//}
+// @Description iOS plist
+// @Success 200  string    "ok"
+// @Router /plist/:hash.plist [GET]
+func (ctl *AppVersion) Plist(c *gin.Context) {
+	appVersionInfo, err := ctl.paramFilter.GetInfoByHash(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
+		return
+	}
+	appInfo := service.App{}
+	app, err := appInfo.GetInfoById(appVersionInfo.AppId)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
+		return
+	}
+
+	url := "https://" + c.Request.Host + "/"
+	app.Icon = url + app.Icon
+	appVersionInfo.Path = url + appVersionInfo.Path
+
+	c.Header("Content-Type", "application/force-download")
+	c.Header("Content-Disposition", "attachment;fileName=manifest.plist")
+	//c.HTML(http.StatusOK, "template.plist", gin.H{
+	//	"appVersionInfo": appVersionInfo,
+	//	"appInfo":        app,
+	//})
+
+	tmpl, parseErr := template.ParseFiles("./static/template/template.plist")
+	if parseErr != nil {
+		api.SetResponse(c, http.StatusOK, 10002, "parseErr "+parseErr.Error())
+		return
+	}
+	exeErr := tmpl.Execute(c.Writer, gin.H{
+		"appVersionInfo": appVersionInfo,
+		"appInfo":        app,
+	})
+	if exeErr != nil {
+		api.SetResponse(c, http.StatusOK, 10002, "exeErr")
+		return
+	}
+
+	return
+}
 
 // @Tags APP版本管理
 // @Summary APP版本详情 API

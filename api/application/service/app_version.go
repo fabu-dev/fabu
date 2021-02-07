@@ -59,6 +59,9 @@ func (s *AppVersion) DeleteAppVersion(appVersionInfo *model.AppVersionInfo) *api
 func (s *AppVersion) GetInfoByHash(key string) (*model.AppVersionInfo, *api.Error) {
 	objAppVersion := model.NewAppVersion()
 	appVersion, err := objAppVersion.GetInfoByHash(key)
+	if err != nil {
+		return nil, err
+	}
 
 	return appVersion, err
 }

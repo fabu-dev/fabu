@@ -42,7 +42,6 @@ func SetLogs() {
 func InitRouter() {
 	Router = gin.Default()
 
-	// APP LOGO
 	Router.StaticFS("/static/app", http.Dir("./static/app"))
 
 	if gin.Mode() != gin.ReleaseMode {

@@ -2,6 +2,7 @@ package filter
 
 import (
 	"fabu.dev/api/application/controller/response"
+	"fabu.dev/api/application/model"
 	"fabu.dev/api/application/service"
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
@@ -48,17 +49,16 @@ func (f *AppVersion) Delete(c *gin.Context) *api.Error {
 	return err
 }
 
-func (f *AppVersion) Download(c *gin.Context) (string, *api.Error) {
-	params := &request.DownloadParams{}
-
+func (f *AppVersion) GetInfoByHash(c *gin.Context) (*model.AppVersionInfo, *api.Error) {
+	params := &request.AppVersionByHashParams{}
 	if err := c.ShouldBindUri(params); err != nil {
-		return "", api.NewError(code.ErrorRequest, err.Error())
+		return nil, api.NewError(code.ErrorRequest, err.Error())
 	}
 
 	// 调用service对应的方法
 	appVersion, err := f.service.GetInfoByHash(params.Hash)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return appVersion.Path, nil
+	return appVersion, nil
 }

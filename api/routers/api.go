@@ -76,4 +76,9 @@ func CreateApiRouter() {
 		system.POST("/setting", controller2.NewSystem().Setting) // 监控检查
 	}
 
+	// Plist
+	Router.GET("/plist/:hash", controller2.NewAppVersion().Plist)
+	// App Upload API (for CI/CD)
+	// curl -F "file=@path/xxx.ipa" http://host/app/upload
+	Router.POST("/app/upload", controller2.NewApp().Upload)
 }

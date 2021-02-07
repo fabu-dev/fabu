@@ -26,33 +26,33 @@
               </div>
               <h1 class="name wrapper" style="margin-top: 60px">
                 <span class="icon-warp">
-                  <i class="icon-android"/>
-                  {{ appInfo.name }}
-                </span>
+                  <i :class="appInfo.platform === 1 ? 'icon-ios' : 'icon-android'"/>
+                </span> {{ appInfo.name }}
               </h1>
               <p class="scan-tips">
-                扫描二维码下载<br>或用手机浏览器输入这个网址:&nbsp;&nbsp;<span class="text-black">{{ url }}</span>
+                扫描二维码下载<br>或用手机浏览器输入这个网址：<span class="text-black">{{ url }}</span>
               </p>
               <div class="release-info">
                 <p itemprop="softwareVersion">
-                  {{ appInfo.current_version + "-" }}
-                  {{ (current.size/1024/1024).toFixed(2) }} MB
+                  {{ "当前版本：" + appInfo.current_version + " （" }}
+                  {{ (current.size/1024/1024).toFixed(2) }} MB）
                 </p>
-                <p>更新于: <span itemprop="datePublished">{{ current.created_at }}</span></p>
+                <p>更新时间：<span itemprop="datePublished">{{ current.created_at }}</span></p>
+                <p>更新说明：<span itemprop="datePublished">{{ current.description }}</span></p>
               </div>
               <div id="actions" class="actions type-android">
-                <button class="install-btn" @click="install">{{ installText }}</button>
+                <button class="install-btn" @click="install(current)">{{ installText }}</button>
               </div>
             </div>
           </div>
         </div>
-        <a-card style="margin-top: 24px" :bordered="false" title="应用版本列表">
+        <a-card style="margin-top: 24px" :bordered="false" title="版本列表">
           <a-table :columns="columns" :data-source="version" rowKey="id" :pagination="false" bordered>
             <span slot="size" slot-scope="size">
               {{ (size/1024/1024).toFixed(2) }}
             </span>
             <span slot="action" slot-scope="text, record">
-              <a @click="changeVersion(record)">下载</a>
+              <a @click="install(record)">下载</a>
             </span>
           </a-table>
         </a-card>
@@ -75,12 +75,12 @@ const ua = navigator.userAgent.toLowerCase()
 const columns = [
   {
     title: '版本号',
-    dataIndex: 'code',
-    key: 'code',
+    dataIndex: 'version',
+    key: 'version',
     slots: { title: 'customTitle' }
   },
   {
-    title: '大小MB',
+    title: '大小（MB）',
     dataIndex: 'size',
     key: 'size',
     scopedSlots: { customRender: 'size' }
@@ -143,6 +143,7 @@ export default {
     } else {
       this.platform = 'pc'
     }
+
     if (ua.indexOf('micromessenger') !== -1) {
       this.isWeChat = true
     } else if (ua.match(/qq\/[0-9]/i)) {
@@ -183,30 +184,22 @@ export default {
         console.log('team list', err)
       })
     },
-    changeVersion (record) {
-      this.current = record
-    },
-    install () {
+    install (record) {
       if (this.platform === 'ios') {
-        const iosUrl = this.appInfo.iosUrl
-        if (iosUrl) {
-          window.location.href = iosUrl
-        } else {
-          this.installText = '该app不支持iOS'
-        }
+          window.location.href = 'itms-services://?action=download-manifest&url=' + process.env.VUE_APP_API_BASE_URL + '/plist/' + record.hash
       } else if (this.platform === 'android') {
         if (this.isWeChat || this.isQQ) {
           this.installText = (this.isWeChat ? '微信' : 'QQ') + '中无法下载，请点击右上角选择在浏览器打开'
           this.tipShow = true
         } else {
-          this.download()
+          this.download(record.path)
         }
       } else {
-        this.download()
+        this.download(record.path)
       }
     },
-    download () {
-      const url = process.env.VUE_APP_API_BASE_URL + '/' + this.current.path
+    download (path) {
+      const url = process.env.VUE_APP_API_BASE_URL + '/' + path
       const a = document.createElement('a')
       a.setAttribute('href', url)
       document.body.appendChild(a)
@@ -275,7 +268,7 @@ export default {
   }
 
   .desc-section pre, .releases-section .release-view .version-info .changelog .wrapper, body, html {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif
+    /*font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif*/
   }
 
   .icon-loading:before {
@@ -907,25 +900,29 @@ export default {
 
   .main > header .release-info {
     position: relative;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    padding-top: 30px
+    padding-top: 30px;
+    border-top: 1px solid #DAE2E3;
+    margin: 30px auto;
+    width: 290px;
+    text-align: left;
+    white-space: nowrap;
+    line-height: 22px
   }
 
   .main > header .release-info p {
     margin-bottom: 4px
   }
 
-  .main > header .release-info:before {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    display: block;
-    margin-left: -30%;
-    width: 60%;
-    border-top: 1px solid #DAE2E3;
-    content: ' '
-  }
+  /*.main > header .release-info:before {*/
+  /*  position: absolute;*/
+  /*  top: 0;*/
+  /*  left: 50%;*/
+  /*  display: block;*/
+  /*  margin-left: -30%;*/
+  /*  width: 60%;*/
+  /*  border-top: 1px solid #DAE2E3;*/
+  /*  content: ' '*/
+  /*}*/
 
   .main > header .ios_inhouse_tip {
     background: url(https://ali-static.jappstore.com/images/tip_icon.png) left no-repeat;
