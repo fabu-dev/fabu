@@ -129,7 +129,6 @@ func (s *App) SaveApp(apk *global.AppInfo, params *request.SaveParams, operator 
 		BundleId:       apk.BundleId,
 		CurrentVersion: apk.Version,
 		CurrentBuild:   apk.Build,
-		Identifier:     "",
 		Status:         constant.StatusEnable,
 		CreatedBy:      operator.Account,
 	}

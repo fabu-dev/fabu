@@ -32,7 +32,7 @@
       <div class="operate">
       </div>
 
-      <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
+      <a-list size="large">
         <a-list-item :key="index" v-for="(item, index) in data">
           <a-list-item-meta :description="item.name" style="flex: 0.25">
             <a-avatar slot="avatar" size="large" shape="square" :src="item.icon"/>{{ item.icon }}
@@ -51,33 +51,21 @@
             </a-dropdown>
           </div>
           <div class="list-content">
-            <div class="list-content-item">
+            <div class="list-content-item" style="width:200px;">
               <span>BundleID</span>
               <p>{{ item.bundle_id }}</p>
             </div>
-            <div class="list-content-item">
+            <div class="list-content-item" style="width:50px;">
               <span>平台</span>
               <p>{{ item.platform_name }}</p>
             </div>
-            <div class="list-content-item">
-              <span>下载次数</span>
-              <p>{{ 0 }}</p>
-            </div>
-            <div class="list-content-item">
-              <span>浏览次数</span>
-              <p>{{ 0 }}</p>
-            </div>
-            <div class="list-content-item">
-              <span>identifier</span>
-              <p>{{ item.identifier ? item.identifier : ' 1' }}</p>
-            </div>
-            <div class="list-content-item">
-              <span>短连接</span>
-              <p>{{ item.short_url ? item.short_url : ' 1' }}</p>
-            </div>
-            <div class="list-content-item">
+            <div class="list-content-item" style="width:100px;">
               <span>当前版本</span>
               <p>{{ item.current_version }}</p>
+            </div>
+            <div class="list-content-item" style="width:150px;">
+              <span>更新时间</span>
+              <p>{{ item.updated_at | formatDate }}</p>
             </div>
           </div>
         </a-list-item>

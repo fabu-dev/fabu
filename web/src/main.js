@@ -21,6 +21,11 @@ import './core/lazy_use'
 import './utils/filter' // global filter
 import './global.less'
 
+import Moment from 'moment'
+Vue.filter('formatDate', function (value) {
+  return Moment(value).format('YYYY-MM-DD HH:mm:ss')
+})
+
 Vue.config.productionTip = false
 
 // mount axios to `Vue.$http` and `this.$http`

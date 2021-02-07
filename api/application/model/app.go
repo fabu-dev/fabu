@@ -26,7 +26,6 @@ type AppInfo struct {
 	BundleId       string         `json:"bundle_id"`
 	CurrentVersion string         `json:"current_version"`
 	CurrentBuild   string         `json:"current_build"`
-	Identifier     string         `json:"identifier"`
 	IsPublic       uint8          `json:"is_public"`
 	Status         uint8          `json:"status"`
 	CreatedBy      string         `json:"created_by"`
@@ -37,7 +36,7 @@ type AppInfo struct {
 
 func NewApp() *App {
 	app := &App{
-		DetailColumns: []string{"id", "name", "team_id", "platform", "icon", "short_url", "bundle_id", "current_version", "current_build", "identifier", "is_public", "status", "updated_at", "updated_by", "created_at", "created_by"},
+		DetailColumns: []string{"id", "name", "team_id", "platform", "icon", "short_url", "bundle_id", "current_version", "current_build", "is_public", "status", "updated_at", "updated_by", "created_at", "created_by"},
 	}
 
 	app.SetTableName("app")

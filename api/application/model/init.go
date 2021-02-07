@@ -8,7 +8,7 @@ func init() {
 }
 
 func initTeamRoleMap() {
-	TeamRoleMap[1] = "团队成员"
-	TeamRoleMap[2] = "管理员"
-	TeamRoleMap[3] = "创建者"
+	TeamRoleMap[1] = "普通成员" // 可查看
+	TeamRoleMap[2] = "开发者"  // 可上传APP
+	TeamRoleMap[3] = "管理员"  // 可管理团队
 }

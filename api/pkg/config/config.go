@@ -59,7 +59,6 @@ type System struct {
 	ImageAllowExt []string
 
 	ExportPath   string
-	QrCodePath   string
 	FontSavePath string
 
 	LogPath    string

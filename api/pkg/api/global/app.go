@@ -11,5 +11,4 @@ type AppInfo struct {
 	Path       string `json:"path"`
 	Identifier string `json:"identifier"`
 	ShortKey   string `json:"short_key"`
-	QrCode     string `json:"qr_code"`
 }

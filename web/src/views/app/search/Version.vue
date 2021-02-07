@@ -30,26 +30,15 @@ const columns = [
   },
   {
     title: '版本号',
-    dataIndex: 'code',
-    key: 'code',
+    dataIndex: 'version',
+    key: 'version',
     slots: { title: 'customTitle' }
   },
   {
-    title: '更新说明',
-    dataIndex: 'description',
-    key: 'description'
-  },
-  {
-    title: '大小M',
+    title: '大小（M）',
     dataIndex: 'size',
     key: 'size',
     scopedSlots: { customRender: 'size' }
-  },
-  {
-    title: 'hash',
-    key: 'hash',
-    dataIndex: 'hash',
-    scopedSlots: { customRender: 'hash' }
   },
   {
     title: '上传人',
@@ -62,6 +51,11 @@ const columns = [
     key: 'created_at',
     dataIndex: 'created_at',
     scopedSlots: { customRender: 'created_at' }
+  },
+  {
+    title: '更新说明',
+    dataIndex: 'description',
+    key: 'description'
   },
   {
     title: '操作',
@@ -101,7 +95,7 @@ export default {
       GetVersionList(params).then(res => {
         this.data = res.result.app_version
         for (const key in this.data) {
-          this.data[key].shortUrl = process.env.VUE_APP_API_BASE_URL + '/download/' + this.data[key].short_url
+          this.data[key].shortUrl = process.env.VUE_APP_API_BASE_URL + '/' + this.data[key].path
         }
       }).catch((err) => {
         console.log('team list', err)
