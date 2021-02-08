@@ -14,7 +14,7 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: { title: 'menu.home' },
-    redirect: '/app',
+    redirect: '/app/square',
     children: [
       // dashboard
       {
@@ -54,6 +54,13 @@ export const asyncRouterMap = [
             hidden: true,
             component: () => import('@/views/app/BasicList'),
             meta: { title: '应用列表', keepAlive: true, hidden: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/app/square',
+            name: 'AppSquare',
+            hidden: true,
+            component: () => import('@/views/app/SquareList'),
+            meta: { title: 'APP广场', keepAlive: true, hidden: true }
           },
           {
             path: '/app/upload',

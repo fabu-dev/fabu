@@ -61,7 +61,7 @@
             </div>
             <div class="list-content-item" style="width:100px;">
               <span>当前版本</span>
-              <p>{{ item.current_version }}</p>
+              <p>{{ item.current_version }}（{{ item.current_build }}）</p>
             </div>
             <div class="list-content-item" style="width:150px;">
               <span>更新时间</span>

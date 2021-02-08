@@ -1,4 +1,4 @@
-import { upload, getBase, save, getList, getInfo, getInfoByShort, deleteApp } from '@/api/app'
+import { upload, getBase, save, getList, getInfo, getInfoByShort, deleteApp, getSquare } from '@/api/app'
 
 const apps = {
   actions: {
@@ -33,6 +33,15 @@ const apps = {
     GetList ({ commit }, params) {
       return new Promise((resolve, reject) => {
         getList(params).then(response => {
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    GetSquare ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        getSquare().then(response => {
           resolve(response)
         }).catch(error => {
           reject(error)

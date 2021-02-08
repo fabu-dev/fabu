@@ -56,6 +56,26 @@ func (s *App) GetListByTeamId(params *request.AppIndexParams) (*response.AppList
 	return result, err
 }
 
+func (s *App) GetPublicApps() (*response.AppList, *api.Error) {
+	// 先获取会员所有的团队
+	ObjApp := model.NewApp()
+	appSlice, err := ObjApp.GetPublicApps()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, app := range appSlice {
+		s.ApplyPlatformName(app)
+	}
+
+	result := &response.AppList{
+		Count: 0,
+		App:   appSlice,
+	}
+
+	return result, err
+}
+
 // 将文件保存到channel中
 func (s *App) Upload(params *request.UploadParams, operator *model.Operator) *api.Error {
 	// 将数据写入到channel中

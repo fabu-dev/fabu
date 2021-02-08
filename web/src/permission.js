@@ -10,9 +10,9 @@ import { i18nRender } from '@/locales'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['login', 'register', 'registerResult', 'Preview'] // no redirect whitelist
+const whiteList = ['login', 'register', 'registerResult', 'Preview', 'AppSquare'] // no redirect whitelist
 const loginRoutePath = '/user/login'
-const defaultRoutePath = '/app'
+const defaultRoutePath = '/app/square'
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar

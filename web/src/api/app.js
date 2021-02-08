@@ -5,6 +5,7 @@ const appApi = {
   Save: '/v1/app/create',
   GetBase: '/v1/app/base',
   Index: '/v1/app/',
+  Square: '/v1/app/square',
   Info: '/v1/app/info/',
   InfoByShort: '/v1/app/info?short_url=',
   Delete: '/v1/app/delete'
@@ -51,6 +52,14 @@ export function getList (parameter) {
     method: 'Get',
     timeout: 0,
     params: parameter
+  })
+}
+
+export function getSquare () {
+  return request({
+    url: appApi.Square,
+    method: 'Get',
+    timeout: 0
   })
 }
 

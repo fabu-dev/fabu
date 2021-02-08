@@ -3,7 +3,7 @@
     <a-card style="margin-top: 24px" :bordered="false" :title="data.name">
       <a-descriptions title="基本信息" :column="4">
         <a-descriptions-item label="Bundle Id">{{ data.bundle_id }}</a-descriptions-item>
-        <a-descriptions-item label="最新版本">{{ data.current_version }}</a-descriptions-item>
+        <a-descriptions-item label="最新版本">{{ data.current_version }}（{{ data.current_build }}）</a-descriptions-item>
         <a-descriptions-item label="平台">{{ data.platform_name }}</a-descriptions-item>
         <a-descriptions-item label="下载地址">{{ data.shortUrl }}</a-descriptions-item>
       </a-descriptions>

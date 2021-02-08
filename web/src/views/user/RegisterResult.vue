@@ -6,8 +6,7 @@
     :sub-title="description">
 
     <template #extra>
-      <a-button size="large" type="primary">查看邮箱</a-button>
-      <a-button size="large" style="margin-left: 8px" @click="goHomeHandle">返回首页</a-button>
+      <a-button size="large" type="primary" @click="goHomeHandle">返回首页</a-button>
     </template>
 
   </a-result>
@@ -18,7 +17,7 @@ export default {
   name: 'RegisterResult',
   data () {
     return {
-      description: '激活邮件已发送到你的邮箱中，邮件有效期为24小时。请及时登录邮箱，点击邮件中的链接激活帐户。',
+      description: '',
       form: {}
     }
   },

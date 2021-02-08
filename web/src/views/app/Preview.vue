@@ -35,7 +35,7 @@
               <div class="release-info">
                 <p itemprop="softwareVersion">
                   {{ "当前版本：" + appInfo.current_version + " （" }}
-                  {{ (current.size/1024/1024).toFixed(2) }} MB）
+                  {{ appInfo.current_build }} ）
                 </p>
                 <p>更新时间：<span itemprop="datePublished">{{ current.created_at }}</span></p>
                 <p v-if="current.description">更新说明：<span itemprop="datePublished">{{ current.description }}</span></p>
@@ -77,6 +77,12 @@ const columns = [
     title: '版本号',
     dataIndex: 'version',
     key: 'version',
+    slots: { title: 'customTitle' }
+  },
+  {
+    title: 'Build',
+    dataIndex: 'build',
+    key: 'build',
     slots: { title: 'customTitle' }
   },
   {

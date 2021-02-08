@@ -37,6 +37,16 @@ func (ctl *App) GetList(c *gin.Context) {
 	api.SetResponse(c, http.StatusOK, 1, result)
 }
 
+func (ctl *App) Square(c *gin.Context) {
+	result, err := ctl.paramFilter.GetSquareList(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, code.ErrorRequest, err.Message)
+		return
+	}
+
+	api.SetResponse(c, http.StatusOK, 1, result)
+}
+
 // @Tags APP管理
 // @Summary App上传 API
 // @Description App上传

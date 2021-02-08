@@ -54,6 +54,7 @@ func CreateApiRouter() {
 		v1App.POST("/base", controller2.NewApp().GetAppInfoByIdentifier) // APP 统计
 
 	}
+	Router.GET("/v1/app/square", controller2.NewApp().Square)
 	Router.GET("/v1/app/info", controller2.NewApp().ViewByShort)
 
 	// APP版本管理

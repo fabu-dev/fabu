@@ -36,6 +36,10 @@ func (f *App) GetList(c *gin.Context) (*response.AppList, *api.Error) {
 	return result, err
 }
 
+func (f *App) GetSquareList(c *gin.Context) (*response.AppList, *api.Error) {
+	return f.service.GetPublicApps()
+}
+
 // 上传文件
 func (f *App) Upload(c *gin.Context) *api.Error {
 	params := &request.UploadParams{}
