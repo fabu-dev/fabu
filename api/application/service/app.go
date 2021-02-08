@@ -162,30 +162,31 @@ func (s *App) SaveApp(apk *global.AppInfo, params *request.SaveParams, operator 
 
 // 保存app信息
 func (s *App) SaveAppVersion(apk *global.AppInfo, params *request.SaveParams, operator *model.Operator, appId uint64) (*model.AppVersionInfo, *api.Error) {
-	// 判断app是否是第一次上传
+
 	ObjAppVersion := model.NewAppVersion()
-	appVersionInfo, err := ObjAppVersion.GetInfoByVersion(appId, apk.Version, apk.Build)
-	if err != nil {
-		return nil, err
-	}
 
-	// 如果不是第一次上传，则修改版本号
-	if appVersionInfo != nil {
-		appVersionInfo.Description = params.Description
-		appVersionInfo.Size = apk.Size
-		appVersionInfo.Hash = apk.Identifier
-		appVersionInfo.Path = apk.Path
-		appVersionInfo.IsPublish = constant.IsTrue
-		appVersionInfo.Status = constant.StatusEnable
-		appVersionInfo.UpdatedAt = utils.GetCurrentDateTime()
-		appVersionInfo.UpdatedBy = operator.Account
-
-		err = ObjAppVersion.Edit(appVersionInfo)
-		return appVersionInfo, err
-	}
+	//// 判断app是否是第一次上传
+	//appVersionInfo, err := ObjAppVersion.GetInfoByVersion(appId, apk.Version, apk.Build)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//// 如果不是第一次上传，则修改版本号
+	//if appVersionInfo != nil {
+	//	appVersionInfo.Description = params.Description
+	//	appVersionInfo.Size = apk.Size
+	//	appVersionInfo.Hash = apk.Identifier
+	//	appVersionInfo.Path = apk.Path
+	//	appVersionInfo.IsPublish = constant.IsTrue
+	//	appVersionInfo.Status = constant.StatusEnable
+	//	appVersionInfo.UpdatedAt = utils.GetCurrentDateTime()
+	//	appVersionInfo.UpdatedBy = operator.Account
+	//
+	//	err = ObjAppVersion.Edit(appVersionInfo)
+	//	return appVersionInfo, err
+	//}
 
 	// 如果是第一次上传，则直接添加
-	appVersionInfo = &model.AppVersionInfo{
+	appVersionInfo := &model.AppVersionInfo{
 		AppId:       appId,
 		Build:       apk.Build,
 		Version:     apk.Version,
@@ -197,7 +198,7 @@ func (s *App) SaveAppVersion(apk *global.AppInfo, params *request.SaveParams, op
 		Status:      constant.StatusEnable,
 		CreatedBy:   operator.Account,
 	}
-	err = ObjAppVersion.Add(appVersionInfo)
+	err := ObjAppVersion.Add(appVersionInfo)
 
 	return appVersionInfo, err
 }

@@ -76,7 +76,7 @@ func (m *AppVersion) GetInfoByVersion(AppId uint64, version string, build string
 // 获取一个app的版本列表
 func (m *AppVersion) GetListByAppId(AppId uint64) ([]*AppVersionInfo, *api.Error) {
 	appSlice := make([]*AppVersionInfo, 0, 32)
-	err := m.Db().Select(m.DetailColumns).Where("app_id = ? and status = ?", AppId, constant.StatusEnable).Find(&appSlice).Order("code desc").Error
+	err := m.Db().Select(m.DetailColumns).Where("app_id = ? and status = ?", AppId, constant.StatusEnable).Order("created_at desc").Find(&appSlice).Error
 
 	return appSlice, m.ProcessError(err)
 }

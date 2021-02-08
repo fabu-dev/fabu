@@ -58,7 +58,7 @@ func (m *App) HasByTeamId(teamId uint64) (bool, *api.Error) {
 
 func (m *App) GetPublicApps() ([]*AppInfo, *api.Error) {
 	appList := make([]*AppInfo, 0, 8)
-	err := m.Db().Select(m.DetailColumns).Where("is_public = 1 and status = ?", constant.StatusEnable).Find(&appList).Error
+	err := m.Db().Select(m.DetailColumns).Where("is_public = 1 and status = ?", constant.StatusEnable).Order("updated_at desc").Find(&appList).Error
 
 	return appList, m.ProcessError(err)
 }
@@ -66,7 +66,7 @@ func (m *App) GetPublicApps() ([]*AppInfo, *api.Error) {
 // 查询团队的app列表
 func (m *App) GetAppListByTeamId(teamId uint64) ([]*AppInfo, *api.Error) {
 	appList := make([]*AppInfo, 0, 8)
-	err := m.Db().Select(m.DetailColumns).Where("team_id = ? and status = ?", teamId, constant.StatusEnable).Find(&appList).Error
+	err := m.Db().Select(m.DetailColumns).Where("team_id = ? and status = ?", teamId, constant.StatusEnable).Order("updated_at desc").Find(&appList).Error
 
 	return appList, m.ProcessError(err)
 }
