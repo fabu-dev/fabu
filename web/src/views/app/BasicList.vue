@@ -34,7 +34,7 @@
 
       <a-list size="large">
         <a-list-item :key="index" v-for="(item, index) in data">
-          <a-list-item-meta :description="item.env | getEnvName" style="flex: 0.25">
+          <a-list-item-meta :description="item.desc" style="flex: 0.25">
             <a-avatar slot="avatar" size="large" shape="square" :src="item.icon"/>{{ item.icon }}
             <a slot="title"><router-link :to="{ name: 'AppInfo', query:{ id: item.id, team_id: item.team_id } }"> {{ item.name }} </router-link></a>
           </a-list-item-meta>
@@ -59,7 +59,7 @@
               <span>平台</span>
               <p>{{ item.platform_name }}</p>
             </div>
-            <div class="list-content-item" style="width:100px;">
+            <div class="list-content-item" style="width:120px;">
               <span>当前版本</span>
               <p>{{ item.current_version }}（{{ item.current_build }}）</p>
             </div>
@@ -158,6 +158,7 @@ export default {
           this.data = res.result.app
           for (const key in this.data) {
             this.data[key].icon = process.env.VUE_APP_API_BASE_URL + '/' + this.data[key].icon
+            this.data[key].desc = this.$options.filters['getEnvName'](this.data[key].env) + (this.data[key].is_public === 1 ? '，公开' : '')
           }
 
           console.log('list data', this.data)

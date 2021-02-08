@@ -2,7 +2,14 @@ package service
 
 import (
 	"encoding/json"
+	"errors"
+	"fabu.dev/api/pkg/config"
+	"fabu.dev/api/pkg/parser"
+	"fabu.dev/api/pkg/short"
 	"fabu.dev/api/pkg/utils"
+	"image/png"
+	"io"
+	"os"
 	"time"
 
 	"fabu.dev/api/application/controller/response"
@@ -92,6 +99,75 @@ func (s *App) Upload(params *request.UploadParams, operator *model.Operator) *ap
 			}
 			time.Sleep(time.Millisecond * 200)
 		}
+	}
+
+	return nil
+}
+
+func (s *App) UploadByAPI(params *request.UploadByAPIParams) *api.Error {
+	// Token 校验
+	memberModel := model.NewMember()
+	member, err := memberModel.GetDetailByAPIToken(params.Token)
+	if err != nil {
+		return err
+	}
+
+	// 获取默认 TeamId
+	var teamId uint64
+	teamModel := model.NewTeamMember()
+	teamIds, err := teamModel.GetTeamIdForUpload(member.Id)
+	if err != nil {
+		return err
+	}
+	for _, value := range teamIds {
+		if value == params.TeamId {
+			teamId = value
+		}
+	}
+	if teamId == 0 && params.TeamId == 0 {
+		teamId = teamIds[0]
+	}
+	if teamId == 0 {
+		return api.NewError(10001, "团队信息错误")
+	}
+
+	// 文件处理
+	src, nErr := params.File.Open()
+	if nErr != nil {
+		return api.NewError(10002, nErr.Error())
+	}
+	defer src.Close()
+
+	var buf []byte
+	_, nErr = src.Read(buf)
+	if nErr != nil {
+		return api.NewError(10002, nErr.Error())
+	}
+	fileMD5 := utils.FileHash(buf)
+
+	// 判断文件 Hash 是否已存在
+	appVersionInfo, err := model.NewAppVersion().GetInfoByHash(fileMD5)
+	if appVersionInfo != nil {
+		return api.NewError(10001, "该文件已存在，请勿重复上传")
+	}
+
+	filename := config.Conf.System.AppSaveRootPath + fileMD5 + params.File.Filename
+	out, nErr := os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0666)
+	if nErr != nil {
+		return api.NewError(10002, nErr.Error())
+	}
+	defer out.Close()
+	_, nErr = io.Copy(out, src)
+	if nErr != nil {
+		return api.NewError(10002, nErr.Error())
+	}
+
+	saveParams := &request.SaveParams{Env: params.Env, Identifier: fileMD5, Description: params.Desc, TeamId: teamId}
+	operator := &model.Operator{Id: int64(member.Id), Account: member.Account}
+
+	nErr = s.DealApp(filename, fileMD5, saveParams, operator)
+	if nErr != nil {
+		return api.NewError(10002, nErr.Error())
 	}
 
 	return nil
@@ -271,4 +347,54 @@ func (s *App) DeleteApp(appInfo *model.AppInfo) *api.Error {
 // 平台名
 func (s *App) ApplyPlatformName(appInfo *model.AppInfo) {
 	appInfo.PlatformName = constant.PlatformMap[appInfo.Platform]
+}
+
+// APP 文件上传后的处理
+func (s *App) DealApp(filename, identifier string, params *request.SaveParams, operator *model.Operator) error {
+	apk, err := parser.NewAppParser(filename)
+	if err != nil {
+		return err
+	}
+
+	iconName := config.Conf.System.AppSaveRootPath + identifier + ".png"
+	out, err := os.Create(iconName)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	err = png.Encode(out, apk.Icon)
+	if err != nil {
+		return err
+	}
+
+	shortKey, err := short.NewPool().GetShortKey()
+	if err != nil {
+		logrus.Error("shortKey err：", err)
+	}
+
+	app := &global.AppInfo{
+		Name:       apk.Name,
+		BundleId:   apk.BundleId,
+		Version:    apk.Version,
+		Build:      apk.Build,
+		Icon:       iconName,
+		Size:       apk.Size,
+		Identifier: identifier,
+		Platform:   apk.Platform,
+		ShortKey:   shortKey,
+		Path:       filename,
+	}
+
+	appInfo, aErr := s.SaveApp(app, params, operator)
+	if aErr != nil {
+		return errors.New(aErr.Message)
+	}
+
+	_, aErr = s.SaveAppVersion(app, params, operator, appInfo.Id)
+	if aErr != nil {
+		return errors.New(aErr.Message)
+	}
+
+	return nil
 }

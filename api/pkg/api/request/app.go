@@ -17,6 +17,14 @@ type UploadParams struct {
 	ChunkTotal       int                   `form:"chunk_total" binding:"required,numeric"`
 }
 
+type UploadByAPIParams struct {
+	File   *multipart.FileHeader `form:"file" binding:"required"`
+	Token  string                `form:"token" binding:"required"`
+	TeamId uint64                `form:"team_id" binding:"numeric"`
+	Env    uint8                 `form:"env" binding:"numeric"`
+	Desc   string                `form:"desc"`
+}
+
 type AppInfoParams struct {
 	TotalSize  uint64 `json:"total_size" binding:"required,numeric"`
 	Identifier string `json:"identifier" binding:"required"`

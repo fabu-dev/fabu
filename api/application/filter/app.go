@@ -54,6 +54,17 @@ func (f *App) Upload(c *gin.Context) *api.Error {
 	return err
 }
 
+func (f *App) UploadByAPI(c *gin.Context) *api.Error {
+	params := &request.UploadByAPIParams{}
+	if err := c.ShouldBind(params); err != nil {
+		return api.NewError(code.ErrorRequest, err.Error())
+	}
+
+	err := f.service.UploadByAPI(params)
+
+	return err
+}
+
 // 解析上传好的app文件
 func (f *App) GetAppInfoByIdentifier(c *gin.Context) (*global.AppInfo, *api.Error) {
 	params := &request.AppInfoParams{}

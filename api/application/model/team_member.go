@@ -2,7 +2,6 @@ package model
 
 import (
 	"errors"
-
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
 	"fabu.dev/api/pkg/utils"
@@ -41,6 +40,13 @@ func NewTeamMember() *TeamMember {
 func (m *TeamMember) GetTeamId(memberId uint64) ([]uint64, *api.Error) {
 	teamIdSlice := make([]uint64, 0, 8)
 	err := m.Db().Where("member_id = ?", memberId).Pluck("team_id", &teamIdSlice).Error
+
+	return teamIdSlice, m.ProcessError(err)
+}
+
+func (m *TeamMember) GetTeamIdForUpload(memberId uint64) ([]uint64, *api.Error) {
+	teamIdSlice := make([]uint64, 0, 8)
+	err := m.Db().Where("member_id = ? and role in (2,3)", memberId).Pluck("team_id", &teamIdSlice).Error
 
 	return teamIdSlice, m.ProcessError(err)
 }

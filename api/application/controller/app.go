@@ -62,6 +62,16 @@ func (ctl *App) Upload(c *gin.Context) {
 	api.SetResponse(c, http.StatusOK, 1, "")
 }
 
+func (ctl *App) UploadByAPI(c *gin.Context) {
+	err := ctl.paramFilter.UploadByAPI(c)
+	if err != nil {
+		api.SetResponse(c, http.StatusOK, err.Code, err.Message)
+		return
+	}
+
+	api.SetResponse(c, http.StatusOK, 1, "")
+}
+
 // @Tags APP管理
 // @Summary App上传 API
 // @Description App上传

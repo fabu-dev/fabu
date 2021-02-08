@@ -2,6 +2,7 @@ package model
 
 import (
 	"errors"
+	"fabu.dev/api/pkg/constant"
 
 	"fabu.dev/api/pkg/api"
 	"fabu.dev/api/pkg/api/code"
@@ -29,7 +30,7 @@ type MemberInfo struct {
 
 func NewMember() *Member {
 	member := &Member{
-		DetailColumns: []string{"id", "mobile", "account", "name", "email", "password", "status", "token"},
+		DetailColumns: []string{"id", "mobile", "account", "name", "email", "password", "status", "token", "api_token"},
 	}
 
 	member.SetTableName("member")
@@ -71,6 +72,17 @@ func (m *Member) GetDetailByAccount(params *request.LoginParams) (*MemberInfo, *
 func (m *Member) GetDetailByToken(token string) (*MemberInfo, *api.Error) {
 	member := &MemberInfo{}
 	err := m.Db().Select(m.DetailColumns).Where("token = ?", token).First(member).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, api.NewError(code.ErrorMemberNotExists, code.GetMessage(code.ErrorMemberNotExists))
+	}
+
+	return member, m.ProcessError(err)
+}
+
+// 根据api_token获取会员账号信息
+func (m *Member) GetDetailByAPIToken(apiToken string) (*MemberInfo, *api.Error) {
+	member := &MemberInfo{}
+	err := m.Db().Select(m.DetailColumns).Where("api_token = ? and status = ?", apiToken, constant.StatusEnable).First(member).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, api.NewError(code.ErrorMemberNotExists, code.GetMessage(code.ErrorMemberNotExists))
 	}
