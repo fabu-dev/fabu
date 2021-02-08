@@ -20,9 +20,9 @@ export const asyncRouterMap = [
       {
         path: '/dashboard',
         name: 'dashboard',
-        redirect: '/dashboard/workplace',
+        redirect: '/app/square',
         component: RouteView,
-        meta: { title: '工作台', keepAlive: true, icon: bxAnaalyse, permission: [ 'dashboard' ] },
+        meta: { title: '公开信息', keepAlive: true, icon: bxAnaalyse, permission: [ 'dashboard' ] },
         hidden: true,
         children: [
           {
@@ -36,6 +36,13 @@ export const asyncRouterMap = [
             name: 'Workplace',
             component: () => import('@/views/dashboard/Workplace'),
             meta: { title: 'menu.dashboard.workplace', keepAlive: true, permission: [ 'dashboard' ] }
+          },
+          {
+            path: '/app/square',
+            name: 'AppSquare',
+            hidden: true,
+            component: () => import('@/views/app/SquareList'),
+            meta: { title: 'APP广场', keepAlive: true, hidden: true }
           }
         ]
       },
@@ -44,7 +51,7 @@ export const asyncRouterMap = [
         path: '/app',
         name: 'app',
         component: RouteView,
-        meta: { title: '应用管理', icon: 'table', keepAlive: true, permission: [ 'table' ] },
+        meta: { title: '应用管理', icon: 'appstore', keepAlive: true, permission: [ 'table' ] },
         redirect: '/app/index',
         hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
         children: [
@@ -54,13 +61,6 @@ export const asyncRouterMap = [
             hidden: true,
             component: () => import('@/views/app/BasicList'),
             meta: { title: '应用列表', keepAlive: true, hidden: true, permission: [ 'table' ] }
-          },
-          {
-            path: '/app/square',
-            name: 'AppSquare',
-            hidden: true,
-            component: () => import('@/views/app/SquareList'),
-            meta: { title: 'APP广场', keepAlive: true, hidden: true }
           },
           {
             path: '/app/upload',
@@ -105,7 +105,7 @@ export const asyncRouterMap = [
         path: '/team',
         name: 'team',
         component: () => import('@/views/team/BasicList'),
-        meta: { title: '我的团队', icon: 'profile', permission: [ 'team' ] }
+        meta: { title: '我的团队', icon: 'team', permission: [ 'team' ] }
       },
 
       // account
