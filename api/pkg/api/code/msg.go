@@ -13,6 +13,7 @@ var Message = map[int]string{
 	ErrorTeamMemberExist: "该用户已经在团队中",
 
 	ErrorAppFileParserFail: "解析失败",
+	ErrorAppReUpload:       "文件重复，存在相同文件",
 
 	ErrorMemberNotExists: "会员不存在",
 }

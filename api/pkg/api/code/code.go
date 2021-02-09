@@ -19,4 +19,5 @@ const (
 
 	// app模块
 	ErrorAppFileParserFail = 40001 // app解析失败
+	ErrorAppReUpload       = 40002 // app文件重复上传
 )

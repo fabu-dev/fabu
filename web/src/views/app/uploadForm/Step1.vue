@@ -74,7 +74,7 @@ export default {
       if (status === 'done') {
         this.$message.success(`${info.file.name} 上传成功`)
       } else if (status === 'error') {
-        this.$message.error(`${info.file.name} 上传失败`)
+        this.$message.error(`${info.file.name} 上传失败：` + info.file.error.message)
       }
     },
     beforeUpload (file) {

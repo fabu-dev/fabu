@@ -10,6 +10,7 @@ import (
 	"image/png"
 	"io"
 	"os"
+	"path"
 	"time"
 
 	"fabu.dev/api/application/controller/response"
@@ -85,6 +86,12 @@ func (s *App) GetPublicApps() (*response.AppList, *api.Error) {
 
 // 将文件保存到channel中
 func (s *App) Upload(params *request.UploadParams, operator *model.Operator) *api.Error {
+	// 判断文件 Hash 是否已存在
+	appVersionInfo, _ := model.NewAppVersion().GetInfoByHash(params.Identifier)
+	if appVersionInfo != nil {
+		return api.NewError(code.ErrorAppReUpload, code.GetMessage(code.ErrorAppReUpload))
+	}
+
 	// 将数据写入到channel中
 	FileChannel <- &UploadInfo{
 		Params:   params,
@@ -131,6 +138,11 @@ func (s *App) UploadByAPI(params *request.UploadByAPIParams) *api.Error {
 		return api.NewError(10001, "团队信息错误")
 	}
 
+	// 环境默认为测试
+	if params.Env == 0 {
+		params.Env = 2
+	}
+
 	// 文件处理
 	src, nErr := params.File.Open()
 	if nErr != nil {
@@ -138,21 +150,20 @@ func (s *App) UploadByAPI(params *request.UploadByAPIParams) *api.Error {
 	}
 	defer src.Close()
 
-	var buf []byte
-	_, nErr = src.Read(buf)
+	fileMD5, nErr := utils.CalcFileMD5(params.File)
 	if nErr != nil {
 		return api.NewError(10002, nErr.Error())
 	}
-	fileMD5 := utils.FileHash(buf)
 
 	// 判断文件 Hash 是否已存在
 	appVersionInfo, err := model.NewAppVersion().GetInfoByHash(fileMD5)
 	if appVersionInfo != nil {
-		return api.NewError(10001, "该文件已存在，请勿重复上传")
+		return api.NewError(code.ErrorAppReUpload, code.GetMessage(code.ErrorAppReUpload))
 	}
 
-	filename := config.Conf.System.AppSaveRootPath + fileMD5 + params.File.Filename
-	out, nErr := os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0666)
+	// 存储文件
+	filename := config.Conf.System.AppSaveRootPath + fileMD5 + path.Ext(params.File.Filename)
+	out, nErr := os.Create(filename)
 	if nErr != nil {
 		return api.NewError(10002, nErr.Error())
 	}
@@ -162,9 +173,9 @@ func (s *App) UploadByAPI(params *request.UploadByAPIParams) *api.Error {
 		return api.NewError(10002, nErr.Error())
 	}
 
+	// 解析 APP 文件，并进行数据库处理
 	saveParams := &request.SaveParams{Env: params.Env, Identifier: fileMD5, Description: params.Desc, TeamId: teamId}
 	operator := &model.Operator{Id: int64(member.Id), Account: member.Account}
-
 	nErr = s.DealApp(filename, fileMD5, saveParams, operator)
 	if nErr != nil {
 		return api.NewError(10002, nErr.Error())
@@ -174,7 +185,6 @@ func (s *App) UploadByAPI(params *request.UploadByAPIParams) *api.Error {
 }
 
 // 保存上传信息
-// TODO 判断版本号，用最大的版本号作为最新版本号
 func (s *App) Save(params *request.SaveParams, operator *model.Operator) (*global.AppInfo, *api.Error) {
 	apk, err := s.GetAppInfoByIdentifier(params.Identifier)
 	if err != nil {
@@ -206,11 +216,11 @@ func (s *App) SaveApp(apk *global.AppInfo, params *request.SaveParams, operator 
 
 	// 如果不是第一次上传，则修改版本号
 	if appInfo != nil {
+		appInfo.Name = apk.Name
 		appInfo.CurrentVersion = apk.Version
 		appInfo.CurrentBuild = apk.Build
 		appInfo.Icon = apk.Icon
 		appInfo.UpdatedBy = operator.Account
-		appInfo.UpdatedAt = utils.GetCurrentDateTime()
 		appInfo.Status = constant.StatusEnable
 
 		err = ObjApp.Edit(appInfo)

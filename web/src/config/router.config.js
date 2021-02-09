@@ -125,6 +125,12 @@ export const asyncRouterMap = [
             meta: { title: '基本设置', hidden: true, permission: [ 'user' ] }
           },
           {
+            path: '/account/settings/token',
+            name: 'TokenSettings',
+            component: () => import('@/views/account/settings/TokenSetting'),
+            meta: { title: 'Token设置', hidden: true, permission: [ 'user' ] }
+          },
+          {
             path: '/account/settings/security',
             name: 'SecuritySettings',
             component: () => import('@/views/account/settings/Security'),

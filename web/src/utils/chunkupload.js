@@ -54,7 +54,7 @@ export default function upload (option) {
   for (let i = 0; i < optionFile.size; i = i + chunkSize) {
     const tmp = optionFile.slice(i, Math.min((i + chunkSize), optionFile.size))
     if (i === 0) {
-      fileReader.readAsArrayBuffer(tmp)
+      fileReader.readAsArrayBuffer(optionFile)
     }
     fileChunkedList.push(tmp)
   }
@@ -62,7 +62,7 @@ export default function upload (option) {
   // 在文件读取完毕之后，开始计算文件md5，作为文件唯一标识
   fileReader.onload = async (e) => {
     spark.append(e.target.result)
-    md5 = spark.end() + new Date().getTime()
+    md5 = spark.end()
     console.log('文件唯一标识--------', md5)
     // 将fileChunkedList转成FormData对象，并加入上传时需要的数据
     fileChunkedList = fileChunkedList.map((item, index) => {
@@ -119,6 +119,11 @@ export default function upload (option) {
               if (xhr.status < 200 || xhr.status >= 300) {
                 isStop = true
                 reject(getError(action, option, xhr))
+              }
+              const resp = JSON.parse(xhr.response)
+              if (resp.code !== 1) {
+                isStop = true
+                reject(new Error(resp.message))
               }
               if (counter === len - 1) {
                 // 最后一个上传完成

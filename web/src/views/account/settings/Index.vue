@@ -15,6 +15,11 @@
                 基本设置
               </router-link>
             </a-menu-item>
+            <a-menu-item key="/account/settings/token">
+              <router-link :to="{ name: 'TokenSettings' }">
+                Token设置
+              </router-link>
+            </a-menu-item>
             <!--
             <a-menu-item key="/account/settings/security">
               <router-link :to="{ name: 'SecuritySettings' }">

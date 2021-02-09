@@ -5,6 +5,7 @@ import (
 	"image/png"
 	"io"
 	"os"
+	"path"
 
 	"fabu.dev/api/pkg/short"
 
@@ -111,8 +112,15 @@ func (t *CombineApp) BufferFragment(data *service.UploadInfo) {
 
 // 保存文件到硬盘上
 func (t *CombineApp) Save(data *service.UploadInfo) error {
-	filename := t.AppSaveRootPath + data.Params.Identifier + data.Params.Filename
-	out, err := os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0666) // TODO 这里感觉还可以优化，避免多次打开关闭文件
+	filename := t.AppSaveRootPath + data.Params.Identifier + path.Ext(data.Params.Filename)
+	var out *os.File
+	var err error
+	if data.Params.ChunkNumber == 1 {
+		// 第一个分片就不是APPEND了
+		out, err = os.Create(filename)
+	} else {
+		out, err = os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0666)
+	}
 	if err != nil {
 		return err
 	}
